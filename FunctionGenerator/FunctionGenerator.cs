@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FunctionGenerator;
 
@@ -17,14 +18,17 @@ public class FunctionGenerator : ISourceGenerator
         }*/
         foreach (var compilationSource in context.Compilation.SyntaxTrees)
         {
+            compilationSource.GetRoot().ChildNodes()
+                .OfType<ClassDeclarationSyntax>();
+
             File.WriteAllText($@"F:\Programming\Asp\AspCore\v8\MinimalApi\MinimalApi\Log\log_{DateTime.Now.ToString("yyyyyMMdd")}.txt", compilationSource.GetText().ToString());
         }
-        throw new Exception("Hello \n qw");
+        //throw new Exception("Hello \n qw");
     }
 
     public void Initialize(GeneratorInitializationContext context)
     {
-        File.WriteAllText($@"F:\Programming\Asp\AspCore\v8\MinimalApi\MinimalApi\Log\log_{DateTime.Now.ToString("yyyyyMMdd")}.txt", "Hello");
+        //File.WriteAllText($@"F:\Programming\Asp\AspCore\v8\MinimalApi\MinimalApi\Log\log_{DateTime.Now.ToString("yyyyyMMdd")}.txt", "Hello");
         throw new Exception("Hello \n qw");
     }
 }

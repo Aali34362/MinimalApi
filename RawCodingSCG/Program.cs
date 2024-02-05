@@ -22,11 +22,11 @@ Console.WriteLine("Hello, World");
 public partial class Car
 {
     [Give("Print")]
-    partial void Do();
+    static partial void Do();
 }
 
 
-public class Functions
+public static class Functions
 {
     [Define]
     public static void Print()
