@@ -1,4 +1,5 @@
 ﻿using RawCodingSCG.FrameWork;
+using static System.Net.Mime.MediaTypeNames;
 ////////////////////////////Source Generator////////////////////////////////
 /*
  * Links
@@ -16,6 +17,8 @@
  * Usage
  * 
  */
+
+//Test.P();
 
 Console.WriteLine("Hello, World");
 
