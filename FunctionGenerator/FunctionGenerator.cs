@@ -1,7 +1,9 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Collections.Immutable;
 using System.Text;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace FunctionGenerator;
 
@@ -44,7 +46,58 @@ public class FunctionGenerator : ISourceGenerator
         sb.Append("{");
         sb.Append("public static void P() => Console.WriteLine(\"Hello New World\");");
         sb.Append("}");
-        context.AddSource("hellos.g.cs", output);
+        context.AddSource("hellos.g.cs", sb.ToString());
+        var source = CompilationUnit()
+.WithMembers(
+    SingletonList<MemberDeclarationSyntax>(
+        ClassDeclaration("Test")
+        .WithModifiers(
+            TokenList(
+                Token(SyntaxKind.PublicKeyword)))
+        .WithMembers(
+            SingletonList<MemberDeclarationSyntax>(
+                MethodDeclaration(
+                    PredefinedType(
+                        Token(SyntaxKind.VoidKeyword)),
+                    Identifier("P"))
+                .WithModifiers(
+                    TokenList(
+                        new[]{
+                            Token(SyntaxKind.PublicKeyword),
+                            Token(SyntaxKind.StaticKeyword)}))
+                .WithExpressionBody(
+                    ArrowExpressionClause(
+                        InvocationExpression(
+                            MemberAccessExpression(
+                                SyntaxKind.SimpleMemberAccessExpression,
+                                IdentifierName("Console"),
+                                IdentifierName("WriteLine")))
+                        .WithArgumentList(
+                            ArgumentList(
+                                SeparatedList<ArgumentSyntax>(
+                                    new SyntaxNodeOrToken[]{
+                                        Argument(
+                                            LiteralExpression(
+                                                SyntaxKind.StringLiteralExpression,
+                                                Literal(""))),
+                                        MissingToken(SyntaxKind.CommaToken),
+                                        Argument(
+                                            IdentifierName("Hello")),
+                                        MissingToken(SyntaxKind.CommaToken),
+                                        Argument(
+                                            IdentifierName("New")),
+                                        MissingToken(SyntaxKind.CommaToken),
+                                        Argument(
+                                            IdentifierName("World")),
+                                        MissingToken(SyntaxKind.CommaToken),
+                                        Argument(
+                                            LiteralExpression(
+                                                SyntaxKind.StringLiteralExpression,
+                                                Literal("")))})))))
+                .WithSemicolonToken(
+                    Token(SyntaxKind.SemicolonToken))))))
+.NormalizeWhitespace();
+        context.AddSource("hellos.g.cs", source.GetText(Encoding.UTF8));
         throw new Exception("Hello world \n qw");
     }
 
@@ -58,7 +111,9 @@ public class FunctionGenerator : ISourceGenerator
 
 public class MainSyntaxReceiver : ISyntaxReceiver
 {
-    public int Index { get; set; }
+    public int Index  { get; set; }
+    public DefinitionAggregate definitionAggregate { get; } = new();
+    public GivethsAggregation givethsAggregation  { get; } = new();
 
     public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
     {
@@ -67,6 +122,22 @@ public class MainSyntaxReceiver : ISyntaxReceiver
             //File.WriteAllText($@"F:\Programming\Asp\AspCore\v8\MinimalApi\MinimalApi\Log\log_{DateTime.Now.ToString("yyyyyMMddTHHmmsss")}.txt", syntaxNode.GetText().ToString());
             File.WriteAllText($@"F:\Programming\Asp\AspCore\v8\MinimalApi\MinimalApi\Log\log_{Index++.ToString()}.txt", syntaxNode.GetText().ToString());
         }
+    }
+}
+
+public class DefinitionAggregate : ISyntaxReceiver
+{
+    public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
+    {
+
+    }
+}
+
+public class GivethsAggregation : ISyntaxReceiver
+{
+    public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
+    {
+
     }
 }
 
