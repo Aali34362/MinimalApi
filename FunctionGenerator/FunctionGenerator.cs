@@ -35,6 +35,8 @@ public class FunctionGenerator : ISourceGenerator
         //    }
         //}
 
+        var receiver = (MainSyntaxReceiver)context.SyntaxReceiver;
+
         var output = @"
                 public class Test
                 {
@@ -97,7 +99,7 @@ public class FunctionGenerator : ISourceGenerator
                 .WithSemicolonToken(
                     Token(SyntaxKind.SemicolonToken))))))
 .NormalizeWhitespace();
-        context.AddSource("hellos.g.cs", source.GetText(Encoding.UTF8));
+        context.AddSource("HelloWorld.g.cs", source.GetText(Encoding.UTF8));
         throw new Exception("Hello world \n qw");
     }
 
@@ -112,34 +114,81 @@ public class FunctionGenerator : ISourceGenerator
 public class MainSyntaxReceiver : ISyntaxReceiver
 {
     public int Index  { get; set; }
-    public DefinitionAggregate definitionAggregate { get; } = new();
-    public GivethsAggregation givethsAggregation  { get; } = new();
+    public DefinitionAggregate Definition { get; } = new();
+    public GivethsAggregation Giveths  { get; } = new();
 
     public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
     {
-        if(syntaxNode is ClassDeclarationSyntax)
+        Definition.OnVisitSyntaxNode(syntaxNode);
+        Giveths.OnVisitSyntaxNode(syntaxNode);
+        if (syntaxNode is ClassDeclarationSyntax)
         {
             //File.WriteAllText($@"F:\Programming\Asp\AspCore\v8\MinimalApi\MinimalApi\Log\log_{DateTime.Now.ToString("yyyyyMMddTHHmmsss")}.txt", syntaxNode.GetText().ToString());
             File.WriteAllText($@"F:\Programming\Asp\AspCore\v8\MinimalApi\MinimalApi\Log\log_{Index++.ToString()}.txt", syntaxNode.GetText().ToString());
         }
     }
 }
+public class Capture
+{
+    public string Keys { get; set; }
+    public MethodDeclarationSyntax Methods { get; set; }
 
+    public Capture(string Keys, MethodDeclarationSyntax Methods)
+    {
+        this.Keys = Keys;
+        this.Methods = Methods;
+    }
+}
 public class DefinitionAggregate : ISyntaxReceiver
 {
+    public List<Capture> Captures { get; } = new();
     public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
     {
-
+        if (syntaxNode is not AttributeSyntax { Name: IdentifierNameSyntax { Identifier.Text: "Define" } } attr)
+        {
+            return;
+        }
+        var method = attr.GetParent<MethodDeclarationSyntax>();
+        var key = method.Identifier.Text;
+        Captures.Add(new Capture(key, method));
     }
 }
 
 public class GivethsAggregation : ISyntaxReceiver
 {
+    public List<Capture> Captures { get; } = new();
     public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
-    {
-
+    {        
+        if (syntaxNode is not AttributeSyntax { Name: IdentifierNameSyntax { Identifier.Text: "Give" } } attr)
+        {
+            return;
+        }
+        var target = (attr.ArgumentList.Arguments.Single() as LiteralExpressionSyntax).Token.ValueText;
+        //var key = method.Identifier.Text;
+       // Captures.Add(new Capture(key, method));
     }
 }
+
+public static class SyntaxNodeExtensions
+{
+    public static T GetParent<T>(this SyntaxNode node)
+    {
+        var parent = node.Parent;
+        while(true)
+        {
+            if(parent == null)
+            {
+                throw new Exception();
+            }
+            if(parent is T t)
+            {
+                return t;
+            }
+            parent = parent.Parent;
+        }
+    }
+}
+
 
 
 [Generator] 
