@@ -29,8 +29,12 @@ Console.WriteLine( new String('-',50));
 
 ////////////////////////////////////////////////////////////////////////////
 
-Dictionary<Book, string> whatt = new();
+Dictionary<Book, string> whatt = new(Book.IdEqualityComparer);
+Dictionary<Book, string> good = new();
 HashSet<Book> hnh = new();
+
+List<Book> books = new();
+
 abstract class Entities<TId> : IEquatable<Entities<TId>> where TId : IEquatable<TId>
 {
     public TId Id { get; private set; }
@@ -45,21 +49,24 @@ abstract class Entities<TId> : IEquatable<Entities<TId>> where TId : IEquatable<
         left is null ? right is null : left.Equals(right);
     public static bool operator != (Entities<TId>? left, Entity<TId>? right) =>
         !(left == right);
-
-    
 }
 
 abstract class Entity<TId> where TId : IEquatable<TId>
 {
     public TId Id { get; private set; }
-    protected Entity(TId id) => Id = id;
+    public Entity(TId id) => Id = id;
+    public static IEqualityComparer<Entity<TId>> IdEqualityComparer =>
+        EqualityComparer<Entity<TId>>.Create((x, y) => 
+        x is null ? y is null
+            : y is not null && x.GetType() == y.GetType() && x.Id.Equals(y.Id));
 }
 class Book : Entity<BookId>
 {
     public BookId Id { get; private set; }
     public string Title { get; set; }
 
-    public Book(BookId id, string title) => (Id, Title) = (id, title);
+    //public Book(BookId id, string title) => (Id, Title) = (id, title);
+    public Book(BookId id, string title) : base(id) => Title = title;
 
     public static Book CreateNew() => new(new(Guid.NewGuid()), string.Empty);
 

@@ -35,21 +35,25 @@ public class FunctionGenerator : ISourceGenerator
         //    }
         //}
 
-        var receiver = (MainSyntaxReceiver)context.SyntaxReceiver;
+        var receiver = (MainSyntaxReceiver) context.SyntaxReceiver;
 
-        var output = @"
+        //Part 1
+        /*var output = @"
                 public class Test
                 {
                     public static void P() => Console.WriteLine(""Hello New World"");
                 }";
-        context.AddSource("hello.g.cs",output);
-        var sb = new StringBuilder();
+        context.AddSource("hello.g.cs",output);*/
+        //Part II
+        /*var sb = new StringBuilder();
         sb.Append("public class Test1");
         sb.Append("{");
         sb.Append("public static void P() => Console.WriteLine(\"Hello New World\");");
         sb.Append("}");
-        context.AddSource("hellos.g.cs", sb.ToString());
-        var source = CompilationUnit()
+        context.AddSource("hellos.g.cs", sb.ToString());*/
+
+        //Part III
+        /*var source = CompilationUnit()
 .WithMembers(
     SingletonList<MemberDeclarationSyntax>(
         ClassDeclaration("Test")
@@ -99,7 +103,7 @@ public class FunctionGenerator : ISourceGenerator
                 .WithSemicolonToken(
                     Token(SyntaxKind.SemicolonToken))))))
 .NormalizeWhitespace();
-        context.AddSource("HelloWorld.g.cs", source.GetText(Encoding.UTF8));
+        context.AddSource("HelloWorld.g.cs", source.GetText(Encoding.UTF8));*/
         throw new Exception("Hello world \n qw");
     }
 
