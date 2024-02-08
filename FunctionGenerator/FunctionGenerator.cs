@@ -132,17 +132,7 @@ public class MainSyntaxReceiver : ISyntaxReceiver
         }
     }
 }
-public class Capture
-{
-    public string Keys { get; set; }
-    public MethodDeclarationSyntax Methods { get; set; }
 
-    public Capture(string Keys, MethodDeclarationSyntax Methods)
-    {
-        this.Keys = Keys;
-        this.Methods = Methods;
-    }
-}
 public class DefinitionAggregate : ISyntaxReceiver
 {
     public List<Capture> Captures { get; } = new();
@@ -156,6 +146,7 @@ public class DefinitionAggregate : ISyntaxReceiver
         var key = method.Identifier.Text;
         Captures.Add(new Capture(key, method));
     }
+    public record Capture(string Keys, MethodDeclarationSyntax Methods);
 }
 
 public class GivethsAggregation : ISyntaxReceiver
@@ -167,10 +158,14 @@ public class GivethsAggregation : ISyntaxReceiver
         {
             return;
         }
-        var target = (attr.ArgumentList.Arguments.Single() as LiteralExpressionSyntax).Token.ValueText;
+        var target = (attr.ArgumentList.Arguments.Single().Expression as LiteralExpressionSyntax).Token.ValueText;
+        var method = attr.GetParent<MethodDeclarationSyntax>();
+        var clazz = attr.GetParent<ClassDeclarationSyntax>();
         //var key = method.Identifier.Text;
        // Captures.Add(new Capture(key, method));
+
     }
+    public record Capture(string TargetImplementation, MethodDeclarationSyntax Method, ClassDeclarationSyntax Clazz);
 }
 
 public static class SyntaxNodeExtensions
