@@ -19,6 +19,8 @@ using static System.Net.Mime.MediaTypeNames;
  */
 
 //Test.P();
+var car = new Car();
+car.Do();
 Console.WriteLine(new String('-', 50));
 
 ////////////////////////////////////IDisposable///////////////////////////
@@ -69,8 +71,6 @@ class Book : Entity<BookId>
     public Book(BookId id, string title) : base(id) => Title = title;
 
     public static Book CreateNew() => new(new(Guid.NewGuid()), string.Empty);
-
-
 }
 readonly record struct BookId(Guid Value);
 
@@ -81,17 +81,36 @@ readonly record struct BookId(Guid Value);
 public partial class Car
 {
     [Give("Print")]
-    static partial void Do();
+    public partial void Do();
 }
 
+/*public partial class Person
+{
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+
+    [Give("FullNames")]
+    public static partial string FullName();
+}*/
 
 public static class Functions
 {
     [Define]
     public static void Print()
     {
-        Console.WriteLine("Hello, World!");
+       Console.WriteLine("Hello, World!");
     }
+
+    /*[Define]
+    public static string FullNames()
+    {
+        var type = GetType();
+        var firstNameP = type.GetProperty("FirstName");
+        var lastNameP = type.GetProperty("LastName");
+        var fn = (string)firstNameP.GetValue(this);
+        var ln = (string)lastNameP.GetValue(this);
+        return $"{fn} {ln}";
+    }*/
 
     public static void Save()
     {

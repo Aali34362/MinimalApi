@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -32,8 +33,6 @@ public class FunctionGenerator : ISourceGenerator
         //        File.WriteAllText($@"F:\Programming\Asp\AspCore\v8\MinimalApi\MinimalApi\Log\log_{DateTime.Now.ToString("yyyyyMMdd")}.txt", classDeclarationSyntax.GetText().ToString());
         //    }
         //}
-
-        var receiver = (MainSyntaxReceiver) context.SyntaxReceiver;
 
         //Part 1
         /*var output = @"
@@ -102,7 +101,30 @@ public class FunctionGenerator : ISourceGenerator
                     Token(SyntaxKind.SemicolonToken))))))
 .NormalizeWhitespace();
         context.AddSource("HelloWorld.g.cs", source.GetText(Encoding.UTF8));*/
-        throw new Exception("Hello world \n qw");
+
+
+        var receiver = (MainSyntaxReceiver)context.SyntaxReceiver;
+        if (receiver != null)
+        {
+            foreach (var giveth in receiver.Giveths.Captures)
+            {
+                var def = receiver.Definition.Captures.FirstOrDefault(x => x.Keys == giveth.TargetImplementation);
+                var output = giveth.Clazz.WithMembers(new(CreateGiveMethod(giveth.Method, def.Methods))).NormalizeWhitespace();
+                //throw new Exception(output.ToFullString().ReplaceLineEndings(""));
+                //throw new Exception(giveth.Clazz.ToFullString().ReplaceLineEndings(""));
+                context.AddSource($"{giveth.Clazz.Identifier.Text}.g.cs", output.GetText(Encoding.UTF8));
+
+            }
+        }
+        throw new Exception(receiver?.Definition.Captures.First().Methods.ToFullString().ReplaceLineEndings(""));
+    }
+
+    private MethodDeclarationSyntax CreateGiveMethod(MethodDeclarationSyntax givethMethod, MethodDeclarationSyntax def)
+    {
+        return MethodDeclaration(givethMethod.ReturnType, givethMethod.Identifier)
+                .WithModifiers(givethMethod.Modifiers)
+                .WithBody(def.Body);               
+                //.WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
     }
 
     public void Initialize(GeneratorInitializationContext context)
