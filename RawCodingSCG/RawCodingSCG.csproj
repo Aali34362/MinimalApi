@@ -9,7 +9,14 @@
     <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
   </PropertyGroup>
 
+  <Target Name="CleanSourceGeneratedFiles" BeforeTargets="BeforeBuild" DependsOnTargets="$(BeforeBuildDependsOn)">
+    <RemoveDir Directories="Generated" />
+  </Target>
+
   <ItemGroup>
+    <Compile Remove="Generated\**" />
+    <Content Include="Generated\**" />
+    
     <ProjectReference Include="..\FunctionGenerator\FunctionGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\SampleGenerator\SampleGenerator.csproj"  OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
