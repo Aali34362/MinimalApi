@@ -1,5 +1,6 @@
 ﻿using RawCodingSCG.FrameWork;
-using static System.Net.Mime.MediaTypeNames;
+using SampleGenerator;
+//using static System.Net.Mime.MediaTypeNames;
 ////////////////////////////Source Generator////////////////////////////////
 /*
  * Links
@@ -20,8 +21,16 @@ using static System.Net.Mime.MediaTypeNames;
 
 //Test.P();
 var car = new Car();
-car.Do();
+Car.Do();
 Console.WriteLine(new String('-', 50));
+
+///////////This Class is generated From Source Code
+foreach(string name in EndpointsExtension.Names)
+{
+    Console.WriteLine(name);
+}
+Console.WriteLine(EndpointsExtension.MapAllEndpoints("Hello World"));
+Console.WriteLine(EndpointsExtension.MapAllEndpoint(1));
 
 ////////////////////////////////////IDisposable///////////////////////////
 //Using Statement -> this class must implement IDisposable interface will properly call IDisposable interface every time it is called
@@ -78,10 +87,13 @@ readonly record struct BookId(Guid Value);
 
 
 
-public partial class Car
+public class Car
 {
     [Give("Print")]
-    public partial void Do();
+    public static void Do()
+    {
+        Console.WriteLine("Do");
+    }
 }
 
 /*public partial class Person
