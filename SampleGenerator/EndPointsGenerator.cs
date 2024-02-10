@@ -2,10 +2,10 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Collections.Immutable;
 
-namespace SourceGenerator.Generator;
+namespace SampleGenerator;
 
 [Generator]
-public class EndPointsGenerator : IIncrementalGenerator
+public class EndPointsGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -39,6 +39,4 @@ public class EndPointsGenerator : IIncrementalGenerator
                     """;
         context.AddSource("EndpointsExtension.cs", code);
     }
-
-
 }
