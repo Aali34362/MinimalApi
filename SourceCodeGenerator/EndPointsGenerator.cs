@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 namespace SourceCodeGenerator;
 
 [Generator]
-public class EndPointsGenerator
+public class EndPointsGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {

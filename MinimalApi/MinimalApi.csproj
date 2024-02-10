@@ -16,6 +16,13 @@
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Generated\**" />
+    <Content Include="Generated\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SourceCodeGenerator\SourceCodeGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />    
+  </ItemGroup>
 
 </Project>
   

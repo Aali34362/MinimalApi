@@ -22,6 +22,6 @@ app.UseAuthorization();
 
 //app.MapControllers();
 new UserEndPoint().MapEndPoints(app);
-//app.MapAllEndpoints();
+app.MapAllEndpoints();
 
 app.Run();

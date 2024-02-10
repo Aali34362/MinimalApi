@@ -25,12 +25,12 @@ Car.Do();
 Console.WriteLine(new String('-', 50));
 
 ///////////This Class is generated From Source Code
-foreach(string name in EndpointsExtension.Names)
+foreach(string name in ClassNames.Names)
 {
     Console.WriteLine(name);
 }
-Console.WriteLine(EndpointsExtension.MapAllEndpoints("Hello World"));
-Console.WriteLine(EndpointsExtension.MapAllEndpoint(1));
+Console.WriteLine(ClassNames.MapAllEndpoints("Hello World"));
+Console.WriteLine(ClassNames.MapAllEndpoint(1));
 
 ////////////////////////////////////IDisposable///////////////////////////
 //Using Statement -> this class must implement IDisposable interface will properly call IDisposable interface every time it is called
