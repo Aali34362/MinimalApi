@@ -21,7 +21,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 //app.MapControllers();
-new UserEndPoint().MapEndPoints(app);
+//new UserEndPoint().MapEndPoints(app);
 app.MapAllEndpoints();
 
 app.Run();
