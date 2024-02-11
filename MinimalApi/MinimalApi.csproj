@@ -21,9 +21,12 @@
     <RemoveDir Directories="Generated" />
   </Target>
   
+  <!--#if (UseSwagger)-->
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
+  <!--#endif-->
+  
   <ItemGroup>
     <Compile Remove="Generated\**" />
     <Content Include="Generated\**" />

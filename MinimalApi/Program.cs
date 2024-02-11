@@ -13,8 +13,10 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+#if (UseSwagger)
     app.UseSwagger();
     app.UseSwaggerUI();
+#endif
 }
 
 app.UseHttpsRedirection();
