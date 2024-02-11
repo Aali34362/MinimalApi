@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionGenerator", "Functi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleGenerator", "SampleGenerator\SampleGenerator.csproj", "{27753F89-FA39-4920-B3B2-9ED480EB114D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceCodeGenerator", "SourceCodeGenerator\SourceCodeGenerator.csproj", "{530CEE6F-FED1-4B5C-987E-40CD325B74D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SourceCodeGenerator", "SourceCodeGenerator\SourceCodeGenerator.csproj", "{530CEE6F-FED1-4B5C-987E-40CD325B74D1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".template.config", ".template.config", "{E8C308D8-121D-47FE-9920-4E435EE488B6}"
+	ProjectSection(SolutionItems) = preProject
+		template.json = template.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
