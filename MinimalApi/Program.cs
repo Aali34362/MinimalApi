@@ -6,8 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+#if(UseSwagger)
 builder.Services.AddSwaggerGen();
-
+#endif
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

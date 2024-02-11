@@ -10,8 +10,26 @@
     "type": "solution"
   },
   "sourceName": "MinimalApi",
-  "description": "This is a minimal api template"
+  "description": "This is a minimal api template",
+  "symbols": {
+    "UseSwagger": {
+      "type": "parameter",
+      "description": "Use Swagger ?",
+      "defaultValue": "true",
+      "datatype": "bool"
+    }
+    /*
+    "projects": {
+      "type": "list",
+      "description": "List of projects to include in the template",
+      "replaces": "Project1, Project2",
+      "defaultValue": ["Project1", "Project2"]
+      }
+      */
+  }
 
+
+  
 }
 /*
   In CMD -> Administration
