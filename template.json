@@ -1,3 +1,6 @@
+/*
+  https://github.com/mhdbouk/reference-service-template
+*/
 {
   "$schema": "http://json.schemastore.org/template",
   "author": "Amir Abdul Wahid",
@@ -17,6 +20,30 @@
       "description": "Use Swagger ?",
       "defaultValue": "true",
       "datatype": "bool"
+    },
+    "DatabaseProvider": {
+      "type": "parameter",
+      "description": "Select the Database provider (sql server or oracle)",
+      "choices": [
+        {
+          "choice": "sqlserver",
+          "displayName": "Sql Server",
+          "description": "Use Sql Server with Entity Framework"
+        },
+        {
+          "choice": "oracle",
+          "displayName": "Oracle",
+          "description": "Use Oracle with Entity Framework"
+        }
+      ]
+    },
+    "UseSqlServer": {
+      "type": "computed",
+      "value": "(DatabaseProvider == \"sqlserver\")"
+    },
+    "UseOracle": {
+      "type": "computed",
+      "value": "(DatabaseProvider == \"oracle\")"
     }
     /*
     "projects": {
@@ -26,10 +53,25 @@
       "defaultValue": ["Project1", "Project2"]
       }
       */
-  }
-
-
-  
+  },
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "condition": "(UseSqlServer)",
+          "exclude": [
+            "**/Data/NoSql/**/*"
+          ]
+        },
+        {
+          "condition": "(UseCosmosDb)",
+          "exclude": [
+            "**/Data/Sql/**/*"
+          ]
+        }
+      ]
+    }
+  ]
 }
 /*
   In CMD -> Administration
