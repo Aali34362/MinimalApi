@@ -13,3 +13,13 @@
   "description": "This is a minimal api template"
 
 }
+/*
+  In CMD -> Administration
+  commands to run for creating new .Net Template
+  dotnet new list
+  dotnet new install .
+  dotnet new minimalapi -o "TodoService"
+
+  dotnet new install F:\Programming\Asp\AspCore\v8\copyMinimalApi --force
+  dotnet new uninstall .
+*/
