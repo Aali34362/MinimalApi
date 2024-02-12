@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".template.config", ".templa
 		template.json = template.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbUpDemo", "DbUpDemo\DbUpDemo.csproj", "{3B9C86D6-3FA3-4632-929E-5EB5AE13E32B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{530CEE6F-FED1-4B5C-987E-40CD325B74D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{530CEE6F-FED1-4B5C-987E-40CD325B74D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{530CEE6F-FED1-4B5C-987E-40CD325B74D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B9C86D6-3FA3-4632-929E-5EB5AE13E32B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B9C86D6-3FA3-4632-929E-5EB5AE13E32B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B9C86D6-3FA3-4632-929E-5EB5AE13E32B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B9C86D6-3FA3-4632-929E-5EB5AE13E32B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
