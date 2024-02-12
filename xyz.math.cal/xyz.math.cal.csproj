@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>xyz.math.cal</PackageId>
+    <Version>1.0.0</Version>
+    <Author>xyz</Author>
+    <Product>Calculator</Product>
+    <Description>this is a cool calculato</Description>
+    <PackageProjectUrl></PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.jpg</PackageIcon>
+    <PackageTags>Calculator;Math</PackageTags>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="icon.jpg" Pack="true" PackagePath="icon.jpg"/>
+    <None Include="README.md" Pack="true" PackagePath="README.md"/>
+    <None Include="LICENSE.txt" Pack="true" PackagePath=""/>
+  </ItemGroup>
+</Project>
