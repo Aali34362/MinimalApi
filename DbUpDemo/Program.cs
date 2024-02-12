@@ -1,4 +1,5 @@
 ﻿using DbUp;
+using xyz.math.cal;
 string connectionString =
     args.FirstOrDefault() ??
     "Server=UCHIHA_MADARA\\SQLEXPRESS;Database=SocietyManagementSystem;User=UCHIHA_MADARA\\aa882;Password=; MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=true;Connection Timeout=6000;Trusted_Connection=True;";
@@ -17,3 +18,7 @@ else
 {
     Console.WriteLine("Failure");
 }
+
+//Created from my own Package Hurray
+Calculator calculator = new();
+Console.WriteLine(calculator.Add(1, 1));

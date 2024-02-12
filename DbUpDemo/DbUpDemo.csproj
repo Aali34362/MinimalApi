@@ -21,6 +21,7 @@
     <PackageReference Include="dbup-core" Version="5.0.76" />
     <PackageReference Include="dbup-sqlserver" Version="5.0.40" />
     <PackageReference Include="DbUp.Downgrade" Version="2.4.0" />
+    <PackageReference Include="xyz.math.cal" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
