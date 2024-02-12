@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Scripts\CreatePayments.sql" />
+    <None Remove="Scripts\*.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Scripts\CreatePayments.sql">
+    <EmbeddedResource Include="Scripts\*.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
@@ -21,6 +21,10 @@
     <PackageReference Include="dbup-core" Version="5.0.76" />
     <PackageReference Include="dbup-sqlserver" Version="5.0.40" />
     <PackageReference Include="DbUp.Downgrade" Version="2.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CodeExplaination\" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,1 @@
+Insert Into Payments Values(1,'Abc',100,'Paytm','Partially',1,0,'Abc','Abc',GETDATE(),GETDATE(),'1:1:1:1');
