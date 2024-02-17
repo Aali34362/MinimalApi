@@ -18,9 +18,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".template.config", ".templa
 		template.json = template.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbUpDemo", "DbUpDemo\DbUpDemo.csproj", "{3B9C86D6-3FA3-4632-929E-5EB5AE13E32B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbUpDemo", "DbUpDemo\DbUpDemo.csproj", "{3B9C86D6-3FA3-4632-929E-5EB5AE13E32B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xyz.math.cal", "xyz.math.cal\xyz.math.cal.csproj", "{EC9AC57D-4DBE-4130-A4F3-FF5AC3DAC300}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xyz.math.cal", "xyz.math.cal\xyz.math.cal.csproj", "{EC9AC57D-4DBE-4130-A4F3-FF5AC3DAC300}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormatDemo", "FormatDemo\FormatDemo.csproj", "{4E6183A4-4A22-46AD-BB85-7C62C5AF15E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +58,10 @@ Global
 		{EC9AC57D-4DBE-4130-A4F3-FF5AC3DAC300}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC9AC57D-4DBE-4130-A4F3-FF5AC3DAC300}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC9AC57D-4DBE-4130-A4F3-FF5AC3DAC300}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E6183A4-4A22-46AD-BB85-7C62C5AF15E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E6183A4-4A22-46AD-BB85-7C62C5AF15E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E6183A4-4A22-46AD-BB85-7C62C5AF15E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E6183A4-4A22-46AD-BB85-7C62C5AF15E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
