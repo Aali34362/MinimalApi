@@ -1,0 +1,153 @@
+IServiceCollection :
+IServiceCollection is a central part of the ASP.NET Core and .NET Core dependency injection system. 
+It's a collection of service descriptors that are used to configure the dependency injection container. 
+Here's what it's used for:
+
+Service Registration: 
+It's used to register services with the dependency injection container. 
+Services can be registered with various lifetimes such as transient, scoped, or singleton.
+
+Service Resolution: 
+It's used to resolve services from the dependency injection container. Once services are registered, 
+they can be requested and injected into application components like controllers, middleware, or other services.
+
+Configuration: 
+It's used to configure services and their dependencies within the application. 
+This includes setting up dependencies, specifying lifetimes, and configuring options.
+
+E.G : 
+public void ConfigureServices(IServiceCollection services)
+{
+    // Register services with IServiceCollection
+    services.AddTransient<IMyService, MyService>();
+    services.AddScoped<IOtherService, OtherService>();
+    services.AddSingleton<IMySingletonService, MySingletonService>();
+
+    // Configure options
+    services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));
+
+    // Add MVC services
+    services.AddControllers();
+}
+
+services.AddTransient<IMyService, MyService>() 
+registers MyService as a transient service, meaning a new instance will be created every time it's requested.
+
+services.AddScoped<IOtherService, OtherService>() 
+registers OtherService as a scoped service, meaning a single instance will be created per scope (typically per HTTP request).
+
+services.AddSingleton<IMySingletonService, MySingletonService>() 
+registers MySingletonService as a singleton service, meaning a single instance will be created for the lifetime of the application.
+
+services.Configure<MyOptions>(Configuration.GetSection("MyOptions")) 
+registers configuration options.
+
+services.AddControllers() 
+registers services required for MVC controllers.
+
+IServiceCollection is an essential part of configuring services and dependencies within ASP.NET Core applications, 
+allowing for a flexible and maintainable application structure.
+IServiceCollection is an interface provided by the Microsoft.Extensions.DependencyInjection namespace 
+that is used to define a container for managing dependencies in an application. 
+
+
+
+Services can be registered with or without implementation types: 
+When you register a service with the dependency injection container, 
+you specify the service type (the interface or abstract class that defines the service) 
+and optionally the implementation type (the concrete class that provides the service). 
+You can register a service without specifying an implementation type 
+if you intend to use it with factory methods, delegates, or instances created elsewhere.
+
+For example:
+
+// Register with implementation type
+services.AddTransient<IService, ServiceImplementation>();
+
+// Register without implementation type
+services.AddSingleton<IService>(serviceProvider => new ServiceImplementation());
+
+
+Easily resolved using constructor injection or property injection: 
+Once services are registered, they can be resolved and injected into other classes 
+(typically controllers, services, or middleware) that depend on them. 
+Dependency injection can be performed using constructor injection or property injection.
+
+Constructor Injection: 
+Dependencies are injected into the constructor of the consuming class. 
+This is the preferred method as it ensures that dependencies are available when the class is instantiated.
+
+public class MyClass
+{
+    private readonly IService _service;
+
+    public MyClass(IService service)
+    {
+        _service = service;
+    }
+}
+
+Property Injection: 
+Dependencies are injected into public properties of the consuming class. 
+While this approach is less preferred than constructor injection, it can be useful in certain scenarios.
+
+public class MyClass
+{
+    public IService Service { get; set; }
+}
+With dependency injection, the framework handles the resolution and injection of dependencies, 
+making it easy to manage and decouple components within your application.
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+IConfiguration :
+IConfiguration is a key component in ASP.NET Core for accessing configuration settings in an application. 
+It's used to read configuration data from various sources such as JSON files, 
+environment variables, command-line arguments, and more. Here's how it works:
+
+Configuration Providers: IConfiguration is built on top of a configuration system that uses configuration providers to load configuration data. Providers are responsible for retrieving configuration data from various sources.
+
+Configuration Sources: Configuration providers can load data from different sources such as JSON files, XML files, environment variables, command-line arguments, Azure Key Vault, and more. Each provider adds its configuration data to the configuration system.
+
+Configuration Hierarchy: Configuration data is organized into a hierarchical structure where data from different sources can override each other based on a set of rules. This allows for flexible and customizable configuration settings.
+
+Binding: IConfiguration provides methods to bind configuration data to strongly-typed objects. This simplifies accessing configuration settings and allows for type-safe access to configuration values.
+
+Here's a simple example of how IConfiguration is used in an ASP.NET Core application:
+
+public class Startup
+{
+    public IConfiguration Configuration { get; }
+
+    public Startup(IConfiguration configuration)
+    {
+        Configuration = configuration;
+    }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        // Access configuration settings
+        var connectionString = Configuration.GetConnectionString("DefaultConnection");
+
+        // Bind configuration to strongly-typed object
+        var myOptions = Configuration.GetSection("MyOptions").Get<MyOptions>();
+
+        // Register services
+        services.AddDbContext<MyDbContext>(options =>
+            options.UseSqlServer(connectionString));
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        // Configure middleware
+    }
+}
+In this example:
+
+Startup class constructor accepts an instance of IConfiguration.
+Inside ConfigureServices, configuration settings are accessed using methods like GetConnectionString and GetSection.
+Configuration data can be bound to strongly-typed objects using Get<T>.
+Configuration settings can be used to configure services, middleware, and other components in the application.
+IConfiguration provides a powerful and flexible way to manage configuration settings in ASP.NET Core applications, allowing developers to externalize and customize application settings easily.
