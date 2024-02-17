@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using FormatDemo.Model;
+using FormatDemo.PropertyInjector;
 
 Console.WriteLine("Hello, World!");
 
@@ -18,4 +19,12 @@ Console.WriteLine(employee.ToString("Login"));
 Console.WriteLine(employee.ToString("S"));
 Console.WriteLine(employee.ToString("SORTABLE"));
 
-
+///////////////////////////////
+///// Create an instance of the service
+var services = new Service();
+// Create an instance of MyClass
+var myClass = new MyClass();
+// Inject the service into the property
+myClass.service = services;
+// Call the method that uses the injected service
+myClass.PerformAction();
