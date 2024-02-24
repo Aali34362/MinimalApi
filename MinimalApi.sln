@@ -26,7 +26,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormatDemo", "FormatDemo\Fo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthCheckandWatchDog", "HealthCheckandWatchDog\HealthCheckandWatchDog.csproj", "{7D294630-2BA4-4972-B601-8343E23FF7A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransitSample", "MassTransit\MassTransitSample.csproj", "{1B18CC50-2735-499E-AF48-C9C210BDC993}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransitSample", "MassTransit\MassTransitSample.csproj", "{1B18CC50-2735-499E-AF48-C9C210BDC993}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGenerator", "CodeGenerator", "{8503A187-E15B-4A93-9CFB-286988E67A21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{30993265-0651-4642-9721-8044155BA2AD} = {8503A187-E15B-4A93-9CFB-286988E67A21}
+		{A4EAB1BF-59BF-4125-9AA7-238C42951FEE} = {8503A187-E15B-4A93-9CFB-286988E67A21}
+		{A5D04886-A69F-4D19-B405-C1B39B8566BB} = {8503A187-E15B-4A93-9CFB-286988E67A21}
+		{27753F89-FA39-4920-B3B2-9ED480EB114D} = {8503A187-E15B-4A93-9CFB-286988E67A21}
+		{530CEE6F-FED1-4B5C-987E-40CD325B74D1} = {8503A187-E15B-4A93-9CFB-286988E67A21}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28FF3121-2A6C-4EC7-A341-71BD65260A1C}
