@@ -24,7 +24,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xyz.math.cal", "xyz.math.ca
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormatDemo", "FormatDemo\FormatDemo.csproj", "{4E6183A4-4A22-46AD-BB85-7C62C5AF15E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthCheckandWatchDog", "HealthCheckandWatchDog\HealthCheckandWatchDog.csproj", "{7D294630-2BA4-4972-B601-8343E23FF7A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthCheckandWatchDog", "HealthCheckandWatchDog\HealthCheckandWatchDog.csproj", "{7D294630-2BA4-4972-B601-8343E23FF7A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransitSample", "MassTransit\MassTransitSample.csproj", "{1B18CC50-2735-499E-AF48-C9C210BDC993}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +70,10 @@ Global
 		{7D294630-2BA4-4972-B601-8343E23FF7A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D294630-2BA4-4972-B601-8343E23FF7A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D294630-2BA4-4972-B601-8343E23FF7A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B18CC50-2735-499E-AF48-C9C210BDC993}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B18CC50-2735-499E-AF48-C9C210BDC993}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B18CC50-2735-499E-AF48-C9C210BDC993}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B18CC50-2735-499E-AF48-C9C210BDC993}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

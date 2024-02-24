@@ -38,14 +38,14 @@ using DemoResource demo = new();
 try { demo.DoWork(); } catch (Exception ex) { Console.WriteLine(ex.Message); }
 Console.WriteLine( new String('-',50));
 
-////////////////////////////////////////////////////////////////////////////
+///////////////////////////Entity Equal/////////////////////////////////////////////////
 
 Dictionary<Book, string> whatt = new(Book.IdEqualityComparer);
 Dictionary<Book, string> good = new();
 HashSet<Book> hnh = new();
 
 List<Book> books = new();
-
+//Part 1 before
 abstract class Entities<TId> : IEquatable<Entities<TId>> where TId : IEquatable<TId>
 {
     public TId Id { get; private set; }
@@ -61,7 +61,7 @@ abstract class Entities<TId> : IEquatable<Entities<TId>> where TId : IEquatable<
     public static bool operator != (Entities<TId>? left, Entity<TId>? right) =>
         !(left == right);
 }
-
+// part 2 after
 abstract class Entity<TId> where TId : IEquatable<TId>
 {
     public TId Id { get; private set; }
