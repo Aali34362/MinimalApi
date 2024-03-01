@@ -6,7 +6,7 @@ IEnumerable<int> collection = [ 1, 2, 3, 4, 5, 1, 6];
 IEnumerable<object> objcollection = [ 1, 2, 3, 5, 1];
 IEnumerable<List<int>> listcollection = [[8, 7, 6, 4, 9],[1, 2, 3, 5]];
 IEnumerable<object> obj = [1, "abc", 2, 3, 5];
-IEnumerable < Person > Person = [new("You", 15), new("Me",16)];
+IEnumerable < Person > Person = [new("You", 15), new("Me",16), new("them",16)];
 
 
 /// Where
@@ -123,7 +123,44 @@ collection
 
 //Element Operator
 
+collection.First().Dump();
 
+collection.FirstOrDefault().Dump();
+
+collection.FirstOrDefault(-1).Dump();
+
+collection.Single().Dump();
+
+collection.SingleOrDefault().Dump();
+
+collection.Last().Dump();
+
+collection.LastOrDefault().Dump();
+
+collection.ElementAt(1).Dump();
+
+collection.ElementAt(12).Dump();
+
+collection.ElementAtOrDefault(12).Dump();
+
+collection.DefaultIfEmpty().Dump();
+
+
+////Methods
+
+collection.ToArray().Dump();
+
+collection.ToList().Dump();
+
+collection.ToHashSet().Dump();
+
+Person.ToLookup(x => x.age).Dump();
+Person.ToLookup(x => x.age)[15].Single().Dump();
+Person.ToLookup(x => x.age)[15].Single().Name.Dump();
+
+collection.ToDictionary(key => key, value => value).Dump();
+
+////Iteration Methods
 
 
 
