@@ -1,12 +1,40 @@
-﻿// See https://aka.ms/new-console-template for more information
-using Dumpify;
-using System.Data.SqlTypes;
+﻿using Dumpify;
+using PlayGround;
 
+
+/*
+ * Language-Integrated Query (LINQ) is the name for a set of technologies based 
+ * on the integration of query capabilities directly into the C# language
+ * Query expressions are written in a declarative query syntax.
+ * By using query syntax, you perform filtering, ordering, and grouping operations 
+ * on data sources with a minimum of code
+ * We use the same query expression patterns to query and transform 
+ * data from any type of data source.
+ * The variables in a query expression are all strongly typed.
+ * A query isn't executed until you iterate over the query variable,
+ * for example in a foreach statement.
+ * 
+ * At compile time, query expressions are converted to standard query 
+ * operator method calls according to the rules defined in the C# specification. 
+ * Any query that can be expressed by using query syntax can also be 
+ * expressed by using method syntax. 
+ *  In some cases, query syntax is more readable and concise. In others, method syntax is more readable. There's no semantic or performance difference between the two different forms. 
+ *  Some query operations, such as Count or Max, have no equivalent query
+ *  expression clause and must therefore be expressed as a method call. 
+ *  Method syntax can be combined with query syntax in various ways.
+ *  Query expressions can be compiled to expression trees or to delegates, 
+ *  depending on the type that the query is applied to.
+ *  IEnumerable<T> queries are compiled to delegates.
+ *  IQueryable and IQueryable<T> queries are compiled to expression trees.
+ *  
+ * 
+ */
 IEnumerable<int> collection = [ 1, 2, 3, 4, 5, 1, 6];
 IEnumerable<object> objcollection = [ 1, 2, 3, 5, 1];
 IEnumerable<List<int>> listcollection = [[8, 7, 6, 4, 9],[1, 2, 3, 5]];
 IEnumerable<object> obj = [1, "abc", 2, 3, 5];
 IEnumerable < Person > Person = [new("You", 15), new("Me",16), new("them",16)];
+List < Person > Persons = [new("You", 15), new("Me",16), new("them",16)];
 
 
 /// Where
@@ -15,21 +43,31 @@ collection.Where(x=> x > 2).Dump();
 ///OfType
 
 IEnumerable<int> obj1 = obj.OfType<int>().Dump();
+
 IEnumerable<string> obj2 = obj.OfType<string>().Dump();
 
 //Partitioning
 obj.Skip(1).Dump();
+
 obj.SkipLast(1).Dump();
+
 collection.SkipWhile(x => x < 2).Dump();
+
 obj.Take(1).Dump();
+
 obj.TakeLast(1).Dump();
+
 collection.TakeWhile(x => x < 2).Dump();
 
 //Projection
 collection.Select(x => x < 2).Dump();//Deferred Execution
+
 collection.Select(x => x.ToString()).Dump();
+
 collection.Select((x, i) => $"{i} {x}").Dump();
+
 listcollection.SelectMany(x => x).Dump();
+
 listcollection
     .SelectMany(x => x)
     .Select(x => x.ToString())
@@ -51,6 +89,7 @@ var result = collection
     .Chunk(3)
     .SelectMany(x=>x);
 //we are performing Chunk and SelectMany execution twice it gets executed only when data is iterated to display
+
 result.Dump();
 result.Dump();
 
@@ -58,7 +97,9 @@ var results = collection
     .Chunk(3)
     .SelectMany(x => x).ToList();
 //we are performing Chunk and SelectMany execution twice it gets executed only when data is iterated to display
+
 results.ToList().Dump();
+
 results.ToList().Dump();
 
 
@@ -199,10 +240,39 @@ foreach (var item in filteredCollection3)
     Console.WriteLine(item);
 }
 
-record Person(string Name, int age);
 
 
+//////////IEnumerable & IEnumerator////////////////
+/*
+ * IEnumerable and IEnumerator are interfaces in C# that are used to work with 
+ * collections and enable iteration over them. 
+ * They are part of the IEnumerable pattern, which allows objects to provide an 
+ * iterator for traversing their elements.
+ */
+TestStreamReaderEnumerable();
+Console.WriteLine("---");
+TestReadingFile();
+/*
+IEnumerable:
+IEnumerable is the base interface for all non-generic collections that can be enumerated.
+It contains a single method, GetEnumerator(), which returns an IEnumerator interface.
+It allows you to iterate over a collection using a foreach loop.
+It provides read-only access to a collection.
 
+IEnumerator:
+
+IEnumerator provides a way to iterate over a collection one element at a time.
+It contains three members:
+Current: Gets the current element in the collection.
+MoveNext(): Advances the enumerator to the next element of the collection. 
+It returns true if there are more elements to iterate over; otherwise, it returns false.
+Reset(): Sets the enumerator to its initial position, which is before the first element in the collection.
+
+IEnumerator is disposable, so it should be disposed of after use to release resources. 
+However, this is typically handled implicitly by using the foreach loop,
+which calls Dispose() on the enumerator when it's no longer needed.
+ */
+//////////////////////////////////////////////////////////////
 
 /*
  Deferred execution and immediate execution refer to the timing of the execution of a query or operation in LINQ.
@@ -230,21 +300,6 @@ immediate execution. For instance, when you call Dump() at the end of a query, i
 immediately and display the results. It's important to be aware of the execution strategy, especially when working with
 potentially expensive or resource-intensive operations.
  */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 Where
@@ -310,3 +365,69 @@ Reverse
 PLINQ
  */
 
+//////////IEnumerable & IEnumerator////////////////
+static void TestStreamReaderEnumerable()
+{
+    // Check the memory before the iterator is used.
+    long memoryBefore = GC.GetTotalMemory(true);
+    IEnumerable<String> stringsFound;
+    // Open a file with the StreamReaderEnumerable and check for a string.
+    try
+    {
+        stringsFound =
+              from line in new StreamReaderEnumerable(@"c:\temp\tempFile.txt")
+              where line.Contains("string to search for")
+              select line;
+        Console.WriteLine("Found: " + stringsFound.Count());
+    }
+    catch (FileNotFoundException)
+    {
+        Console.WriteLine(@"This example requires a file named C:\temp\tempFile.txt.");
+        return;
+    }
+
+    // Check the memory after the iterator and output it to the console.
+    long memoryAfter = GC.GetTotalMemory(false);
+    Console.WriteLine("Memory Used With Iterator = \t"
+        + string.Format(((memoryAfter - memoryBefore) / 1000).ToString(), "n") + "kb");
+}
+
+static void TestReadingFile()
+{
+    long memoryBefore = GC.GetTotalMemory(true);
+    StreamReader sr;
+    try
+    {
+        sr = File.OpenText("c:\\temp\\tempFile.txt");
+    }
+    catch (FileNotFoundException)
+    {
+        Console.WriteLine(@"This example requires a file named C:\temp\tempFile.txt.");
+        return;
+    }
+
+    // Add the file contents to a generic list of strings.
+    List<string> fileContents = new List<string>();
+    while (!sr.EndOfStream)
+    {
+        fileContents.Add(sr.ReadLine());
+    }
+
+    // Check for the string.
+    var stringsFound =
+        from line in fileContents
+        where line.Contains("string to search for")
+        select line;
+
+    sr.Close();
+    Console.WriteLine("Found: " + stringsFound.Count());
+
+    // Check the memory after when the iterator is not used, and output it to the console.
+    long memoryAfter = GC.GetTotalMemory(false);
+    Console.WriteLine("Memory Used Without Iterator = \t" +
+        string.Format(((memoryAfter - memoryBefore) / 1000).ToString(), "n") + "kb");
+}
+//////////////////////////////////////////////////////////////
+
+
+record Person(string Name, int age);
