@@ -1,5 +1,6 @@
 ﻿using Dumpify;
 using PlayGround;
+using System.Linq;
 
 
 /*
@@ -33,9 +34,15 @@ IEnumerable<int> collection = [ 1, 2, 3, 4, 5, 1, 6];
 IEnumerable<object> objcollection = [ 1, 2, 3, 5, 1];
 IEnumerable<List<int>> listcollection = [[8, 7, 6, 4, 9],[1, 2, 3, 5]];
 IEnumerable<object> obj = [1, "abc", 2, 3, 5];
-IEnumerable < Person > Person = [new("You", 15), new("Me",16), new("them",16)];
-List < Person > Persons = [new("You", 15), new("Me",16), new("them",16)];
-
+IEnumerable < Person > Person = [new(1, "You", 15), new(2, "Me",16), new(1, "them",16)];
+List < Person > Persons = [new(1, "You", 15), new(2, "Me",16), new(3, "them",16)];
+IEnumerable<int> rangecollection = Enumerable.Range(0, 100);
+IEnumerable<int> repeatcollection = Enumerable.Repeat(0, 100);
+IEnumerable<int> emptycollection = Enumerable.Empty<int>();
+IEnumerable<int> emptyarraycollection = Array.Empty<int>();
+IEnumerable<int> union1 = [1, 2, 3];
+IEnumerable<int> union2 = [2, 3, 4];
+IEnumerable<int> sequence1 = [1, 2, 3, 4];
 
 /// Where
 collection.Where(x=> x > 2).Dump();
@@ -203,11 +210,37 @@ collection.ToDictionary(key => key, value => value).Dump();
 
 ////Iteration Methods
 
+IEnumerable<Person> enumerableperson = Persons.AsEnumerable().Dump();
 
+IQueryable<Person> queryableperson = Persons.AsQueryable().Dump();
 
+rangecollection.Dump();
 
+repeatcollection.Dump();
 
+emptycollection.Dump();
+emptyarraycollection.Dump();
 
+/////Set Operators
+
+collection.Distinct().Dump();
+
+Person.DistinctBy(x=>x.id).Dump();
+
+union1.Union(union2).Dump();
+Person.UnionBy(Persons,  x => x.id).Dump("Union");
+
+union1.Intersect(union2).Dump();
+union1.IntersectBy(union2, x => x).Dump("Intersect");
+
+union1.Except(union2).Dump();
+union1.ExceptBy(union2, x => x).Dump("Except");
+
+union1.SequenceEqual(union2).Dump();
+union1.SequenceEqual(sequence1).Dump();
+
+/////Join and Grouping
+///
 
 
 
@@ -430,4 +463,4 @@ static void TestReadingFile()
 //////////////////////////////////////////////////////////////
 
 
-record Person(string Name, int age);
+record Person(int id, string Name, int age);
