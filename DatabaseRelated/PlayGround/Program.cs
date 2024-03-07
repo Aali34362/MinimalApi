@@ -1,4 +1,5 @@
-﻿using Dumpify;
+﻿using Bogus;
+using Dumpify;
 using PlayGround;
 using System.Linq;
 
@@ -36,6 +37,7 @@ IEnumerable<List<int>> listcollection = [[8, 7, 6, 4, 9],[1, 2, 3, 5]];
 IEnumerable<object> obj = [1, "abc", 2, 3, 5];
 IEnumerable < Person > Person = [new(1, "You", 15), new(2, "Me",16), new(1, "them",16)];
 List < Person > Persons = [new(1, "You", 15), new(2, "Me",16), new(3, "them",16)];
+List < Product > product = [new(1, "Your"), new(2, "Men"), new(3, "then")];
 IEnumerable<int> rangecollection = Enumerable.Range(0, 100);
 IEnumerable<int> repeatcollection = Enumerable.Repeat(0, 100);
 IEnumerable<int> emptycollection = Enumerable.Empty<int>();
@@ -43,6 +45,7 @@ IEnumerable<int> emptyarraycollection = Array.Empty<int>();
 IEnumerable<int> union1 = [1, 2, 3];
 IEnumerable<int> union2 = [2, 3, 4];
 IEnumerable<int> sequence1 = [1, 2, 3, 4];
+IEnumerable<string> stringcollection = ["a","b","c","d"];
 
 /// Where
 collection.Where(x=> x > 2).Dump();
@@ -241,6 +244,45 @@ union1.SequenceEqual(sequence1).Dump();
 
 /////Join and Grouping
 ///
+
+sequence1.Zip(stringcollection).Dump();
+union1.Zip(stringcollection).Dump();
+union1.Zip(stringcollection,union2).Dump();
+
+Persons.Join(
+    product, 
+    person => person.id, 
+    products => products.PersonId, 
+    (person, product) => $"{person.Name} bought {product.Name}"
+    ).Dump();
+
+
+Persons.GroupJoin(
+    product,
+    person => person.id,
+    products => products.PersonId,
+    (person, products) => $"{person.Name} bought {string.Join(',',products)}"
+    ).Dump();
+
+union1.Concat(union2).Dump();
+
+Person.GroupBy(x => x.age).Dump();
+
+IGrouping <int, Person> lastGroup  = Person.GroupBy(x => x.age).Last().Dump();
+lastGroup.Key.Dump();
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -464,3 +506,5 @@ static void TestReadingFile()
 
 
 record Person(int id, string Name, int age);
+
+record Product(int PersonId, string Name);
