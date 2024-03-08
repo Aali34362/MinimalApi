@@ -1,6 +1,8 @@
 ﻿using Bogus;
 using Dumpify;
 using PlayGround;
+using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Linq;
 
 
@@ -37,6 +39,7 @@ IEnumerable<List<int>> listcollection = [[8, 7, 6, 4, 9],[1, 2, 3, 5]];
 IEnumerable<object> obj = [1, "abc", 2, 3, 5];
 IEnumerable < Person > Person = [new(1, "You", 15), new(2, "Me",16), new(1, "them",16)];
 List < Person > Persons = [new(1, "You", 15), new(2, "Me",16), new(3, "them",16)];
+List < Person > thenbyorderperson = [new(1, "John", 25), new(2, "John",23), new(3, "Marry",26)];
 List < Product > product = [new(1, "Your"), new(2, "Men"), new(3, "then")];
 IEnumerable<int> rangecollection = Enumerable.Range(0, 100);
 IEnumerable<int> repeatcollection = Enumerable.Repeat(0, 100);
@@ -180,9 +183,9 @@ collection.FirstOrDefault().Dump();
 
 collection.FirstOrDefault(-1).Dump();
 
-collection.Single().Dump();
+//collection.Single().Dump();
 
-collection.SingleOrDefault().Dump();
+//collection.SingleOrDefault().Dump();
 
 collection.Last().Dump();
 
@@ -190,7 +193,7 @@ collection.LastOrDefault().Dump();
 
 collection.ElementAt(1).Dump();
 
-collection.ElementAt(12).Dump();
+//collection.ElementAt(12).Dump();
 
 collection.ElementAtOrDefault(12).Dump();
 
@@ -209,7 +212,7 @@ Person.ToLookup(x => x.age).Dump();
 Person.ToLookup(x => x.age)[15].Single().Dump();
 Person.ToLookup(x => x.age)[15].Single().Name.Dump();
 
-collection.ToDictionary(key => key, value => value).Dump();
+//collection.ToDictionary(key => key, value => value).Dump(); // change the collection create new
 
 ////Iteration Methods
 
@@ -272,12 +275,102 @@ IGrouping <int, Person> lastGroup  = Person.GroupBy(x => x.age).Last().Dump();
 lastGroup.Key.Dump();
 
 
+////Sorting
+
+
+objcollection.Order().Dump();
+
+objcollection.OrderDescending().Dump();
+
+objcollection.OrderByDescending(x => x).Dump();
+
+objcollection.OrderBy(x=>x).Dump();
+
+thenbyorderperson.OrderBy(x=>x.Name).ThenBy(x=>x.age).Dump();
+thenbyorderperson.OrderBy(x=>x.Name).ThenByDescending(x=>x.age).Dump();
+
+objcollection.Reverse().Dump();
 
 
 
+//Parallel LINQ
+
+var stopwatch = Stopwatch.StartNew();
+ConcurrentDictionary<int, List<int>> threadsMap = [];
+
+/*var HeavyComputationEnumerableRangecollection = Enumerable.Range(0, 10)
+    .AsParallel()
+    .WithDegreeOfParallelism(2)
+    .AsOrdered()
+    .AsUnordered()
+    .Select(HeavyComputation);*/
 
 
+/*var HeavyComputationEmptycollection = ParallelEnumerable.Empty<int>()
+    .AsParallel()
+    .WithDegreeOfParallelism(2)
+    .AsOrdered()
+    .AsUnordered()
+    .Select(HeavyComputation);*/
 
+/*var HeavyComputationRepeatcollection = ParallelEnumerable.Repeat(0, 10)
+    .AsParallel()
+    .WithDegreeOfParallelism(2)
+    .AsOrdered()
+    .AsUnordered()
+    .Select(HeavyComputation);*/
+
+var HeavyComputationRangeAsUnorderedcollection = ParallelEnumerable.Range(0, 10)
+    .AsParallel()
+    .WithDegreeOfParallelism(2)
+    .AsUnordered()
+    .Select(HeavyComputation);
+
+var HeavyComputationRangeAsOrderedcollection = ParallelEnumerable.Range(0, 10)
+    .AsParallel()
+    .AsOrdered()
+    .WithDegreeOfParallelism(2)    
+    .Select(HeavyComputation);
+
+foreach ( var n in HeavyComputationRangeAsOrderedcollection)
+{
+    n.Dump();
+}
+
+foreach (var _ in HeavyComputationRangeAsOrderedcollection) ;
+
+stopwatch.Stop();
+
+threadsMap.Dump();
+stopwatch.ElapsedMilliseconds.Dump("Execution time");
+/*int HeavyComputation(int n)
+{
+    $"Working on thread {Environment.CurrentManagedThreadId}".Dump();
+    threadsMap.AddOrUpdate(key: Environment.CurrentManagedThreadId,
+        addValue: [n],
+        updateValueFactory: (keys, values) => [..values, n]);
+
+    for (int i = 0; i < 100_000_000; i++)
+    {
+        n += i;
+    }
+    return n;
+}*/
+
+int HeavyComputation(int n)
+{
+    var originalN = n;
+    $"Working on thread {Environment.CurrentManagedThreadId}".Dump();
+    threadsMap.AddOrUpdate(key: Environment.CurrentManagedThreadId,
+        addValue: [n],
+        updateValueFactory: (keys, values) => [.. values, n]);
+
+    for (int i = 0; i < 100_000_000; i++)
+    {
+        n += i;
+    }
+    return originalN;
+}
 
 
 
@@ -450,14 +543,14 @@ static void TestStreamReaderEnumerable()
     try
     {
         stringsFound =
-              from line in new StreamReaderEnumerable(@"c:\temp\tempFile.txt")
+              from line in new StreamReaderEnumerable(@"C:\Users\aa882\Pictures\testimony.txt")
               where line.Contains("string to search for")
               select line;
         Console.WriteLine("Found: " + stringsFound.Count());
     }
     catch (FileNotFoundException)
     {
-        Console.WriteLine(@"This example requires a file named C:\temp\tempFile.txt.");
+        Console.WriteLine(@"This example requires a file named C:\Users\aa882\Pictures\testimony.txt.");
         return;
     }
 
@@ -473,7 +566,7 @@ static void TestReadingFile()
     StreamReader sr;
     try
     {
-        sr = File.OpenText("c:\\temp\\tempFile.txt");
+        sr = File.OpenText("C:\\Users\\aa882\\Pictures\\testimony.txt");
     }
     catch (FileNotFoundException)
     {

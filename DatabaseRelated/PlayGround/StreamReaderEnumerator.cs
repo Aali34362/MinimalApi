@@ -82,7 +82,8 @@ public class StreamReaderEnumerator : IEnumerator<string>
 
     public void Dispose()
     {
-        throw new NotImplementedException();
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
     }
 
     ~StreamReaderEnumerator()
