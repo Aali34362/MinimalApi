@@ -22,12 +22,12 @@ public class ToDoService(AppDbContext dbContext, IMapper mapper) : TodoGrpc.Todo
 
         var toDoItem = _mapper.Map<CreateToDoRequest, ToDoItem>(request);
 
-        using (var transaction = _dbContext.Database.BeginTransaction())
+        using (var transaction = await _dbContext.Database.BeginTransactionAsync())
         {
             try
             {
-                _dbContext.Add<ToDoItem>(toDoItem);
-                _dbContext.SaveChangesAsync();
+                await _dbContext.AddAsync<ToDoItem>(toDoItem);
+                await _dbContext.SaveChangesAsync();
                 transaction.Commit();
             }
             catch (Exception ex)
