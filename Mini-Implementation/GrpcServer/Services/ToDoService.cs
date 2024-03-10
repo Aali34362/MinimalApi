@@ -54,18 +54,64 @@ public class ToDoService(AppDbContext dbContext, IMapper mapper) : TodoGrpc.Todo
         throw new RpcException(new Status(StatusCode.NotFound, $"No task with id {request.Id}"));
     }
 
-    public override Task<GetAllResponse> ListToDo(GetAllRequest request, ServerCallContext context)
+    public override async Task<GetAllResponse> ListToDo(GetAllRequest request, ServerCallContext context)
     {
-        return base.ListToDo(request, context);
+        var response = new GetAllResponse();
+        var toDoItems = await _dbContext.ToDoItems.ToListAsync();
+
+        foreach (var toDo in toDoItems)
+        {
+            response.ToDo.Add(new ReadToDoResponse
+            {
+                Id = toDo.Id,
+                Title = toDo.Title,
+                Description = toDo.Description,
+                ToDoStatus = toDo.ToDoStatus
+            });
+        }
+
+        return await Task.FromResult(response);
     }
 
-    public override Task<UpdateToDoResponse> UpdateToDo(UpdateToDoRequest request, ServerCallContext context)
+    public override async Task<UpdateToDoResponse> UpdateToDo(UpdateToDoRequest request, ServerCallContext context)
     {
-        return base.UpdateToDo(request, context);
+        if (request.Id <= 0 || request.Title == string.Empty || request.Description == string.Empty)
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "You must suppply a valid object"));
+
+        var toDoItem = await _dbContext.ToDoItems.FirstOrDefaultAsync(t => t.Id == request.Id);
+
+        if (toDoItem == null)
+            throw new RpcException(new Status(StatusCode.NotFound, $"No Task with Id {request.Id}"));
+
+        toDoItem.Title = request.Title;
+        toDoItem.Description = request.Description;
+        toDoItem.ToDoStatus = request.ToDoStatus;
+
+        await _dbContext.SaveChangesAsync();
+
+        return await Task.FromResult(new UpdateToDoResponse
+        {
+            Id = toDoItem.Id
+        });
     }
 
-    public override Task<DeleteToDoResponse> DeleteToDo(DeleteToDoRequest request, ServerCallContext context)
+    public override async Task<DeleteToDoResponse> DeleteToDo(DeleteToDoRequest request, ServerCallContext context)
     {
-        return base.DeleteToDo(request, context);
+        if (request.Id <= 0)
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "resouce index must be greater than 0"));
+
+        var toDoItem = await _dbContext.ToDoItems.FirstOrDefaultAsync(t => t.Id == request.Id);
+
+        if (toDoItem == null)
+            throw new RpcException(new Status(StatusCode.NotFound, $"No Task with Id {request.Id}"));
+
+        _dbContext.Remove(toDoItem);
+
+        await _dbContext.SaveChangesAsync();
+
+        return await Task.FromResult(new DeleteToDoResponse
+        {
+            Id = toDoItem.Id
+        });
     }
 }
