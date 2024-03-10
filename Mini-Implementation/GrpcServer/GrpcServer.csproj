@@ -8,14 +8,17 @@
 
   <ItemGroup>
     <None Remove="Protos\Customers.proto" />
+    <None Remove="Protos\todo.proto" />
   </ItemGroup>
 
   <ItemGroup>
     <Protobuf Include="Protos\Customers.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\todo.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Dumpify" Version="0.6.5" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
     <PackageReference Include="Grpc.Tools" Version="2.57.0">
