@@ -3,6 +3,7 @@ using Dumpify;
 using Grpc.Core;
 using GrpcServer.Model;
 using GrpcServer.Repository;
+using Microsoft.EntityFrameworkCore;
 using TodoGrpc;
 
 namespace GrpcServer.Services;
@@ -16,19 +17,18 @@ public class ToDoService(AppDbContext dbContext, IMapper mapper) : TodoGrpc.Todo
     {
         if (request.Title == string.Empty || request.Description == string.Empty)
             throw new RpcException(new Status(StatusCode.InvalidArgument, "you must supply valid object"));
-        
+
         request.Dump("CreateToDoRequest");
-        
+
         var toDoItem = _mapper.Map<CreateToDoRequest, ToDoItem>(request);
-        
-        toDoItem.Dump("ToDoItem");
 
         using (var transaction = _dbContext.Database.BeginTransaction())
         {
             try
             {
-                await _dbContext.AddAsync(toDoItem);
-                await _dbContext.SaveChangesAsync();
+                _dbContext.Add<ToDoItem>(toDoItem);
+                _dbContext.SaveChangesAsync();
+                transaction.Commit();
             }
             catch (Exception ex)
             {
@@ -40,9 +40,18 @@ public class ToDoService(AppDbContext dbContext, IMapper mapper) : TodoGrpc.Todo
         return await Task.FromResult(new CreateToDoResponse { Id = toDoItem.Id });
     }
 
-    public override Task<ReadToDoResponse> ReadToDo(ReadToDoRequest request, ServerCallContext context)
+    public override async Task<ReadToDoResponse> ReadToDo(ReadToDoRequest request, ServerCallContext context)
     {
-        return base.ReadToDo(request, context);
+        if (request.Id <= 0)
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "Resource index must be greater than 0"));
+
+        var Item = await _dbContext.ToDoItems.FirstOrDefaultAsync<ToDoItem>(t => t.Id == request.Id);
+
+        if (Item != null)
+        {
+            return await Task.FromResult(_mapper.Map<ToDoItem, ReadToDoResponse>(Item));
+        }
+        throw new RpcException(new Status(StatusCode.NotFound, $"No task with id {request.Id}"));
     }
 
     public override Task<GetAllResponse> ListToDo(GetAllRequest request, ServerCallContext context)
