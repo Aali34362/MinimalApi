@@ -19,7 +19,7 @@ builder.Services.AddDbContext<AppDbContext>
     (opt => opt.UseSqlite("Data Source=ToDoDatabase.db"));
 
 // Add services to the container.
-builder.Services.AddGrpc();
+builder.Services.AddGrpc().AddJsonTranscoding();
 
 var app = builder.Build();
 
