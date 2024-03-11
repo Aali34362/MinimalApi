@@ -100,6 +100,48 @@ making it easy to manage and decouple components within your application.
 
 
 
+
+
+{
+so actually what happens when we are writing this piece of code
+from my understanding is  
+IService services = new ServiceImplementation();
+basically we are creating object and passing the reference 
+we write manually in each class so instead of writing in each class we are using three registers transient,scoped, singleton 
+this all this is done in one services.AddTransient<IService, ServiceImplementation>(); in this code
+
+Interface and Implementation: 
+IService is an interface, and ServiceImplementation is a concrete class that implements this interface. 
+In software engineering, it's often a good practice to program to an interface rather than a concrete implementation. 
+This allows for flexibility, easy swapping of implementations, and easier testing (through the use of mock implementations).
+
+Object Creation and Reference: 
+When you write IService service = new ServiceImplementation();, 
+you are indeed creating an object of type ServiceImplementation and assigning it to a variable of type IService. 
+This is possible because ServiceImplementation implements IService, so it can be treated as an IService. 
+This is a form of polymorphism in object-oriented programming.
+
+Dependency Injection: 
+Instead of manually creating instances of ServiceImplementation and assigning them to variables, you can use dependency injection. 
+Dependency injection frameworks, like the one provided by ASP.NET Core, 
+manage the creation and lifetime of objects for you.
+When you register ServiceImplementation as a service (services.AddTransient<IService, ServiceImplementation>();), 
+you're telling the framework to create instances of ServiceImplementation whenever an IService is required. 
+Later, when you request an instance of IService, 
+the framework automatically resolves it to an instance of ServiceImplementation and provides it to you. 
+This process is typically performed using constructor injection.
+
+Transient, Scoped, Singleton: 
+These are different lifetimes that you can specify when registering a service.
+
+Transient: 
+A new instance is created every time the service is requested. It's suitable for lightweight, stateless services.
+
+Scoped: A single instance is created per scope. In ASP.NET Core, a scope typically corresponds to an HTTP request. This means that within the same HTTP request, the same instance is returned for subsequent requests for the same service.
+Singleton: A single instance is created for the lifetime of the application. This instance is shared across all consumers. It's suitable for stateful services or services that are expensive to create.
+So, in summary, by using dependency injection and service registration, you're abstracting away the creation and management of objects, allowing the framework to handle it for you based on the configuration you provide. This promotes decoupling, flexibility, and easier testing in your application.
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 IConfiguration :

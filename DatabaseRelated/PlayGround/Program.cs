@@ -298,33 +298,53 @@ objcollection.Reverse().Dump();
 var stopwatch = Stopwatch.StartNew();
 ConcurrentDictionary<int, List<int>> threadsMap = [];
 
-/*var HeavyComputationEnumerableRangecollection = Enumerable.Range(0, 10)
+var cts = new CancellationTokenSource();
+
+var HeavyComputationEnumerableRangecollection = Enumerable.Range(0, 10)
     .AsParallel()
-    .WithDegreeOfParallelism(2)
     .AsOrdered()
     .AsUnordered()
-    .Select(HeavyComputation);*/
-
-
-/*var HeavyComputationEmptycollection = ParallelEnumerable.Empty<int>()
-    .AsParallel()
     .WithDegreeOfParallelism(2)
+    .Select(HeavyComputation);
+foreach (var n in HeavyComputationEnumerableRangecollection)
+{
+    n.Dump();
+}
+
+var HeavyComputationEmptycollection = ParallelEnumerable.Empty<int>()
+    .AsParallel()
     .AsOrdered()
     .AsUnordered()
-    .Select(HeavyComputation);*/
+    .WithDegreeOfParallelism(2)    
+    .Select(HeavyComputation);
+foreach (var n in HeavyComputationEmptycollection)
+{
+    n.Dump();
+}
 
-/*var HeavyComputationRepeatcollection = ParallelEnumerable.Repeat(0, 10)
+var HeavyComputationRepeatcollection = ParallelEnumerable.Repeat(0, 10)
     .AsParallel()
-    .WithDegreeOfParallelism(2)
-    .AsOrdered()
+     .AsOrdered()
     .AsUnordered()
-    .Select(HeavyComputation);*/
+    .WithDegreeOfParallelism(2)    
+    .Select(HeavyComputation);
+
+foreach (var n in HeavyComputationRepeatcollection)
+{
+    n.Dump();
+}
+
 
 var HeavyComputationRangeAsUnorderedcollection = ParallelEnumerable.Range(0, 10)
     .AsParallel()
     .WithDegreeOfParallelism(2)
     .AsUnordered()
     .Select(HeavyComputation);
+
+foreach (var n in HeavyComputationRangeAsUnorderedcollection)
+{
+    n.Dump();
+}
 
 var HeavyComputationRangeAsOrderedcollection = ParallelEnumerable.Range(0, 10)
     .AsParallel()
@@ -338,6 +358,42 @@ foreach ( var n in HeavyComputationRangeAsOrderedcollection)
 }
 
 foreach (var _ in HeavyComputationRangeAsOrderedcollection) ;
+
+var HeavyComputationRangeAsSequentialcollection = ParallelEnumerable.Range(0, 10)
+    .AsSequential()
+    .Select(HeavyComputation);
+foreach (var n in HeavyComputationRangeAsSequentialcollection)
+{
+    n.Dump();
+}
+
+
+var HeavyComputationRangeAsParallelandSequentialcollection = Enumerable.Range(0, 10)
+    .AsParallel()
+    .WithCancellation(cts.Token)
+    .Select(HeavyComputation)
+    .AsSequential()
+    .Select(HeavyComputation);
+
+cts.Cancel();
+foreach (var n in HeavyComputationRangeAsParallelandSequentialcollection)
+{
+    n.Dump();
+}
+
+
+var withmergeoptionscollection = MyRange(0, 10)
+    .AsParallel()
+    .WithDegreeOfParallelism(2)
+    .WithMergeOptions(ParallelMergeOptions.NotBuffered)
+    .Select(HeavyComputation);
+
+foreach (var n in HeavyComputationRangeAsParallelandSequentialcollection)
+{
+    $"Consuming {n}".Dump();
+}
+
+
 
 stopwatch.Stop();
 
@@ -359,6 +415,7 @@ stopwatch.ElapsedMilliseconds.Dump("Execution time");
 
 int HeavyComputation(int n)
 {
+    $"Processing {n}".Dump();
     var originalN = n;
     $"Working on thread {Environment.CurrentManagedThreadId}".Dump();
     threadsMap.AddOrUpdate(key: Environment.CurrentManagedThreadId,
@@ -410,6 +467,13 @@ foreach (var item in filteredCollection3)
 
 
 
+static IEnumerable<int> MyRange(int start, int count)
+{
+    for(int i = start; i<count;i++)
+    {
+        yield return i;
+    }
+}
 //////////IEnumerable & IEnumerator////////////////
 /*
  * IEnumerable and IEnumerator are interfaces in C# that are used to work with 
