@@ -1,0 +1,73 @@
+
+private set;: 
+This means that the property can only be set from within the same class. 
+It allows the property to be modified only by other methods or 
+constructors within the class itself. 
+Outside the class, the property appears read-only.
+
+init;: 
+This is a new feature introduced in C# 9.0. 
+It allows the property to be set only during initialization,
+typically within a constructor or object initializer. 
+After initialization, the property becomes read-only and cannot be modified.
+
+set;: 
+This is the standard way to define a property setter in C#. 
+It allows the property to be set from anywhere within the same assembly or 
+from derived classes if the property is not explicitly marked as private.
+
+
+Fields and properties are both members of a class in C#, 
+but they serve different purposes and have different characteristics.
+
+Fields:
+Fields are variables that are directly declared within a class.
+They are used to store data for the object.
+Fields can be of any data type, including primitive types, custom types, 
+or collections.
+They are typically declared with an access modifier (public, private, 
+protected, etc.) to control their visibility and accessibility.
+Fields are accessed directly using the dot notation (object.field).
+public class MyClass
+{
+    private int myField;
+    public string anotherField;
+}
+
+Properties:
+Properties are a special type of member that provide access to a private field.
+They encapsulate fields and provide a way to control access to them, 
+usually by adding logic (e.g., validation, lazy loading) in the getter 
+and setter methods.
+Properties are defined using a syntax similar to methods, with a get accessor 
+and optionally a set accessor.
+They are accessed using the dot notation (object.PropertyName), just like fields.
+Properties can have different access modifiers (public, private, protected, etc.)
+for their getters and setters, allowing fine-grained control over accessibility.
+public class MyClass
+{
+    private int myField;
+
+    // Property with a private setter
+    public int MyProperty { get; private set; }
+
+    // Property with custom logic in getter and setter
+    private string _name;
+    public string Name
+    {
+        get { return _name; }
+        set
+        {
+            if (!string.IsNullOrEmpty(value))
+                _name = value;
+        }
+    }
+}
+
+Key Differences:
+Fields store data directly, while properties provide controlled access to fields.
+Properties can have logic in their accessors, whereas fields cannot.
+Properties can have different accessibility for their getter and setter, 
+whereas fields have a single accessibility determined by their access modifier.
+Using properties allows for better encapsulation and maintainability by 
+providing a level of abstraction over the underlying data storage.
