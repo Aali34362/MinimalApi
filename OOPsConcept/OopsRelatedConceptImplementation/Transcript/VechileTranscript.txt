@@ -1,0 +1,79 @@
+Do you know the difference between abstract  methods and virtual methods? Not just syntactic,  
+but the difference in how we use  them in design - do you know that? 
+In this demo, I will show you  one aspect of using abstract and  
+virtual methods you may have never learned right. Here is the future base class, modeling a vehicle. 
+The derived class, car, will be more specific. The base class will have a state common to  
+all future derived classes,  such as the make and model. 
+The first lesson you learn about  inheritance is that derived classes  
+must call some constructor in their base. Then comes the state that will lead to  
+defining virtual methods. Is the  engine running, or is it off? 
+The derived class will also add specific  parts, such as the driver's display. 
+Please ignore my use of strings. I am  skipping modeling altogether because I  
+want to show you the virtual members. Focus on the operation I am about to  
+define: starting the engine. I reckon that the base class  
+will start the engine, and the derived  class will switch the display on. That  
+is why the method will be virtual. The Car class does that by overriding  
+the method. This is object-oriented  programming 101 - overriding a method. 
+Alright, I've done that.  And I've made myself a bug. 
+Calling the StartEngine method  on the Car instance will switch  
+the display on but will not start the engine! You will have known that an override of a virtual  
+method might need to call the base implementation. Now, the base class will start the engine indeed,  
+and only then will the derived  class turn on the display. 
+That raises two hard questions. First, must I call the base implementation?  
+What if I knew this override is complete, and  the base implementation should not interfere? 
+If that is so, calling the base  implementation would be the bug,  
+and omitting the call would be right! On another day, not calling the base  
+implementation would be a bug,  such as the one I made here. 
+That is so confusing. The second hard question is:  
+when? Do we call the base before or  after doing our part in the operation? 
+Up to this point, I have  been making design mistakes. 
+It's time to sober up. Maybe you have been learning  
+programming wrong all this time? The books will teach you that we  
+specialize a class by deriving from  it and overriding its virtual methods. 
+Well, wrong! I will now tell you my  
+rule when designing base and derived classes. If the base class method makes side effects,  
+then the class should not let derived classes  override that, lest they might cause bugs of  
+different kinds, as you have witnessed. The methods that only return a result  
+without causing side effects are less  dangerous, and you can make them virtual. 
+If you need a base result in the  derived class, call the base and  
+combine its result with your work. There  is little or no room left for a bug there. 
+I will now apply this specific  rule in C# to my demo classes. 
+Now, back to the demo. We acknowledge that the derived class will  
+have something to say before effectively starting  the engine and/or after effectively doing so. 
+However, the overall operation  is causing a side effect, so we  
+should not let the derived class override it. In C#, we can make this method non-virtual. 
+We cannot always prevent overriding  in other languages, like Java or  
+Python. We use conventions to indicate our  desires there. You will see it in a minute. 
+The essence is that now the base  implementation has taken the control back. 
+It acknowledges that derived classes  might have something to say before or  
+after the core operation or both. And so, we define two other  
+methods with indicative names. These two methods cause no side  
+effects in the base, so the derived  classes can override them freely. 
+You can declare them as abstract. That  will make the entire base class abstract. 
+Now, we just make appropriate calls to the  abstract methods, and the method is complete. 
+There will never be a bug in this method. Down in the derived class, we must override  
+these new abstract methods. This time, the derived class  
+has full control, switching the display  on strictly after the engine starts. 
+I must also override the other method,  but I have nothing to do in it. 
+Where is the bug now? There is no bug here  
+anymore, thank you for asking. That is how the proper use of  
+abstract methods improves the design. The abstract methods are extension  
+points. Sometimes, the class could  define many such extension points. 
+But the derived class might  only need a few of them. 
+You can make these methods virtual  again but leave their bodies empty. 
+Choose whether the base class  should remain abstract or not. 
+The derived classes will become  shorter, as they will only have  
+to override the members they are interested in. Whether they called the base or not will make  
+no difference this time. Neither is  a bug, so it really doesn't matter. 
+One last note, and we are done. While this method was virtual,  
+we had no control over its invocation. When  the external caller calls on a derived object,  
+the derived implementation will  run, whether it should have or not. 
+That is yet another place for a bug. But look what we have accomplished now. 
+The main operation could add a guard clause  and stop the propagation of a call made to it. 
+We shall not start an engine  when it is already running. 
+The difference is that none of the  abstract methods will be invoked this time. 
+The base class is now responsible for  making all possible implementations correct. 
+There will never be a bug when deriving from  this class, all thanks to abstract methods,  
+as well as virtual methods with empty bodies. Remember: A virtual method that returns  
+void is a liability. Leave its body empty  
+in the base class or declare it abstract,  and you will be safe from inheritance bugs.
