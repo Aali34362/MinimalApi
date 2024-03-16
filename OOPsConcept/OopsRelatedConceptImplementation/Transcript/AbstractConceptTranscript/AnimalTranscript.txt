@@ -1,0 +1,98 @@
+Do you know how C# knows which  method implementation to call  
+when you call a virtual method on an object? First of all, it is not C#; it is the .NET  
+Runtime, the one that resolves method calls. But the question remains. 
+
+Base and Derived
+If we had a base and a derived class, it would  only take a minute to bring some hard questions. 
+The base class would define a virtual method,  letting any derived class override it,  
+giving it a different body. There could be another virtual  
+method in the base class but without override  in the derived class. Both classes would then  
+share the same implementation of this method. I will now instantiate a couple of objects,  
+
+Object Assignment
+and you will try to figure out their differences. I will give you a moment to think. 
+
+What do you see? The first object  
+is straightforward - an instance of the Base  class assigned to the reference of type Base. 
+
+But then comes the puzzle —  an instance of the Derived  
+class assigned to a reference of type Base. This is legal in any object-oriented language and  
+falls under the so-called object assignment rule. You can assign an object to a reference to  
+that object's actual type or any base type. The third object exercises the last remaining  
+possibility - assigning a Derived object  to a reference of its actual type, Derived. 
+That was the lesson about legal assignments. But now comes the lesson about method invocations,  
+which is the theme of this demonstration. I will call the same virtual method on  
+each of these three references. I will not  say three objects because I might not know  
+how many distinct objects there are. All I can see are the references of  
+certain types pointing to some objects. That is when the .NET Runtime jumps in  
+and resolves which method implementation  to invoke in each of these three lines. 
+Let me run the demo, and then  we will discuss the results. 
+Only the first call was made on the base  implementation, and the remaining two  
+calls ended up invoking the method's override. The critical information is in the middle - a  
+call made on the reference to the Base class  has effectively called the method defined in  
+the Derived class. 
+
+How? Virtual Methods
+When you figure out how that happened,  you will know virtual methods. 
+I have moved the testing code to a helper  class, and now we can focus on the Base  
+and Derived classes to understand  how the .NET Runtime sees them. 
+Every object - not class, but object - has access  to a few separate objects via the references  
+injected into the object during its creation. One is to the object's runtime type. 
+The other structure is the so-called  virtual method table or vtable. 
+You will now learn the role of each of these two. The type is not affected by the reference to  
+which we assign an object. It is the  object's most intimate information. 
+Every instance of the Base class will  have the reference to the same object  
+that explains the Base class itself. And every instance of the Derived class  
+will possess the reference to another  object that explains the Derived class. 
+You can access these objects easily. Just  call the GetType method on an object,  
+and you will obtain the type object. If this is your first time thinking about how  
+.NET Reflection works, this code shows the answer. A call to the GetType method starts from the  
+reference to this object, whatever that  is, and follows the reference to the type  
+object stored in this instance. No matter what reference type you  
+have assigned this object to, whether  it is a Base or a Derived reference,  
+the type object will be resolved from the object. Now that you have got that principle right,  
+you are ready for the scariest part  of the object's layout - the vtable. 
+
+VTable
+Each type comes with its own  table of virtual methods. 
+Not each object, but each type. Therefore,  all instances of the Base class will share  
+the reference to the same base vtable. This table will have as many entries as  
+there are virtual methods on the class - either  defined on it or inherited from its base. 
+And so the Base class's vtable will have two  entries pointing to actual implementations  
+of the two virtual methods. This part was straightforward. 
+The part that will twist your  mind is in the derived class. 
+This class also has two virtual  methods, both inherited from its base. 
+But, when the time comes to populate the address  of the actual implementation of the first virtual  
+method, the derived class has something to say. It will put the address of the 
+method we added to the Derived class. That is how the compiler implements overriding.  
+The override keyword in C# code implies  that the corresponding entry in this class's  
+vtable will point to the new implementation. The second entry belongs to the second virtual  
+method inherited from the base. The Derived  class did not override this method. Therefore,  
+the compiler will copy the implementation  address from the Base class's vtable. 
+That is what happens when we do  not override a virtual method. 
+
+
+Calling Virtual Methods
+How does calling virtual methods work, then? Here, I am calling the virtual  
+method on one of the objects. The .NET Runtime jumps in and looks for the  
+vtable of the object on which the call is made. Since it is the Base class instance,  
+we would end up in the Base class's vtable. Then, the Runtime picks the entry for the virtual  
+method we have called. That entry would lead to  the concrete method implemented in the Base class. 
+Let's raise the bar and make another call,  this time on the Derived class instance  
+assigned to the Base class reference. The first step is to ignore the type  
+of the reference. The Runtime does not  bother with that. It goes straight into  
+the object, poking out its vtable. Since it is the Derived object,  
+we would get into the Derived class's vtable,  which differs from the Base class's vtable. 
+The difference is precisely on the method we are  invoking in this line, so the Runtime will resolve  
+the call to the concrete method in the Derived  class and pass control to that implementation. 
+What if I called the same virtual  method again, only this time  
+through the reference to the Derived class? Nothing! The type of the reference is ignored,  
+and only the object is observed. Therefore, this  call will execute the same as the one above. 
+Let me run the demo; you  will see what I said is true. 
+Now you know how virtual method polymorphism works  in C# and any other object-oriented language. 
+However, virtual methods are not the  only means of doing polymorphism. 
+I could have defined an interface, too. For the Base class to implement this interface,  
+it must also define the second method. But look, this method is not virtual! 
+And yet, the Runtime will do its magic again to  resolve both methods dynamically at run time. 
+While this demo is over, I guess the question  of how the interface methods are resolved at  
+run time, especially the non-virtual  ones, will keep you awake at night.

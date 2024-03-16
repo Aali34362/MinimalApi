@@ -1,10 +1,10 @@
-﻿namespace OopsRelatedConceptImplementation.OopsImplementation;
+﻿namespace OopsRelatedConceptImplementation.OopsImplementation.AbstractConcept;
 
 abstract class Vechile
 {
     public string Make { get; set; }
     public string Model { get; set; }
-    public string EngineStatus { get; private set; } ="Off";
+    public string EngineStatus { get; private set; } = "Off";
     public Vechile(string make, string model) => (Make, Model) = (make, model);
     protected virtual void BeforeEngineStart() { }
     protected virtual void AfterEngineStart() { }

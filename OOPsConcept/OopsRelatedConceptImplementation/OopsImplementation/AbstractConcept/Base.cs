@@ -1,4 +1,4 @@
-﻿namespace OopsRelatedConceptImplementation.OopsImplementation;
+﻿namespace OopsRelatedConceptImplementation.OopsImplementation.AbstractConcept;
 
 interface IAmTheSavior
 {
@@ -47,7 +47,7 @@ class TrueProxy : IAmTheSavior
 /// </summary>
 public class Base
 {
-    public  void Method() =>
+    public void Method() =>
         Console.WriteLine($"obj of {GetType().Name,-12} runs Base Method");
 
     public virtual void Method1() =>

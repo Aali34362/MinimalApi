@@ -1,4 +1,4 @@
-﻿namespace OopsRelatedConceptImplementation.OopsImplementation;
+﻿namespace OopsRelatedConceptImplementation.OopsImplementation.AbstractConcept;
 
 public class Person
 {

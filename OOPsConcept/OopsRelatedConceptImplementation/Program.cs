@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using OopsRelatedConceptImplementation.OopsImplementation;
+using OopsRelatedConceptImplementation.OopsImplementation.AbstractConcept;
 
 Console.WriteLine("Hello, World!");
 
@@ -39,6 +39,46 @@ z.Methods();    // z -> IAmTheSavior in M/Proxy    -> M/Proxy      -> M/Proxy.Me
 u.Methods();
 
 
+///////////////////////////////////////////////////////
+Console.WriteLine(new string('-', 40));
+Console.WriteLine("Vechile and Car (Abstract Class)");
+
+Car myCar = new Car("Toyota", "Camry");
+
+// Output the initial state of the car
+Console.WriteLine($"Car Make: {myCar.Make}");
+Console.WriteLine($"Car Model: {myCar.Model}");
+Console.WriteLine($"Engine Status: {myCar.EngineStatus}");
+Console.WriteLine($"Screen Context: {myCar.ScreenContext}");
+
+// Starting the engine of the car
+myCar.StartEngine();
+
+// Output the updated state of the car after starting the engine
+Console.WriteLine($"Engine Status after starting: {myCar.EngineStatus}");
+Console.WriteLine($"Screen Context after starting: {myCar.ScreenContext}");
+
+
+//////////////////////////////////////////////////////////
+Console.WriteLine(new string('-', 40));
+Console.WriteLine("Animal and Cat (Abstract Class)");
+Animal animal = new Animal();
+Animal animalcat = new Cat();
+Cat cat = new Cat();
+
+Console.WriteLine("VirtA");
+animal.VirtA();
+animalcat.VirtA();
+cat.VirtA();
+
+Console.WriteLine("VirtB");
+animal.VirtB();
+animalcat.VirtB();
+cat.VirtB();
+
+Console.WriteLine("Testbed Calls");
+Testbed.Call(nameof(Animal.VirtA), x => x.VirtA(), a, b);
+Testbed.Call(nameof(Animal.VirtA), x => x.VirtA(), a, b);
 
 ////////////////////////////////////////////////////////
 Console.WriteLine(new string('-', 40));
