@@ -77,8 +77,8 @@ animalcat.VirtB();
 cat.VirtB();
 
 Console.WriteLine("Testbed Calls");
-Testbed.Call(nameof(Animal.VirtA), x => x.VirtA(), a, b);
-Testbed.Call(nameof(Animal.VirtA), x => x.VirtA(), a, b);
+Testbed.Call(nameof(Animal.VirtA), x => x.VirtA(), animal, animalcat);
+Testbed.Call(nameof(Animal.VirtA), x => x.VirtA(), cat);
 
 ////////////////////////////////////////////////////////
 Console.WriteLine(new string('-', 40));
