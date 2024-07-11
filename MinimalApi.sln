@@ -48,6 +48,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OOPsConcept", "OOPsConcept"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OopsRelatedConceptImplementation", "OOPsConcept\OopsRelatedConceptImplementation\OopsRelatedConceptImplementation.csproj", "{CC1B0D24-F9AE-4887-9E7D-8A59F826DED5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cancellation-token-api", "Mini-Implementation\cancellation-token-api\cancellation-token-api.csproj", "{C335F45A-655A-4294-8477-AB142AE23505}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cancellation-token-example", "Mini-Implementation\cancellation-token-example\cancellation-token-example\cancellation-token-example.csproj", "{0802E61A-45BF-4FA5-ADD1-8C7DF995F0BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDBDemo", "DatabaseRelated\MongoDBDemo\MongoDBDemo.csproj", "{F880E695-48D6-496E-91A4-75AA8D395435}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,6 +116,18 @@ Global
 		{CC1B0D24-F9AE-4887-9E7D-8A59F826DED5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC1B0D24-F9AE-4887-9E7D-8A59F826DED5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC1B0D24-F9AE-4887-9E7D-8A59F826DED5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C335F45A-655A-4294-8477-AB142AE23505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C335F45A-655A-4294-8477-AB142AE23505}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C335F45A-655A-4294-8477-AB142AE23505}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C335F45A-655A-4294-8477-AB142AE23505}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0802E61A-45BF-4FA5-ADD1-8C7DF995F0BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0802E61A-45BF-4FA5-ADD1-8C7DF995F0BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0802E61A-45BF-4FA5-ADD1-8C7DF995F0BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0802E61A-45BF-4FA5-ADD1-8C7DF995F0BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F880E695-48D6-496E-91A4-75AA8D395435}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F880E695-48D6-496E-91A4-75AA8D395435}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F880E695-48D6-496E-91A4-75AA8D395435}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F880E695-48D6-496E-91A4-75AA8D395435}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -129,6 +147,9 @@ Global
 		{4E348587-1E6C-4450-B346-D4E212F0DBCD} = {8503A187-E15B-4A93-9CFB-286988E67A21}
 		{B026EF93-615F-4B8E-B0AD-AA1831AEF32C} = {8503A187-E15B-4A93-9CFB-286988E67A21}
 		{CC1B0D24-F9AE-4887-9E7D-8A59F826DED5} = {F1B34365-85E0-4529-ADF1-77C48DD3C62D}
+		{C335F45A-655A-4294-8477-AB142AE23505} = {BF860EDD-7496-4D3C-B1CA-F417A1278A40}
+		{0802E61A-45BF-4FA5-ADD1-8C7DF995F0BA} = {BF860EDD-7496-4D3C-B1CA-F417A1278A40}
+		{F880E695-48D6-496E-91A4-75AA8D395435} = {5D680459-4AD8-4560-93BF-F3F6CDDD2C3A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28FF3121-2A6C-4EC7-A341-71BD65260A1C}

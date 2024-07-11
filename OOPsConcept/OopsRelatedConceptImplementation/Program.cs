@@ -58,7 +58,7 @@ myCar.StartEngine();
 Console.WriteLine($"Engine Status after starting: {myCar.EngineStatus}");
 Console.WriteLine($"Screen Context after starting: {myCar.ScreenContext}");
 
-
+//customercare.mum@i-on.in 
 //////////////////////////////////////////////////////////
 Console.WriteLine(new string('-', 40));
 Console.WriteLine("Animal and Cat (Abstract Class)");
@@ -66,19 +66,33 @@ Animal animal = new Animal();
 Animal animalcat = new Cat();
 Cat cat = new Cat();
 
+Console.WriteLine();
+
+Console.WriteLine(animal.GetType().Name);
+Console.WriteLine(animalcat.GetType().Name);
+Console.WriteLine(cat.GetType().Name);
+
+Console.WriteLine();
+
 Console.WriteLine("VirtA");
 animal.VirtA();
 animalcat.VirtA();
 cat.VirtA();
+
+Console.WriteLine();
 
 Console.WriteLine("VirtB");
 animal.VirtB();
 animalcat.VirtB();
 cat.VirtB();
 
+Console.WriteLine();
+
 Console.WriteLine("Testbed Calls");
 Testbed.Call(nameof(Animal.VirtA), x => x.VirtA(), animal, animalcat);
 Testbed.Call(nameof(Animal.VirtA), x => x.VirtA(), cat);
+
+Console.WriteLine();
 
 ////////////////////////////////////////////////////////
 Console.WriteLine(new string('-', 40));

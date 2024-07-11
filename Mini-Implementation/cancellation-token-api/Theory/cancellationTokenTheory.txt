@@ -1,0 +1,12 @@
+What is CancellationToken in .NET?
+.NET uses Cancellation Token for cooperative cancellation of asynchronous 
+or long-running synchronous operations.
+
+Propagates notification that operations should be canceled.
+
+Cancellation tokens are particularly useful when long-running or asynchronous 
+operations must be canceled under certain conditions, such as in UI applications 
+where a user might decide to cancel an ongoing operation.
+They allow for a cooperative approach to cancellation, where the executing code 
+periodically checks for cancellation requests and responds accordingly.
+
