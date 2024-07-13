@@ -3,9 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MongoDBDemo.ConfigurationServices;
-using MongoDBDemo.ContextHelper;
 using MongoDBDemo.MainOperations;
-using MongoDBDemo.Repository;
 
 public class Program
 {
@@ -33,7 +31,7 @@ public class Program
                     services.AddSingleton<App>();
                     services.AddSingleton<UserOperations>();
                     services.AddTransient<IMongoRepository, MongoRepository>();
-
+                    services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
                     var mongoDbConfig = context.Configuration.GetSection("MongoDbConfiguration").Get<MongoDbConfiguration>();
                     services.AddSingleton(mongoDbConfig);
 
@@ -53,7 +51,9 @@ public class App(ILogger<App> logger, UserOperations userOperations, MongoDbConf
         Console.WriteLine("Console app running...");
 
         // Example usage of UserOperations
-        await _userOperations.CreateUser();
-        await _userOperations.GetUserList(5);
+        ////await _userOperations.CreateUser();
+        ////await _userOperations.GetUserList();
+        await _userOperations.GetUserById();
+        await _userOperations.GetUserByName();
     }
 }

@@ -2,9 +2,10 @@
 
 namespace MongoDBDemo.MainOperations;
 
-public class UserOperations(IMongoRepository mongoRepository)
+public class UserOperations(IMongoRepository mongoRepository, IMapper mapper)
 {
     private readonly IMongoRepository _mongoRepository = mongoRepository ?? throw new Exception();
+    private readonly IMapper _mapper = mapper ?? throw new Exception();
     public async Task CreateUser()
     {
         var faker = new Faker<User>()
@@ -24,6 +25,14 @@ public class UserOperations(IMongoRepository mongoRepository)
             })
             .RuleFor(u => u.addresses, f => new List<AddressInformation>
             {
+                new AddressInformation
+                {
+                    StreetAddress = f.Address.StreetAddress(),
+                    City = f.Address.City(),
+                    State = f.Address.State(),
+                    Country = f.Address.Country(),
+                    PostalCode = f.Address.ZipCode()
+                },
                 new AddressInformation
                 {
                     StreetAddress = f.Address.StreetAddress(),
@@ -137,30 +146,42 @@ public class UserOperations(IMongoRepository mongoRepository)
 
     public async Task DeleteUser()
     {
-        var faker = new Faker<User>()
-        .RuleFor(u => u.Id, f => f.Random.Guid())
-        .Generate();
-        await _mongoRepository.DeleteUser(faker);
+        User user = new();
+        await _mongoRepository.DeleteUser(user);
+    }
+
+    public async Task SoftDeleteUser()
+    {
+        User user = new();
+        await _mongoRepository.SoftDeleteUser(user);
     }
 
     public async Task GetUserById()
     {
-        User user = new User();
-        await _mongoRepository.GetUser(user.Id).Dump();
+        User user = await _mongoRepository.GetUser(Guid.Parse("a27ae021-b4db-4db5-a824-6ae110e34e0f"));//// ?? throw new Exception("Data Not Found").Dump();
+        if (user != null)
+        {
+            UserDetail userDetail = _mapper.Map<User, UserDetail>(user);
+            userDetail.Dump();
+        }
     }
 
     public async Task GetUserByName()
     {
-        User user = new User();
-        await _mongoRepository.GetUser(user.UserName!).Dump();
+        User user = await _mongoRepository.GetUser("Janie.Conn2");
+        UserDetail userDetail = _mapper.Map<User, UserDetail>(user);
+        userDetail.Dump();
     }
 
-    public async Task GetUserList(int size)
+    public async Task GetUserList(int size = 0)
     {
+        var defaultSize = size == 0 ? 5 : size;
         User user = new User();
         long countUsers = await _mongoRepository.CountOfUsers();
-        int totalindex = (int)Math.Ceiling((double)countUsers / size);
+        int totalindex = (int)Math.Ceiling((double)countUsers / defaultSize);
         for (int index = 1; index <= totalindex; index++)
-        { await _mongoRepository.GetUserList(user, index, size).Dump(); }
+        { 
+            await _mongoRepository.GetUserList(user, index, defaultSize).Dump();
+        }
     }
 }

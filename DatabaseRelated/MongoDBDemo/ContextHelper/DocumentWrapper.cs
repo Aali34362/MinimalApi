@@ -237,7 +237,9 @@ public class DocumentWrapper<T> : IDocumentWrapper<T>
         try
         {
             var collection = _database.GetCollection<T>(collectionName);
-            return await collection.Find(filter).FirstOrDefaultAsync();
+            var filterBuilder = Builders<T>.Filter;
+            var combinedFilter = filterBuilder.And(filter, filterBuilder.Eq("Actv_Ind", 1));
+            return await collection.Find(combinedFilter).FirstOrDefaultAsync();
         }
         catch (Exception ex)
         {

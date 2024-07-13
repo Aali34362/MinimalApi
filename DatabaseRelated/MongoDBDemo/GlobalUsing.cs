@@ -8,3 +8,4 @@ global using MongoDBDemo.Responses;
 global using MongoDBDemo.ContextHelper;
 global using MongoDBDemo.Repository;
 global using Dumpify;
+global using AutoMapper;

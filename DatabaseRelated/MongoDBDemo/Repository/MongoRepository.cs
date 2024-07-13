@@ -52,12 +52,10 @@ public class MongoRepository
     {
         return await _userStore.FindOneAsync(r => r.Id == Id, "UsersCollection");
     }
-
     public async Task<User> GetUser(string UserName)
     {
         return await _userStore.FindOneAsync(r => r.UserName == UserName, "UsersCollection");
     }
-
     public async Task<PaginatedList<UserLists>> GetUserList(User user, int index, int size)
     {
         var filterBuilder = Builders<User>.Filter;
@@ -82,7 +80,7 @@ public class MongoRepository
         {
             Id = r.Id,
             DisplayName = $"{r.FirstName} {r.LastName}",
-            address = $"",
+            address = ConcatenateAddresses(r.addresses),
             DateOfBirth = r.DateOfBirth,
             Gender = r.Gender,
             UserEmail = r.contacts?.FirstOrDefault()?.UserEmail!,
@@ -94,8 +92,15 @@ public class MongoRepository
 
         return userList.ToPaginatedList(index, size, Convert.ToInt32(total));
     }
-
     public async Task<long> CountOfUsers() => await _userStore.CountDocumentsAsync(Builders<User>.Filter.Empty, "UsersCollection");
+    public string ConcatenateAddresses(List<AddressInformation>? addresses)
+    {
+        if (addresses == null || !addresses.Any())
+        {
+            return string.Empty;
+        }
+        return string.Join(" | ", addresses.Select(a => $"{a.StreetAddress}, {a.City}, {a.State}, {a.Country}, {a.PostalCode}"));
+    }
     #endregion
 
 }
