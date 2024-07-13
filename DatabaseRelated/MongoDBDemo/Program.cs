@@ -54,6 +54,7 @@ public class App(ILogger<App> logger, UserOperations userOperations, MongoDbConf
         ////await _userOperations.CreateUser();
         ////await _userOperations.GetUserList();
         await _userOperations.GetUserById();
-        await _userOperations.GetUserByName();
+        ////await _userOperations.GetUserByName();
+        ////await _userOperations.SoftDeleteUser();
     }
 }

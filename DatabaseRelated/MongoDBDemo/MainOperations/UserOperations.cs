@@ -147,18 +147,20 @@ public class UserOperations(IMongoRepository mongoRepository, IMapper mapper)
     public async Task DeleteUser()
     {
         User user = new();
+        user.Id = Guid.Parse("74d0ea4a-7d95-4cab-82d6-0668b28e2b79");
         await _mongoRepository.DeleteUser(user);
     }
 
     public async Task SoftDeleteUser()
     {
         User user = new();
+        user.Id = Guid.Parse("74d0ea4a-7d95-4cab-82d6-0668b28e2b79");
         await _mongoRepository.SoftDeleteUser(user);
     }
 
     public async Task GetUserById()
     {
-        User user = await _mongoRepository.GetUser(Guid.Parse("a27ae021-b4db-4db5-a824-6ae110e34e0f"));//// ?? throw new Exception("Data Not Found").Dump();
+        User user = await _mongoRepository.GetUser(Guid.Parse("74d0ea4a-7d95-4cab-82d6-0668b28e2b79"));//// ?? throw new Exception("Data Not Found").Dump();
         if (user != null)
         {
             UserDetail userDetail = _mapper.Map<User, UserDetail>(user);
