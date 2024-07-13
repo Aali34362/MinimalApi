@@ -9,6 +9,7 @@ public class DocumentWrapper<T> : IDocumentWrapper<T>
     private readonly MongoClient _client;
     public DocumentWrapper(string connectionString, string databaseName)
     {
+        BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
         _client = new MongoClient(connectionString);
         _database = _client.GetDatabase(databaseName);
     }
@@ -142,9 +143,28 @@ public class DocumentWrapper<T> : IDocumentWrapper<T>
             throw;
         }
     }
-    public Task ReplaceManyAsync(Expression<Func<T, bool>> filter, T replacement, string collectionName)
+    public async Task ReplaceManyAsync(Expression<Func<T, bool>> filter, T replacement, string collectionName)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var _collection = _database.GetCollection<T>(collectionName);
+
+            var documents = await _collection.Find(filter).ToListAsync();
+
+            foreach (var document in documents)
+            {
+                var documentId = typeof(T).GetProperty("Id").GetValue(document);
+                typeof(T).GetProperty("Id").SetValue(replacement, documentId);
+
+                var filterById = Builders<T>.Filter.Eq("Id", documentId);
+                await _collection.ReplaceOneAsync(filterById, replacement);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error replacing documents: {ex.Message}");
+            throw;
+        }
     }
     public async Task DeleteOneAsync(Expression<Func<T, bool>> filter, string collectionName)
     {
@@ -246,6 +266,4 @@ public class DocumentWrapper<T> : IDocumentWrapper<T>
     {
         return _client.StartSession();
     }
-
-    
 }

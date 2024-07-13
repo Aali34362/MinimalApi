@@ -19,6 +19,14 @@ public class MongoRepository
         await _userStore.DeleteOneAsync(r => r.Id == user.Id, "UsersCollection");
         return true;
     }
+    public async Task<bool> SoftDeleteUser(User user)
+    {
+        var deleteDefinition = Builders<User>.Update
+            .Combine(Builders<User>.Update.Set(r => r.Actv_Ind, 0),
+                 Builders<User>.Update.Set(r => r.Del_Ind, 1));
+        await _userStore.UpdateOneAsync(r => r.Id == user.Id, deleteDefinition, "UsersCollection");
+        return true;
+    }
     public async Task<bool> UpdateUser(User user)
     {
         var updateDefinition = Builders<User>.Update
@@ -50,11 +58,44 @@ public class MongoRepository
         return await _userStore.FindOneAsync(r => r.UserName == UserName, "UsersCollection");
     }
 
-    public async Task<PaginatedList<User>> GetUserList(User user)
+    public async Task<PaginatedList<UserLists>> GetUserList(User user, int index, int size)
     {
-        PaginatedList<User> list = new PaginatedList<User>();
-        return list;
+        var filterBuilder = Builders<User>.Filter;
+        var filter = filterBuilder.Empty;
+
+        if (!string.IsNullOrEmpty(user.UserName))
+        {
+            filter &= filterBuilder.Eq(r => r.UserName, user.UserName);
+        }
+
+        var collection = _userStore.GetCollection("UsersCollection");
+
+        long total = await _userStore.CountDocumentsAsync(filter, "UsersCollection");
+
+        var users = await collection.Find(filter)
+            .SortByDescending(r => r.Lst_Crtd_Dt)
+            .Skip((index - 1) * size)
+            .Limit(size)
+            .ToListAsync();
+
+        var userList = users.Select(r => new UserLists
+        {
+            Id = r.Id,
+            DisplayName = $"{r.FirstName} {r.LastName}",
+            address = $"",
+            DateOfBirth = r.DateOfBirth,
+            Gender = r.Gender,
+            UserEmail = r.contacts?.FirstOrDefault()?.UserEmail!,
+            UserPhone = r.contacts?.FirstOrDefault()?.UserPhone!,
+            Actv_Ind = r.Actv_Ind,
+            Lst_Crtd_Usr = r.Lst_Crtd_Usr,
+            Lst_Crtd_Dt = r.Lst_Crtd_Dt
+        }).ToList();
+
+        return userList.ToPaginatedList(index, size, Convert.ToInt32(total));
     }
+
+    public async Task<long> CountOfUsers() => await _userStore.CountDocumentsAsync(Builders<User>.Filter.Empty, "UsersCollection");
     #endregion
 
 }

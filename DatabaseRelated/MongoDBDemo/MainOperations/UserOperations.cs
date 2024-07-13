@@ -5,7 +5,7 @@ namespace MongoDBDemo.MainOperations;
 public class UserOperations(IMongoRepository mongoRepository)
 {
     private readonly IMongoRepository _mongoRepository = mongoRepository ?? throw new Exception();
-    public void CreateUser()
+    public async Task CreateUser()
     {
         var faker = new Faker<User>()
             .RuleFor(u => u.UserName, f => f.Internet.UserName())
@@ -67,10 +67,10 @@ public class UserOperations(IMongoRepository mongoRepository)
             });
 
         var user = faker.Generate();
-        _mongoRepository.CreateUser(user);
+        await _mongoRepository.CreateUser(user);
     }
 
-    public void UpdateUser()
+    public async Task UpdateUser()
     {
         var faker = new Faker<User>()
         .RuleFor(u => u.UserName, f => f.Internet.UserName())
@@ -132,32 +132,35 @@ public class UserOperations(IMongoRepository mongoRepository)
         });
 
         var user = faker.Generate();
-        _mongoRepository.UpdateUser(user);
+        await _mongoRepository.UpdateUser(user);
     }
 
-    public void DeleteUser()
+    public async Task DeleteUser()
     {
         var faker = new Faker<User>()
         .RuleFor(u => u.Id, f => f.Random.Guid())
         .Generate();
-        _mongoRepository.DeleteUser(faker);
+        await _mongoRepository.DeleteUser(faker);
     }
 
-    public void GetUserById()
+    public async Task GetUserById()
     {
         User user = new User();
-        _mongoRepository.GetUser(user.Id).Dump();
+        await _mongoRepository.GetUser(user.Id).Dump();
     }
 
-    public void GetUserByName()
+    public async Task GetUserByName()
     {
         User user = new User();
-        _mongoRepository.GetUser(user.UserName!).Dump();
+        await _mongoRepository.GetUser(user.UserName!).Dump();
     }
 
-    public async void GetUserList()
+    public async Task GetUserList(int size)
     {
         User user = new User();
-        await _mongoRepository.GetUserList(user).Dump();
+        long countUsers = await _mongoRepository.CountOfUsers();
+        int totalindex = (int)Math.Ceiling((double)countUsers / size);
+        for (int index = 1; index <= totalindex; index++)
+        { await _mongoRepository.GetUserList(user, index, size).Dump(); }
     }
 }

@@ -46,14 +46,14 @@ public class App(ILogger<App> logger, UserOperations userOperations, MongoDbConf
     private readonly UserOperations _userOperations = userOperations;
     private readonly MongoDbConfiguration _mongoDbConfig = mongoDbConfig;
 
-    public void Run()
+    public async void Run()
     {
         // Application logic here
         _logger.LogInformation("Console app running with MongoDB connection string: {ConnectionString}", _mongoDbConfig.ConnectionString);
         Console.WriteLine("Console app running...");
 
         // Example usage of UserOperations
-        _userOperations.CreateUser();
-        _userOperations.GetUserById();
+        await _userOperations.CreateUser();
+        await _userOperations.GetUserList(5);
     }
 }
