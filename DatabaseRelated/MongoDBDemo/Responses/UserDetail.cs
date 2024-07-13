@@ -9,15 +9,15 @@ public class UserDetail : BaseResponse
     public string? LastName { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public string? Gender { get; set; }
-    public List<ContactInformation>? contacts { get; set; }
-    public List<AddressInformation>? addresses { get; set; }
-    public SecurityInformation? security { get; set; }
-    public AccountInformation? account { get; set; }
-    public Metadata? metadata { get; set; }
-    public SocialInformation? social { get; set; }
+    public List<ContactInformations>? contacts { get; set; }
+    public List<AddressInformations>? addresses { get; set; }
+    public SecurityInformations? security { get; set; }
+    public AccountInformations? account { get; set; }
+    public Metadatas? metadata { get; set; }
+    public SocialInformations? social { get; set; }
 }
 
-public class ContactInformation
+public class ContactInformations
 {
     // Contact Information
     public string? UserName { get; set; }
@@ -25,7 +25,7 @@ public class ContactInformation
     public string? UserPhone { get; set; }
     public string? UserPhoneNumber { get; set; }
 }
-public class AddressInformation
+public class AddressInformations
 {
     // Address Information
     public string? StreetAddress { get; set; }
@@ -34,7 +34,7 @@ public class AddressInformation
     public string? Country { get; set; }
     public string? PostalCode { get; set; }
 }
-public class SecurityInformation
+public class SecurityInformations
 {
     // Security Information
     public string? UserPassword { get; set; } // Consider removing this and using hashed version
@@ -43,7 +43,7 @@ public class SecurityInformation
     public string? SecurityQuestion { get; set; }
     public string? SecurityAnswer { get; set; }
 }
-public class AccountInformation
+public class AccountInformations
 {
     // Account Information
     public bool IsEmailConfirmed { get; set; }
@@ -52,14 +52,14 @@ public class AccountInformation
     public bool LockoutEnabled { get; set; }
     public DateTime? LockoutEndDateUtc { get; set; }
 }
-public class Metadata
+public class Metadatas
 {
     // Metadata
     public DateTime? LastLoginDate { get; set; }
     public List<string> Roles { get; set; } = new List<string>();
     public List<Claim> Claims { get; set; } = new List<Claim>();
 }
-public class SocialInformation
+public class SocialInformations
 {
     // Social Information
     public string? ProfilePictureUrl { get; set; }

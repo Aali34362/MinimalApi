@@ -1,2 +1,59 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using MongoDBDemo.ConfigurationServices;
+using MongoDBDemo.ContextHelper;
+using MongoDBDemo.MainOperations;
+using MongoDBDemo.Repository;
+
+public class Program
+{
+    private static void Main(string[] args) 
+    {
+        var host = CreateHostBuilder(args).Build();
+
+        // Resolve the App service and call its Run method
+        var app = host.Services.GetRequiredService<App>();
+        app.Run();
+
+        host.Run();
+    }
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    var env = hostingContext.HostingEnvironment;
+                    config.SetBasePath(env.ContentRootPath)
+                          .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                          .AddEnvironmentVariables();
+                })
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddSingleton<App>();
+                    services.AddSingleton<UserOperations>();
+                    services.AddTransient<IMongoRepository, MongoRepository>();
+
+                    var mongoDbConfig = context.Configuration.GetSection("MongoDbConfiguration").Get<MongoDbConfiguration>();
+                    services.AddSingleton(mongoDbConfig);
+
+                    services.AddMongoDBDocumentStore<User>();
+                });
+}
+public class App(ILogger<App> logger, UserOperations userOperations, MongoDbConfiguration mongoDbConfig)
+{
+    private readonly ILogger<App> _logger = logger;
+    private readonly UserOperations _userOperations = userOperations;
+    private readonly MongoDbConfiguration _mongoDbConfig = mongoDbConfig;
+
+    public void Run()
+    {
+        // Application logic here
+        _logger.LogInformation("Console app running with MongoDB connection string: {ConnectionString}", _mongoDbConfig.ConnectionString);
+        Console.WriteLine("Console app running...");
+
+        // Example usage of UserOperations
+        _userOperations.CreateUser();
+        _userOperations.GetUserById();
+    }
+}
