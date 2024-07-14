@@ -18,4 +18,10 @@ public static class MongoDbConfigureService
             return new DocumentWrapper<T>(mongoDbConfig.ConnectionString!, mongoDbConfig.DatabaseName!);
         });
     }
+    public static void AddMongoDBServices(this IServiceCollection services)
+    {
+        services.AddMongoDBDocumentStore<User>();
+        services.AddMongoDBDocumentStore<Product>();
+        services.AddMongoDBDocumentStore<Company>();
+    }
 }

@@ -1,4 +1,7 @@
 ﻿using Bogus;
+using MongoDB.Driver.Core.Configuration;
+using MongoDBDemo.JsonClass;
+using System.Collections;
 
 namespace MongoDBDemo.MainOperations;
 
@@ -147,17 +150,15 @@ public class UserOperations(IMongoRepository mongoRepository, IMapper mapper)
     public async Task DeleteUser()
     {
         User user = new();
-        user.Id = Guid.Parse("74d0ea4a-7d95-4cab-82d6-0668b28e2b79");
+        user.Id = Guid.Parse("9c108428-e39c-4753-a9f0-67b694dae164");
         await _mongoRepository.DeleteUser(user);
     }
-
     public async Task SoftDeleteUser()
     {
         User user = new();
         user.Id = Guid.Parse("74d0ea4a-7d95-4cab-82d6-0668b28e2b79");
         await _mongoRepository.SoftDeleteUser(user);
     }
-
     public async Task GetUserById()
     {
         User user = await _mongoRepository.GetUser(Guid.Parse("74d0ea4a-7d95-4cab-82d6-0668b28e2b79"));//// ?? throw new Exception("Data Not Found").Dump();
@@ -167,14 +168,12 @@ public class UserOperations(IMongoRepository mongoRepository, IMapper mapper)
             userDetail.Dump();
         }
     }
-
     public async Task GetUserByName()
     {
         User user = await _mongoRepository.GetUser("Janie.Conn2");
         UserDetail userDetail = _mapper.Map<User, UserDetail>(user);
         userDetail.Dump();
     }
-
     public async Task GetUserList(int size = 0)
     {
         var defaultSize = size == 0 ? 5 : size;
@@ -182,8 +181,97 @@ public class UserOperations(IMongoRepository mongoRepository, IMapper mapper)
         long countUsers = await _mongoRepository.CountOfUsers();
         int totalindex = (int)Math.Ceiling((double)countUsers / defaultSize);
         for (int index = 1; index <= totalindex; index++)
-        { 
+        {
             await _mongoRepository.GetUserList(user, index, defaultSize).Dump();
         }
     }
+
+    public void DynamicJsonClass()
+    {
+        string json = @"
+        {
+          ""Crtd_Usr"": ""Admin"",
+          ""Crtd_Dt"": { ""$date"": ""2024-07-13T13:58:08.143Z"" },
+          ""Lst_Crtd_Usr"": ""Admin"",
+          ""Lst_Crtd_Dt"": { ""$date"": ""2024-07-13T13:58:08.146Z"" },
+          ""Actv_Ind"": 1,
+          ""Del_Ind"": 0,
+          ""UserName"": ""Hello World"",
+          ""FirstName"": ""Hello"",
+          ""LastName"": ""World"",
+          ""DateOfBirth"": { ""$date"": ""1993-10-20T18:34:38.965Z"" },
+          ""Gender"": ""Male"",
+          ""contacts"": [
+            {
+              ""UserEmail"": ""Hello@yahoo.com"",
+              ""UserPhone"": ""(582) 749-2954"",
+              ""UserPhoneNumber"": ""(392) 789-3011 x7928""
+            }
+          ],
+          ""addresses"": [
+            {
+              ""StreetAddress"": ""97651 Wisozk Greens"",
+              ""City"": ""South Lempi"",
+              ""State"": ""Kansas"",
+              ""Country"": ""Nicaragua"",
+              ""PostalCode"": ""55732-5141""
+            }
+          ],
+          ""security"": {
+            ""UserPassword"": ""t292qZCJSQ"",
+            ""UserPasswordHash"": ""ow6nn7a8b9"",
+            ""PasswordSalt"": ""6i5ye"",
+            ""SecurityQuestion"": ""What is your favorite color?"",
+            ""SecurityAnswer"": ""Blue""
+          },
+          ""account"": {
+            ""IsEmailConfirmed"": true,
+            ""IsPhoneNumberConfirmed"": true,
+            ""TwoFactorEnabled"": false,
+            ""LockoutEnabled"": true,
+            ""LockoutEndDateUtc"": { ""$date"": ""2024-09-24T13:24:21.823Z"" }
+          },
+          ""metadata"": {
+            ""LastLoginDate"": { ""$date"": ""2024-07-08T23:18:16.460Z"" },
+            ""Roles"": [""Admin"", ""User""],
+            ""Claims"": [
+              {
+                ""Issuer"": ""LOCAL AUTHORITY"",
+                ""OriginalIssuer"": ""LOCAL AUTHORITY"",
+                ""Subject"": null,
+                ""Type"": ""role"",
+                ""Value"": ""Admin"",
+                ""ValueType"": ""http://www.w3.org/2001/XMLSchema#string""
+              },
+              {
+                ""Issuer"": ""LOCAL AUTHORITY"",
+                ""OriginalIssuer"": ""LOCAL AUTHORITY"",
+                ""Subject"": null,
+                ""Type"": ""email"",
+                ""Value"": ""Keaton71@hotmail.com"",
+                ""ValueType"": ""http://www.w3.org/2001/XMLSchema#string""
+              }
+            ]
+          },
+          ""social"": {
+            ""ProfilePictureUrl"": ""https://braulio.biz"",
+            ""Bio"": ""Laboriosam voluptas labore sed."",
+            ""WebsiteUrl"": ""https://everette.com""
+          }
+        }";
+        string className = "DynamicUser";
+        string classCode = JsonClassGenerator.GenerateClass(json, className);
+        Console.WriteLine(classCode);
+
+        ////// Step 2: Compile the generated class code into a concrete class
+        ////Type dynamicType = RuntimeCompiler.CompileClass(classCode, className);
+
+        ////// Step 3: Use the generated class to insert data into MongoDB
+        ////var dbHelper = new MongoDBHelper(connectionString, databaseName);
+        ////var method = typeof(MongoDBHelper).GetMethod("InsertDynamicJson").MakeGenericMethod(dynamicType);
+        ////method.Invoke(dbHelper, new object[] { json, collectionName });
+
+        ////Console.WriteLine("Document inserted successfully.");
+    }
+
 }

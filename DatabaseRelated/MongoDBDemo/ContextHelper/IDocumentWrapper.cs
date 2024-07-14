@@ -19,4 +19,6 @@ public interface IDocumentWrapper<T>
     
     Task<long> CountDocumentsAsync(FilterDefinition<T> filter, string collectionName);
     IMongoCollection<T> GetCollection(string collectionName);
+    Task<IClientSessionHandle> StartSession();
+    void InsertDynamicJson<J>(string json, string collectionName);
 }

@@ -35,7 +35,7 @@ public class Program
                     var mongoDbConfig = context.Configuration.GetSection("MongoDbConfiguration").Get<MongoDbConfiguration>();
                     services.AddSingleton(mongoDbConfig);
 
-                    services.AddMongoDBDocumentStore<User>();
+                    services.AddMongoDBServices();
                 });
 }
 public class App(ILogger<App> logger, UserOperations userOperations, MongoDbConfiguration mongoDbConfig)
@@ -52,9 +52,11 @@ public class App(ILogger<App> logger, UserOperations userOperations, MongoDbConf
 
         // Example usage of UserOperations
         ////await _userOperations.CreateUser();
-        ////await _userOperations.GetUserList();
-        await _userOperations.GetUserById();
+        await _userOperations.GetUserList();
+        //await _userOperations.GetUserById();
         ////await _userOperations.GetUserByName();
         ////await _userOperations.SoftDeleteUser();
+        ////await _userOperations.DeleteUser();
+        _userOperations.DynamicJsonClass();
     }
 }

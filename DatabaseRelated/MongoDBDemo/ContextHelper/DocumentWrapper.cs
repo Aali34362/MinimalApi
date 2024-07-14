@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using Newtonsoft.Json;
 using System.Linq.Expressions;
 
 namespace MongoDBDemo.ContextHelper;
@@ -264,8 +265,20 @@ public class DocumentWrapper<T> : IDocumentWrapper<T>
     {
         return _database.GetCollection<T>(collectionName);
     }
-    public IClientSessionHandle StartSession()
+    public async Task<IClientSessionHandle> StartSession()
     {
-        return _client.StartSession();
+        return await _client.StartSessionAsync();
+    }
+    public void InsertDynamicJson<J>(string json, string collectionName)
+    {
+        // Deserialize JSON to dynamic object
+        T obj = JsonConvert.DeserializeObject<T>(json);
+
+        // Convert dynamic object to BsonDocument
+        BsonDocument document = BsonDocument.Parse(JsonConvert.SerializeObject(obj));
+
+        // Get collection and insert document
+        var collection = _database.GetCollection<BsonDocument>(collectionName);
+        collection.InsertOne(document);
     }
 }

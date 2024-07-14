@@ -3,16 +3,32 @@
 namespace MongoDBDemo.Repository;
 
 public class MongoRepository
-    (IDocumentWrapper<User> userStore) 
+    (IDocumentWrapper<User> userStore, IDocumentWrapper<Product> productStore, IDocumentWrapper<Company> companyStore) 
     : IMongoRepository
 {
     private readonly IDocumentWrapper<User> _userStore = userStore ?? throw new Exception();
+    private readonly IDocumentWrapper<Product> _productStore = productStore ?? throw new Exception();
+    private readonly IDocumentWrapper<Company> _companyStore = companyStore ?? throw new Exception();
 
     #region User
     public async Task<bool> CreateUser(User user)
     {
-        await _userStore.InsertOneAsync(user, "UsersCollection");
-        return true;
+        using (var session = await _userStore.StartSession())
+        {
+            session.StartTransaction();
+            try
+            {
+                await _userStore.InsertOneAsync(user, "UsersCollection");
+                await session.CommitTransactionAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creating user with transaction: {ex.Message}");
+                await session.AbortTransactionAsync();
+                return false;
+            }
+        }
     }
     public async Task<bool> DeleteUser(User user)
     {
@@ -103,4 +119,25 @@ public class MongoRepository
     }
     #endregion
 
+    #region Products
+    public async Task<bool> CreateProduct(Product product) { return true; }
+    public async Task<bool> UpdateProduct(Product product){return true; }
+    public async Task<bool> DeleteProduct(Product product){return true; }
+    public async Task<bool> SoftDeleteProduct(Product product){return true; }
+    public async Task<Product> GetProduct(Guid Id){return null;}
+    public async Task<Product> GetProduct(string productName, string productCode){return null;}
+    public async Task<PaginatedList<ProductList>> GetProductList(Product product, int index, int size){return null;}
+    public async Task<long> CountOfProducts() { return 0; }
+    #endregion
+
+    #region Companies
+    public async Task<bool> CreateCompany(Company company){return true; }
+    public async Task<bool> UpdateCompany(Company company){return true; }
+    public async Task<bool> DeleteCompany(Company company){return true; }
+    public async Task<bool> SoftDeleteCompany(Company company){return true; }
+    public async Task<Company> GetCompany(Guid Id){return null;}
+    public async Task<Company> GetCompany(string companyName, string companyCode){return null;}
+    public async Task<PaginatedList<CompanyList>> GetProductList(Company company, int index, int size){return null;}
+    public async Task<long> CountOfCompanies() { return 0; }
+    #endregion
 }
