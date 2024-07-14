@@ -28,6 +28,10 @@ public class MongoRepository
                 await session.AbortTransactionAsync();
                 return false;
             }
+            finally
+            {
+                session.Dispose();
+            }
         }
     }
     public async Task<bool> DeleteUser(User user)
