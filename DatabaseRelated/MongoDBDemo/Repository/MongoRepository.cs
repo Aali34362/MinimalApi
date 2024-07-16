@@ -367,14 +367,14 @@ public class RedisJson(IMongoDatabase database,IMapper mapper)
         {
             finalOutput = _mapper.Map<Company, FinalOutputDetails>(company);
 
-            var productCodes = finalOutput.companyProducts.Select(p => p.Product_Cd).ToList();
+            var productCodes = finalOutput.companyProducts!.Select(p => p.Product_Cd).ToList();
             var products = await _productCollection.Find(p => productCodes.Contains(p.Product_Cd)).ToListAsync();
 
             companyProducts = _mapper.Map<List<Product>, List<CompanyProductDetails>>(products);
 
             foreach (var product in companyProducts)
             {
-                var userIds = product.productUsers.Select(u => u.Id).ToList();
+                var userIds = product.productUsers!.Select(u => u.Id).ToList();
                 var users = await _userCollection.Find(u => userIds.Contains(u.Id.ToString())).ToListAsync();
                 productUsers = _mapper.Map<List<User>, List<ProductUserDetails>>(users);
                 product.productUsers = productUsers;
@@ -404,6 +404,85 @@ public class RedisJson(IMongoDatabase database,IMapper mapper)
                 var productDetails = _mapper.Map<Product, CompanyProductDetails>(product);
                 productDetails.productUsers = product.productUsers?
                     .Select(u => userDictionary[u.UserId])
+                    .ToList();
+                return productDetails;
+            }).ToList();
+
+            finalOutput.companyProducts = companyProducts;
+        }
+        return finalOutput!;
+    }
+
+    ////public async Task<FinalOutputDetails> GetCompanyDetailsAsync3(string companyCode)
+    ////{
+    ////    FinalOutputDetails finalOutput = new();
+    ////    var company = await _companyCollection.Find(c => c.Company_Cd == companyCode).FirstOrDefaultAsync();
+    ////    if (company != null)
+    ////    {
+    ////        finalOutput = _mapper.Map<Company, FinalOutputDetails>(company);
+
+    ////        var productCodes = company.companyProducts?.Select(p => p.Product_Cd).ToList();
+    ////        var productsTask = _productCollection.Find(p => productCodes.Contains(p.Product_Cd)).ToListAsync();
+
+    ////        // Fetch users concurrently using Task.WhenAll
+    ////        var allUserIds = products.SelectMany(p => p.productUsers!).Select(u => u.UserId).Distinct().ToList();
+    ////        var usersTask = _userCollection.Find(u => allUserIds.Contains(u.Id)).ToListAsync();
+
+    ////        // Await both tasks
+    ////        await Task.WhenAll(productsTask, usersTask);
+
+    ////        var products = await productsTask;
+    ////        var users = await usersTask;
+
+    ////        // Create a dictionary for fast lookup
+    ////        var userDictionary = users.ToDictionary(u => u.Id, u => _mapper.Map<User, ProductUserDetails>(u));
+
+    ////        var companyProducts = products.Select(product =>
+    ////        {
+    ////            var productDetails = _mapper.Map<Product, CompanyProductDetails>(product);
+    ////            productDetails.productUsers = product.productUsers?
+    ////                .Select(u => userDictionary[u.UserId])
+    ////                .ToList();
+    ////            return productDetails;
+    ////        }).ToList();
+
+    ////        finalOutput.companyProducts = companyProducts;
+    ////    }
+    ////    return finalOutput!;
+    ////}
+    public async Task<FinalOutputDetails> GetCompanyDetailsAsync4(string companyCode)
+    {
+        FinalOutputDetails finalOutput = new();
+        var company = await _companyCollection.Find(c => c.Company_Cd == companyCode).FirstOrDefaultAsync();
+        if (company != null)
+        {
+            finalOutput = _mapper.Map<Company, FinalOutputDetails>(company);
+
+            var productCodes = company.companyProducts?.Select(p => p.Product_Cd).ToList();
+            var productsTask = _productCollection.Find(p => productCodes.Contains(p.Product_Cd)).ToListAsync();
+
+            // Await productsTask to get products
+            var products = await productsTask;
+
+            // Fetch all user IDs from products
+            var allUserIds = products.SelectMany(p => p.productUsers)
+                                    .Select(u => u.UserId)
+                                    .Distinct()
+                                    .ToList();
+
+            var usersTask = _userCollection.Find(u => allUserIds.Contains(u.Id)).ToListAsync();
+
+            // Await usersTask to get users
+            var users = await usersTask;
+
+            // Create a dictionary for fast lookup
+            var userDictionary = users.ToDictionary(u => u.Id, u => _mapper.Map<User, ProductUserDetails>(u));
+
+            var companyProducts = products.Select(product =>
+            {
+                var productDetails = _mapper.Map<Product, CompanyProductDetails>(product);
+                productDetails.productUsers = product.productUsers
+                    .Select(u => userDictionary.ContainsKey(u.UserId) ? userDictionary[u.UserId] : null)
                     .ToList();
                 return productDetails;
             }).ToList();

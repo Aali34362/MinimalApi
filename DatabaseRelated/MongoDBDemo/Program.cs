@@ -61,15 +61,15 @@ public class App(ILogger<App> logger, UserOperations userOperations, MongoDbConf
         ////_userOperations.DynamicJsonClass();
         ///
         // await _userOperations.CreateReadLock();
-        await _userOperations.DisposeReadLock();
-        await _userOperations.GetReadReadLock();
-        await _userOperations.GetReadWriteLock();
+        //await _userOperations.DisposeReadLock();
+        //await _userOperations.GetReadReadLock();
+        //await _userOperations.GetReadWriteLock();
 
 
         //await _userOperations.CreateWriteLock();
-        await _userOperations.DisposeWriteLock();
-        await _userOperations.GetReadWriteLock2();
-        await _userOperations.GetWriteWriteLock();
+        //await _userOperations.DisposeWriteLock();
+        //await _userOperations.GetReadWriteLock2();
+        //await _userOperations.GetWriteWriteLock();
         
     }
 }
