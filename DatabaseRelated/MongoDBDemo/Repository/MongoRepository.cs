@@ -131,6 +131,8 @@ public class MongoRepository
             session.StartTransaction();
             try
             {
+                SequenceParam sequence = GetSequenceDetails("productcode");
+                product.Product_Cd = await _productStore.GetNextSequenceValue(sequence);
                 await _productStore.InsertOneAsync(product, "ProductsCollection");
                 await session.CommitTransactionAsync();
                 return true;
@@ -229,6 +231,8 @@ public class MongoRepository
             session.StartTransaction();
             try
             {
+                SequenceParam sequence = GetSequenceDetails("companycode");
+                company.Company_Cd = await _companyStore.GetNextSequenceValue(sequence);
                 await _companyStore.InsertOneAsync(company, "CompaniesCollection");
                 await session.CommitTransactionAsync();
                 return true;
@@ -318,7 +322,30 @@ public class MongoRepository
     }
     public async Task<long> CountOfCompanies() => await _companyStore.CountDocumentsAsync(Builders<Company>.Filter.Empty, "CompaniesCollection");
     #endregion
-    
+
+    private SequenceParam GetSequenceDetails(string sequenceName)
+    {
+        SequenceParam sequence = new();
+        if(sequenceName is "productcode")
+        {
+            sequence.sequenceName = "productcode";
+            sequence.prefix = "PC";
+            sequence.startWith = 1;
+            sequence.incrementBy = 1;
+            sequence.initialPadding = 4;
+        }
+        if (sequenceName is "companycode")
+        {
+            sequence.sequenceName = "companycode";
+            sequence.prefix = "CC";
+            sequence.startWith = 100;
+            sequence.incrementBy = 1;
+            sequence.initialPadding = 3;
+        }
+        return sequence;
+    }
+
+
 }
 
 
