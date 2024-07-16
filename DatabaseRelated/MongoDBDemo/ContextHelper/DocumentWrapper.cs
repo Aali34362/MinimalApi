@@ -248,6 +248,21 @@ public class DocumentWrapper<T> : IDocumentWrapper<T>
             throw;
         }
     }
+    public async Task<T> FindOneAsync(FilterDefinition<T> filter, string collectionName)
+    {
+        try
+        {
+            var _collection = _database.GetCollection<T>(collectionName);
+            var filterBuilder = Builders<T>.Filter;
+            var combinedFilter = filterBuilder.And(filter, filterBuilder.Eq("Actv_Ind", 1));
+            return await _collection.Find(combinedFilter).FirstOrDefaultAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error finding document: {ex.Message}");
+            throw;
+        }
+    }
     public async Task<long> CountDocumentsAsync(FilterDefinition<T> filter, string collectionName)
     {
         try
@@ -269,6 +284,70 @@ public class DocumentWrapper<T> : IDocumentWrapper<T>
     {
         return await _client.StartSessionAsync();
     }
+    public async Task<string> GetNextSequenceValue(SequenceParam sequenceParam)
+    {
+        IMongoCollection<Sequence> collection = _database.GetCollection<Sequence>("sequences");
+        FilterDefinition<Sequence> filter = Builders<Sequence>.Filter.Eq((Expression<Func<Sequence, string>>)((Sequence s) => s.Id), sequenceParam.sequenceName);
+        Sequence sequence;
+        if (await collection.Find(filter).FirstOrDefaultAsync() == null)
+        {
+            sequence = new Sequence
+            {
+                Id = sequenceParam.sequenceName,
+                Seq = sequenceParam.startWith - sequenceParam.incrementBy
+            };
+            await collection.InsertOneAsync(sequence);
+        }
+
+        UpdateDefinition<Sequence> update = Builders<Sequence>.Update.Inc((Sequence s) => s.Seq, sequenceParam.incrementBy);
+        FindOneAndUpdateOptions<Sequence> options = new FindOneAndUpdateOptions<Sequence>
+        {
+            ReturnDocument = ReturnDocument.After,
+            IsUpsert = true
+        };
+        sequence = await collection.FindOneAndUpdateAsync(filter, update, options);
+        int padding = ((sequenceParam.initialPadding > sequence.Seq.ToString().Length) ? sequenceParam.initialPadding : sequence.Seq.ToString().Length);
+        return sequenceParam.prefix + sequence.Seq.ToString().PadLeft(padding, '0');
+    }
+    public async Task<string> GetNextSequenceValue2(SequenceParam sequenceParam)
+    {
+        var collection = _database.GetCollection<Sequence>("sequences");
+
+        // Filter to find the sequence by sequenceName
+        var filter = Builders<Sequence>.Filter.Eq(s => s.Id, sequenceParam.sequenceName);
+
+        // Check if the sequence exists
+        var sequence = await collection.Find(filter).FirstOrDefaultAsync();
+
+        // If the sequence doesn't exist, create a new one
+        if (sequence == null)
+        {
+            sequence = new Sequence
+            {
+                Id = sequenceParam.sequenceName,
+                Seq = sequenceParam.startWith - sequenceParam.incrementBy
+            };
+            await collection.InsertOneAsync(sequence);
+        }
+
+        // Define the update operation to increment the sequence
+        var update = Builders<Sequence>.Update.Inc(s => s.Seq, sequenceParam.incrementBy);
+
+        // Options for the FindOneAndUpdate operation
+        var options = new FindOneAndUpdateOptions<Sequence>
+        {
+            ReturnDocument = ReturnDocument.After, // Return the updated document
+            IsUpsert = true // Insert if not found (upsert)
+        };
+
+        // Perform the atomic update and retrieve the updated sequence
+        sequence = await collection.FindOneAndUpdateAsync(filter, update, options);
+
+        // Generate the sequence value with padding
+        int padding = Math.Max(sequenceParam.initialPadding, sequence.Seq.ToString().Length);
+        return sequenceParam.prefix + sequence.Seq.ToString().PadLeft(padding, '0');
+    }
+
     public void InsertDynamicJson<J>(string json, string collectionName)
     {
         // Deserialize JSON to dynamic object

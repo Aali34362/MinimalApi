@@ -1,7 +1,5 @@
 ﻿using Bogus;
-using MongoDB.Driver.Core.Configuration;
 using MongoDBDemo.JsonClass;
-using System.Collections;
 
 namespace MongoDBDemo.MainOperations;
 
@@ -81,7 +79,6 @@ public class UserOperations(IMongoRepository mongoRepository, IMapper mapper)
         var user = faker.Generate();
         await _mongoRepository.CreateUser(user);
     }
-
     public async Task UpdateUser()
     {
         var faker = new Faker<User>()
@@ -146,7 +143,6 @@ public class UserOperations(IMongoRepository mongoRepository, IMapper mapper)
         var user = faker.Generate();
         await _mongoRepository.UpdateUser(user);
     }
-
     public async Task DeleteUser()
     {
         User user = new();
@@ -185,7 +181,6 @@ public class UserOperations(IMongoRepository mongoRepository, IMapper mapper)
             await _mongoRepository.GetUserList(user, index, defaultSize).Dump();
         }
     }
-
     public void DynamicJsonClass()
     {
         string json = @"

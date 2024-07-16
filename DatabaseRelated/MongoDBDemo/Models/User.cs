@@ -8,11 +8,17 @@ public class User : BaseEntity
     public string? LastName { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public string? Gender { get; set; }
+    [BsonIgnoreIfNull]
     public List<ContactInformation>? contacts { get; set; }
+    [BsonIgnoreIfNull]
     public List<AddressInformation>? addresses { get; set; }
+    [BsonIgnoreIfNull]
     public SecurityInformation? security { get; set; }
+    [BsonIgnoreIfNull]
     public AccountInformation? account { get; set; }
+    [BsonIgnoreIfNull]
     public Metadata? metadata { get; set; }
+    [BsonIgnoreIfNull]
     public SocialInformation? social { get; set; }
 }
 
