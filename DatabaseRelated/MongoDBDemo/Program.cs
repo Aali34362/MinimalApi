@@ -31,6 +31,7 @@ public class Program
                     services.AddSingleton<App>();
                     services.AddSingleton<UserOperations>();
                     services.AddTransient<IMongoRepository, MongoRepository>();
+                    services.AddTransient<ILockService, LockService>();
                     services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
                     var mongoDbConfig = context.Configuration.GetSection("MongoDbConfiguration").Get<MongoDbConfiguration>();
                     services.AddSingleton(mongoDbConfig);
@@ -52,11 +53,23 @@ public class App(ILogger<App> logger, UserOperations userOperations, MongoDbConf
 
         // Example usage of UserOperations
         ////await _userOperations.CreateUser();
-        await _userOperations.GetUserList();
+        ///await _userOperations.GetUserList();
         //await _userOperations.GetUserById();
         ////await _userOperations.GetUserByName();
         ////await _userOperations.SoftDeleteUser();
         ////await _userOperations.DeleteUser();
-        _userOperations.DynamicJsonClass();
+        ////_userOperations.DynamicJsonClass();
+        ///
+        // await _userOperations.CreateReadLock();
+        await _userOperations.DisposeReadLock();
+        await _userOperations.GetReadReadLock();
+        await _userOperations.GetReadWriteLock();
+
+
+        //await _userOperations.CreateWriteLock();
+        await _userOperations.DisposeWriteLock();
+        await _userOperations.GetReadWriteLock2();
+        await _userOperations.GetWriteWriteLock();
+        
     }
 }

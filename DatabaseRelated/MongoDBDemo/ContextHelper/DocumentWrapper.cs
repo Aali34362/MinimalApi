@@ -237,10 +237,31 @@ public class DocumentWrapper<T> : IDocumentWrapper<T>
     {
         try
         {
-            var collection = _database.GetCollection<T>(collectionName);
+            var _collection = _database.GetCollection<T>(collectionName);
             var filterBuilder = Builders<T>.Filter;
-            var combinedFilter = filterBuilder.And(filter, filterBuilder.Eq("Actv_Ind", 1));
-            return await collection.Find(combinedFilter).FirstOrDefaultAsync();
+            // Check if the type T has the property Actv_Ind
+            var type = typeof(T);
+            var actvIndProperty = type.GetProperty("Actv_Ind");
+
+            // Create the filter
+            FilterDefinition<T> combinedFilter;
+            if (actvIndProperty != null)// If Actv_Ind property exists, add it to the filter
+                combinedFilter = filterBuilder.And(filter, filterBuilder.Eq("Actv_Ind", 1));
+            else  // If Actv_Ind property does not exist, use the provided filter only
+                combinedFilter = filterBuilder.And(filter);            
+
+            // Check if the type T has the property Lst_Updt_Dt
+            var lstUpdtDtProperty = type.GetProperty("Lst_Updt_Dt");
+            SortDefinition<T>? sortDefinition = null;
+
+            if (lstUpdtDtProperty != null)// Define the sort definition based on Lst_Updt_Dt in descending order if it exists
+                sortDefinition = Builders<T>.Sort.Descending("Lst_Updt_Dt");            
+
+            // Find and return the document
+            if (sortDefinition != null)
+                return await _collection.Find(combinedFilter).Sort(sortDefinition).FirstOrDefaultAsync();
+            else
+                return await _collection.Find(combinedFilter).FirstOrDefaultAsync();            
         }
         catch (Exception ex)
         {
@@ -254,8 +275,29 @@ public class DocumentWrapper<T> : IDocumentWrapper<T>
         {
             var _collection = _database.GetCollection<T>(collectionName);
             var filterBuilder = Builders<T>.Filter;
-            var combinedFilter = filterBuilder.And(filter, filterBuilder.Eq("Actv_Ind", 1));
-            return await _collection.Find(combinedFilter).FirstOrDefaultAsync();
+            // Check if the type T has the property Actv_Ind
+            var type = typeof(T);
+            var actvIndProperty = type.GetProperty("Actv_Ind");
+
+            // Create the filter
+            FilterDefinition<T> combinedFilter;
+            if (actvIndProperty != null)// If Actv_Ind property exists, add it to the filter
+                combinedFilter = filterBuilder.And(filter, filterBuilder.Eq("Actv_Ind", 1));
+            else  // If Actv_Ind property does not exist, use the provided filter only
+                combinedFilter = filterBuilder.And(filter);
+
+            // Check if the type T has the property Lst_Updt_Dt
+            var lstUpdtDtProperty = type.GetProperty("Lst_Updt_Dt");
+            SortDefinition<T>? sortDefinition = null;
+
+            if (lstUpdtDtProperty != null)// Define the sort definition based on Lst_Updt_Dt in descending order if it exists
+                sortDefinition = Builders<T>.Sort.Descending("Lst_Updt_Dt");
+
+            // Find and return the document
+            if (sortDefinition != null)
+                return await _collection.Find(combinedFilter).Sort(sortDefinition).FirstOrDefaultAsync();
+            else
+                return await _collection.Find(combinedFilter).FirstOrDefaultAsync();
         }
         catch (Exception ex)
         {

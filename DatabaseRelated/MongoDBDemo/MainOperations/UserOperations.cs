@@ -3,10 +3,45 @@ using MongoDBDemo.JsonClass;
 
 namespace MongoDBDemo.MainOperations;
 
-public class UserOperations(IMongoRepository mongoRepository, IMapper mapper)
+public class UserOperations(IMongoRepository mongoRepository, IMapper mapper, ILockService lockService)
 {
     private readonly IMongoRepository _mongoRepository = mongoRepository ?? throw new Exception();
+    private readonly ILockService _lockService = lockService ?? throw new Exception();
     private readonly IMapper _mapper = mapper ?? throw new Exception();
+
+    public async Task CreateReadLock()
+    {
+        await _lockService.AcquireLockAsync(new Lock { Id = Guid.NewGuid(), CreatedAt = DateTime.Now, Operation = "read", Resource = "Just Disgusting" });
+    }
+    public async Task GetReadReadLock()
+    {
+        await _lockService.IsLockedAsync("Just Disgusting", "read").Dump();
+    }
+    public async Task GetReadWriteLock()
+    {
+        await _lockService.IsLockedAsync("Just Disgusting", "write").Dump();
+    }
+    public async Task DisposeReadLock()
+    {
+        await _lockService.ReleaseLockAsync("Just Disgusting");
+    }
+    public async Task CreateWriteLock()
+    {
+        await _lockService.AcquireLockAsync(new Lock { Id = Guid.NewGuid(), CreatedAt = DateTime.Now, Operation = "write", Resource = "Not Eligible" });
+    }
+    public async Task GetReadWriteLock2()
+    {
+        await _lockService.IsLockedAsync("Not Eligible", "read").Dump();
+    }
+    public async Task GetWriteWriteLock()
+    {
+        await _lockService.IsLockedAsync("Not Eligible", "write");
+    }
+    public async Task DisposeWriteLock()
+    {
+        await _lockService.ReleaseLockAsync("Not Eligible");
+    }
+
     public async Task CreateUser()
     {
         var faker = new Faker<User>()

@@ -23,5 +23,6 @@ public static class MongoDbConfigureService
         services.AddMongoDBDocumentStore<User>();
         services.AddMongoDBDocumentStore<Product>();
         services.AddMongoDBDocumentStore<Company>();
+        services.AddMongoDBDocumentStore<Lock>();
     }
 }

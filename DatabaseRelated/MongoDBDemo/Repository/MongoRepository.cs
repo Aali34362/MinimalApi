@@ -323,6 +323,7 @@ public class MongoRepository
     public async Task<long> CountOfCompanies() => await _companyStore.CountDocumentsAsync(Builders<Company>.Filter.Empty, "CompaniesCollection");
     #endregion
 
+    #region Sequence Object
     private SequenceParam GetSequenceDetails(string sequenceName)
     {
         SequenceParam sequence = new();
@@ -344,7 +345,7 @@ public class MongoRepository
         }
         return sequence;
     }
-
+    #endregion
 
 }
 
