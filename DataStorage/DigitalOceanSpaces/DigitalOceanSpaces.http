@@ -1,0 +1,6 @@
+@DigitalOceanSpaces_HostAddress = http://localhost:5188
+
+GET {{DigitalOceanSpaces_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

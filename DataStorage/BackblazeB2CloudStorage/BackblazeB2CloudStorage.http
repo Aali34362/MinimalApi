@@ -1,0 +1,6 @@
+@BackblazeB2CloudStorage_HostAddress = http://localhost:5149
+
+GET {{BackblazeB2CloudStorage_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

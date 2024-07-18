@@ -1,0 +1,6 @@
+@AWSCognitoSSO_HostAddress = http://localhost:5226
+
+GET {{AWSCognitoSSO_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

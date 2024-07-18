@@ -1,0 +1,126 @@
+Cassandra is a highly scalable, distributed NoSQL database designed to handle large amounts of data across many commodity servers, 
+providing high availability with no single point of failure. It is an open-source project maintained by the Apache Software Foundation.
+
+Key Features:
+
+    Scalability: Cassandra is designed to handle large volumes of data and can 
+    scale horizontally by adding more nodes to the cluster without any downtime.
+    Decentralized: Every node in the Cassandra cluster is identical, ensuring no single point of failure. 
+    This peer-to-peer architecture provides high availability and fault tolerance.
+    Data Model: It uses a wide-column store data model where data is stored in tables with rows and columns,
+    similar to a relational database but with much more flexibility.
+    Replication: Data is automatically replicated across multiple nodes for redundancy, 
+    ensuring durability and fault tolerance. 
+    The replication factor can be configured per keyspace.
+    Consistency Levels: Provides tunable consistency levels ranging from strong consistency
+    (all replicas must respond) to eventual consistency (any replica can respond).
+    CQL (Cassandra Query Language): An SQL-like language for interacting with the database, 
+    making it easier for developers familiar with SQL to work with Cassandra.
+    Support for ACID transactions: While traditionally designed for high availability and 
+    partition tolerance (CAP theorem), recent versions support lightweight transactions with ACID properties.
+
+Use Cases:
+
+    Real-time big data applications
+    IoT applications with high write throughput requirements
+    Content management systems
+    Recommendation and personalization engines
+    E-commerce platforms
+
+what is Cluster
+In Apache Cassandra, a Cluster refers to a collection of interconnected nodes that work together to store and manage data. 
+The cluster architecture ensures high availability and fault tolerance by distributing data across multiple nodes, 
+allowing the system to handle large amounts of data and maintain performance even in the event of node failures.
+
+Key Components of a Cassandra Cluster:
+
+    Nodes: 
+           Individual servers that store data and participate in the cluster. 
+           Each node is capable of handling read and write requests independently.
+    Data Centers: 
+            Logical grouping of nodes within a cluster. 
+            Data centers are typically used to improve performance by placing data closer to users or for disaster recovery purposes.
+    Keyspace: 
+        A namespace that defines data replication on nodes.
+        It is the highest level in the data model hierarchy.
+    Tables: 
+        Within a keyspace, tables store the actual data in rows and columns, 
+        similar to relational databases but with more flexibility in terms of schema design.
+    Replication: 
+        The process of copying data across multiple nodes to ensure high availability and fault tolerance. 
+        The replication factor determines how many copies of the data are stored in the cluster.
+    Coordinator Node: 
+        The node that receives the client request and coordinates the read/write operations with other nodes in the cluster.
+
+Cluster Management:
+    Clusters are managed through configuration settings and tools provided by Cassandra, 
+    such as nodetool, which allows administrators to monitor and manage the cluster.
+
+
+what is ISession
+In the context of the Cassandra .NET driver, the ISession interface represents a connection to a Cassandra cluster, 
+allowing you to execute queries and interact with the database. 
+The ISession interface provides methods for executing CQL (Cassandra Query Language) statements, both synchronously and asynchronously.
+Key Methods of ISession:
+
+    Execute:
+    Executes a CQL statement synchronously.
+    RowSet Execute(string cqlQuery);
+    RowSet Execute(IStatement statement);
+    
+    ExecuteAsync:
+    Executes a CQL statement asynchronously.
+    Task<RowSet> ExecuteAsync(string cqlQuery);
+    Task<RowSet> ExecuteAsync(IStatement statement);
+    
+    Prepare:
+    Prepares a CQL statement for execution, which can be reused with different parameters.
+    PreparedStatement Prepare(string cqlQuery);
+    Task<PreparedStatement> PrepareAsync(string cqlQuery);
+    
+    Cluster:
+    Gets the cluster to which this session is connected.
+    ICluster Cluster { get; }
+
+    Keyspace:
+    Gets the keyspace to which this session is connected.
+    string Keyspace { get; }
+
+
+Cluster.Builder().AddContactPoints(contactPoints).Build();
+Cluster.Builder()
+The Cluster.Builder() method initializes a new Cluster.Builder instance. 
+This builder pattern is used to configure various settings for connecting to a Cassandra cluster.
+
+AddContactPoints(contactPoints)
+The AddContactPoints method is called on the Cluster.Builder instance. 
+It specifies one or more contact points (IP addresses or hostnames) of the nodes in the Cassandra cluster. 
+These contact points are used by the driver to discover the topology of the cluster and establish connections to other nodes.
+    contactPoints: 
+    This parameter is an array or a collection of strings representing the IP addresses or hostnames of the nodes in the Cassandra cluster. 
+    Providing multiple contact points ensures that if one node is down or unreachable, the driver can still connect to the cluster using other nodes.
+
+Build()
+The Build method finalizes the configuration and creates a Cluster instance based on the settings provided through the builder. 
+This Cluster instance represents the connection to the Cassandra cluster and is used to create sessions for interacting with the database.
+
+
+
+Why Create Tables in Cassandra?
+
+    Schema Definition: Although Cassandra is a NoSQL database, it uses a schema to define the structure of tables (also called column families). This schema is necessary to ensure data is stored efficiently and can be queried effectively.
+
+    Data Organization: Defining tables helps organize data in a structured manner. Each table can have different columns with specific data types, and primary keys are defined to enable efficient querying and data retrieval.
+
+    Query Performance: The way tables are structured in Cassandra can significantly impact query performance. By defining tables, you can optimize data distribution across nodes and improve read/write performance.
+
+    Data Integrity: Schema definitions help enforce data integrity rules. For example, setting data types for columns ensures that only valid data is stored in the database.
+
+    Consistency and Replication: Tables and their schemas are used to manage consistency and replication strategies in Cassandra. Defining the schema ensures that the data is consistently replicated across nodes as per the replication factor and strategy.
+
+NoSQL and Schemaless Misconception
+
+The term "schemaless" often associated with NoSQL databases can be misleading. It doesn't mean that NoSQL databases have no structure at all. Instead, it means that they offer more flexibility in terms of how data is structured compared to traditional relational databases.
+
+    In document-oriented NoSQL databases like MongoDB, the schema can vary from document to document within a collection.
+    In Cassandra, the schema is defined at the table level, but you can add new columns on the fly without requiring an explicit schema migration.
