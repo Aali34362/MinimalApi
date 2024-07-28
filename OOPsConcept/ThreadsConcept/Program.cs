@@ -61,8 +61,11 @@ using ThreadsConcept.ThreadedChatServer;
 ////ChatServer client = new ChatServer();
 ////client.HandleClientMain();
 
-RedisChatServer redisclient = new RedisChatServer();
-redisclient.HandleRedisClientMain();
+////RedisChatServer redisclient = new RedisChatServer();
+////redisclient.HandleRedisClientMain();
+
+RedisJsonChatServer redisclient = new RedisJsonChatServer();
+redisclient.HandleRedisJsonClientMain();
 //////////////////////////////////
 
 
