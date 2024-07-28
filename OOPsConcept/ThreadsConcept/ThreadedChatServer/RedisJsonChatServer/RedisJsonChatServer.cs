@@ -168,6 +168,13 @@ public class RedisJsonChatServer
                     }
                     return JsonSerializer.Serialize(new { Error = $"Key '{command.Key}' not found" });
 
+                case "DELETEALL":
+                    keyValueStore.Clear();
+                    return JsonSerializer.Serialize(new { Message = "DELETEALL: All keys removed successfully" });
+
+                case "GETALL":
+                    return JsonSerializer.Serialize(new { Data = keyValueStore });
+
                 default:
                     return JsonSerializer.Serialize(new { Error = "Unknown command" });
             }
