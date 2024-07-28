@@ -1,0 +1,35 @@
+Types of Applications Developed using C#:
+
+With the help of the C# programming language, we can develop different types of secured and robust applications:
+
+    Window Applications
+    Web Applications
+    Distributed Applications
+    Web Service Applications
+    Database Applications
+    Mobile Applications
+    Game Applications
+    IoT Applications, etc.
+
+What will you Learn From These C#.NET Tutorials?
+
+In this C#.NET Tutorials, you will learn from basic to advanced level concepts of C#. Some of them are as follows:
+
+Chapter-1 Introduction & Environment Setup
+Chapter-2 C#.NET Basics
+Chapter-3 OOPs in C#
+Chapter-4 Exception Handling
+Chapter-5 Events, Delegates, and Lambda Expression in C#
+Chapter-6 MultiThreading
+Chapter-7 Collections in C#
+Chapter-8 File Handling
+Chapter-9 Asynchronous Programming
+Chapter-10 Parallel Programming
+Chapter-11 AutoMapper
+Chapter-12 Optional Parameter, Indexers, and Enums
+Chapter-13 .NET Framework Architecture
+Chapter-14 Var, Dynamic and Reflection
+Chapter-15 C# 7.X, 8.X, 9.X, 10.X New Features, and Many More
+Prerequisites to Learn C#.NET
+
+No Prerequisites are required as we will start from the very basics. But if you have some basic programming knowledge, then it is an added advantage.

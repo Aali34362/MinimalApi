@@ -1,22 +1,24 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using ThreadsConcept.BasicMultiThreadCalculator;
 using ThreadsConcept.FileReaderWithThread;
+using ThreadsConcept.MultithreadedWebScraper;
+using ThreadsConcept.ThreadedChatServer;
 
 
 ////MultithreadedCalculator
-MultithreadedCalculator calculator = new MultithreadedCalculator();
-Console.WriteLine("Multithreaded Calculator");
-Console.WriteLine("Operations: add, subtract, multiply, divide");
+////MultithreadedCalculator calculator = new MultithreadedCalculator();
+////Console.WriteLine("Multithreaded Calculator");
+////Console.WriteLine("Operations: add, subtract, multiply, divide");
 
-// Demonstrate concurrent execution
-calculator.Calculate("add", 5, 3);
-calculator.Calculate("subtract", 10, 2);
-calculator.Calculate("multiply", 4, 3);
-calculator.Calculate("divide", 20, 4);
+////// Demonstrate concurrent execution
+////calculator.Calculate("add", 5, 3);
+////calculator.Calculate("subtract", 10, 2);
+////calculator.Calculate("multiply", 4, 3);
+////calculator.Calculate("divide", 20, 4);
 
-// Keep the console open
-Console.WriteLine("Press any key to exit...");
-Console.ReadKey();
+////// Keep the console open
+////Console.WriteLine("Press any key to exit...");
+////Console.ReadKey();
 ////Console.WriteLine("Multithreaded Calculator");
 ////Console.WriteLine("Operations: add, subtract, multiply, divide");
 ////Console.WriteLine("Format: operation number1 number2");
@@ -48,8 +50,16 @@ Console.ReadKey();
 //////////////////////////////////////////////////////////////////
 
 ////ReadFile with Threading
-ReadFile read = new();
-read.GetFileFunction();
-
+////ReadFile read = new();
+////read.GetFileFunction();
+/////////////////////////////////////
+/////ScrapeUrl
+////ScrapeUrl scrapeUrl = new ScrapeUrl();
+////await scrapeUrl.ScrapeUrlMain();
+////////////////////////////////////
+///ThreadedChatServer
+ChatServer client = new ChatServer();
+client.HandleClientMain();
+//////////////////////////////////
 
 

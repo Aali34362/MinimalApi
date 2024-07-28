@@ -24,12 +24,27 @@
 
     public void GetFileFunction()
     {
+        //var folder = Environment.SpecialFolder.LocalApplicationData;
+        //var path = Environment.GetFolderPath(folder);
         string[] files = { "file1.txt", "file2.txt", "file3.txt" };
+        ////string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "FileReaderWithThread");
+        ////string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FileReaderWithThread");
+        //string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "FileReaderWithThread");
+
+        // Get the base directory
+        string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+
+        // Navigate up to the project directory
+        DirectoryInfo projectDir = Directory.GetParent(baseDir)!.Parent!.Parent!.Parent!;
+
+        // Combine with the folder name
+        string folderPath = Path.Combine(projectDir.FullName, "FileReaderWithThread");
 
         // Create and start a thread for each file
         foreach (var file in files)
         {
-            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, file);
+            ///var path = Path.GetFullPath(file);
+            string filePath = Path.Combine(folderPath, file);
             Thread thread = new Thread(() => ReadFileFunction(filePath));
             thread.Start();
         }
