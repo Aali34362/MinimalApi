@@ -1,0 +1,13 @@
+Process :
+
+
+Thread :
+
+
+Task:
+
+
+
+Multi Tasking :
+Multitasking is the concept of running multiple application at a time.
+eg. Windows operating system is the multitasking operating system.

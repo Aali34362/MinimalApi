@@ -58,25 +58,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CassandraConnectSample", "D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SSO", "SSO", "{63F2A4EF-1BBE-4733-92A0-DB1F6A90A897}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyCloakSSO", "SSO\KeyCloakSSO\KeyCloakSSO.csproj", "{AB50EF27-6653-46EA-A16B-0C436781C379}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyCloakSSO", "SSO\KeyCloakSSO\KeyCloakSSO.csproj", "{AB50EF27-6653-46EA-A16B-0C436781C379}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWSCognitoSSO", "SSO\AWSCognitoSSO\AWSCognitoSSO.csproj", "{1CE5EFAA-D557-46A7-9C7F-6F6CB8C76815}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AWSCognitoSSO", "SSO\AWSCognitoSSO\AWSCognitoSSO.csproj", "{1CE5EFAA-D557-46A7-9C7F-6F6CB8C76815}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedisDemo", "DatabaseRelated\RedisDemo\RedisDemo.csproj", "{81538430-BB70-492F-B69B-F44C44E60A0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedisDemo", "DatabaseRelated\RedisDemo\RedisDemo.csproj", "{81538430-BB70-492F-B69B-F44C44E60A0E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataStorage", "DataStorage", "{4A55A25C-6353-4A6F-A44B-EFBF518A90E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemDataStorage", "DataStorage\SystemDataStorage\SystemDataStorage.csproj", "{29BF3718-64E4-457A-A998-123103A26191}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SystemDataStorage", "DataStorage\SystemDataStorage\SystemDataStorage.csproj", "{29BF3718-64E4-457A-A998-123103A26191}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "S3DataStorage", "DataStorage\S3DataStorage\S3DataStorage.csproj", "{19BAB72C-209A-4B37-925F-62E37115FE95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "S3DataStorage", "DataStorage\S3DataStorage\S3DataStorage.csproj", "{19BAB72C-209A-4B37-925F-62E37115FE95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureDataStorage", "DataStorage\AzureDataStorage\AzureDataStorage.csproj", "{AC2826BE-4EF0-4EFF-94E4-A25411FCF41C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureDataStorage", "DataStorage\AzureDataStorage\AzureDataStorage.csproj", "{AC2826BE-4EF0-4EFF-94E4-A25411FCF41C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleCloudStorage", "DataStorage\GoogleCloudStorage\GoogleCloudStorage.csproj", "{6F31A84D-CE8A-4901-8027-E5C53FC18C3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleCloudStorage", "DataStorage\GoogleCloudStorage\GoogleCloudStorage.csproj", "{6F31A84D-CE8A-4901-8027-E5C53FC18C3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigitalOceanSpaces", "DataStorage\DigitalOceanSpaces\DigitalOceanSpaces.csproj", "{118BC03E-97F7-415C-95C8-4AE5788F6454}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitalOceanSpaces", "DataStorage\DigitalOceanSpaces\DigitalOceanSpaces.csproj", "{118BC03E-97F7-415C-95C8-4AE5788F6454}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackblazeB2CloudStorage", "DataStorage\BackblazeB2CloudStorage\BackblazeB2CloudStorage.csproj", "{337419CA-FA4D-454D-8FBA-A81A065427E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackblazeB2CloudStorage", "DataStorage\BackblazeB2CloudStorage\BackblazeB2CloudStorage.csproj", "{337419CA-FA4D-454D-8FBA-A81A065427E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreadsConcept", "OOPsConcept\ThreadsConcept\ThreadsConcept.csproj", "{1041090C-568E-40BE-98A9-3237C86FB2CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -192,6 +194,10 @@ Global
 		{337419CA-FA4D-454D-8FBA-A81A065427E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{337419CA-FA4D-454D-8FBA-A81A065427E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{337419CA-FA4D-454D-8FBA-A81A065427E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1041090C-568E-40BE-98A9-3237C86FB2CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1041090C-568E-40BE-98A9-3237C86FB2CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1041090C-568E-40BE-98A9-3237C86FB2CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1041090C-568E-40BE-98A9-3237C86FB2CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -224,6 +230,7 @@ Global
 		{6F31A84D-CE8A-4901-8027-E5C53FC18C3B} = {4A55A25C-6353-4A6F-A44B-EFBF518A90E8}
 		{118BC03E-97F7-415C-95C8-4AE5788F6454} = {4A55A25C-6353-4A6F-A44B-EFBF518A90E8}
 		{337419CA-FA4D-454D-8FBA-A81A065427E6} = {4A55A25C-6353-4A6F-A44B-EFBF518A90E8}
+		{1041090C-568E-40BE-98A9-3237C86FB2CB} = {F1B34365-85E0-4529-ADF1-77C48DD3C62D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28FF3121-2A6C-4EC7-A341-71BD65260A1C}
