@@ -58,8 +58,11 @@ using ThreadsConcept.ThreadedChatServer;
 ////await scrapeUrl.ScrapeUrlMain();
 ////////////////////////////////////
 ///ThreadedChatServer
-ChatServer client = new ChatServer();
-client.HandleClientMain();
+////ChatServer client = new ChatServer();
+////client.HandleClientMain();
+
+RedisChatServer redisclient = new RedisChatServer();
+redisclient.HandleRedisClientMain();
 //////////////////////////////////
 
 

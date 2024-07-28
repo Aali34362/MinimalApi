@@ -47,7 +47,7 @@ public class RedisChatServer
     }
     private static void RedisBroadcastMessage(string message, TcpClient excludeClient)
     {
-        byte[] buffer = Encoding.ASCII.GetBytes("Server: " + message);
+        byte[] buffer = Encoding.ASCII.GetBytes(message);
 
         foreach (var client in _clients.Keys)
         {
