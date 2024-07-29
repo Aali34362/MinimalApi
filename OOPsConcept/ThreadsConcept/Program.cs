@@ -54,18 +54,21 @@ using ThreadsConcept.ThreadedChatServer;
 ////read.GetFileFunction();
 /////////////////////////////////////
 /////ScrapeUrl
-////ScrapeUrl scrapeUrl = new ScrapeUrl();
+////ScrapeUrl scrapeUrl = new();
 ////await scrapeUrl.ScrapeUrlMain();
 ////////////////////////////////////
 ///ThreadedChatServer
-////ChatServer client = new ChatServer();
+////ChatServer client = new();
 ////client.HandleClientMain();
 
-////RedisChatServer redisclient = new RedisChatServer();
+////RedisChatServer redisclient = new();
 ////redisclient.HandleRedisClientMain();
 
-RedisJsonChatServer redisclient = new RedisJsonChatServer();
-redisclient.HandleRedisJsonClientMain();
+////RedisJsonChatServer redisJsonclient = new();
+////redisJsonclient.HandleRedisJsonClientMain();
+
+RedisMultipleJsonChatServer redisMultipleJsonChatServer = new();
+redisMultipleJsonChatServer.HandleRedisJsonClientMain();
 //////////////////////////////////
 
 
