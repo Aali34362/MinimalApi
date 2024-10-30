@@ -1,0 +1,524 @@
+mongodb://localhost:27017 
+
+What is Mongo Db ?
+
+[
+  {
+    "departureAirport": "MUC",
+    "arrivalAirport": "SFO",
+    "aircraft": "Airbus A380",
+    "distance": 12000,
+    "intercontinental": true
+  },
+  {
+    "departureAirport": "LHR",
+    "arrivalAirport": "TXL",
+    "aircraft": "Airbus A320",
+    "distance": 950,
+    "intercontinental": false
+  }
+]
+
+
+
+CRUD Operations and Mongo DB
+Read :
+find(filter, options);
+db.FlightData.find().pretty()
+
+Cursor Object -> find(): gives you back a cursor object and not all the data
+it doesnt give an array of object because collection can be very big
+data and it will take time so instead it gives back cursor object which is an
+object with lots of metadata behind it that allows us to Cycle through results
+
+db.PassengersData.find().toArray() :
+.toArray will go ahead and exhaust the cursor.
+it will go throught entire list  fetch all the documents and not stop after first 20.
+
+
+db.PassengersData.find().forEach( (PassengersData) => {printjson(PassengersData)})
+
+.pretty() is method simply which exist on the cursor.
+i.e it doesnt support .findOne(). which doesnt give a cursor bcz it only gives us one document
+
+.find() give multiple documents therefor we dont get data immediately with the get cursor instead
+
+
+
+
+
+db.FlightData.find({distance : {$gt: 1000}})
+
+findAll(filter, options);
+
+
+Update :
+updateOne(filter, data, options)
+db.FlightData.updateOne({"distance":950},{$set:{"marker":"delete"}})
+ db.FlightData.updateOne({ _id : ObjectId("647df04f32ce2659b0d6ff7e")}, {$set : {delayed : true}})
+
+updateMany(filter, data, options)
+db.FlightData.updateMany({},{$set:{"marker":"delete"}}) 
+
+update(filter, data, options)
+update({_id : ObjectId("nasdasd")}, {delayed: false})
+it replace existing object with new object unlike others they just 
+update on parameter
+
+replaceOne(filter, data, options)
+replaceOne({_id : ObjectId("nasdasd")}, 
+{
+    "departureAirport": "MUC",
+    "arrivalAirport": "SFO",
+    "aircraft": "Airbus A380",
+    "distance": 12000,
+    "intercontinental": true
+}
+)
+
+
+
+Delete :
+deleteOne(filter, options)
+db.FlightData.deleteOne({"departureAirport" :"TXL"})
+
+deleteMany(filter, options)
+db.FlightData.deleteMany({marker : "delete"})
+
+db.products.deleteMany({})
+
+Create :
+insertOne(data, options);
+
+insertMany(data, options);
+db.FlightData.insertMany([
+...   {
+...     "departureAirport": "MUC",
+...     "arrivalAirport": "SFO",
+...     "aircraft": "Airbus A380",
+...     "distance": 12000,
+...     "intercontinental": true
+...   },
+...   {
+...     "departureAirport": "LHR",
+...     "arrivalAirport": "TXL",
+...     "aircraft": "Airbus A320",
+...     "distance": 950,
+...     "intercontinental": false
+...   }
+... ]
+... )
+
+
+
+
+
+
+
+
+What is Projection : 
+MongoDB projection is a powerful tool that can be used to extract 
+only the fields you need from a document—not all fields.
+db.collection_name.find({},{<field> : <value>})
+db.PassengersData.find({}, {name: 1}).pretty()
+
+if you want to exclude id then 
+db.PassengersData.find({}, {name: 1, _id: 0}).pretty()
+
+
+Embedded Documents :
+Embedded documents are an efficient and clean way to store related data, especially data that's regularly accessed together.
+db.FlightData.updateMany({}, {$set: {status : {description : "on-time", lastUpdated: "1 Hour ago"}}})
+
+db.PassengersData.updateMany({name : "Albert Twostone"}, {$set: {status : {hobbies : ["sports","cooking"]}})
+
+
+
+db.PassengersData.find({name : "Albert Twostone"}).pretty()
+
+db.PassengersData.findOne({name : "Albert Twostone"}).hobbies
+
+
+db.PassengersData.find({hobbies : "sports"}).pretty()
+
+db.FlightData.find({"status.description":"on-time"}).pretty()
+
+db.FlightData.find({"status.details.responsible":"ABC"}).pretty()
+
+
+
+
+[
+  {
+    _id: ObjectId("648f1623ff81e4cd71c664a8"),
+    firstName: 'A',
+    lastName: 'X',
+    age: 29,
+    history: [
+      { disease: 'cold', treament: { medicine: [ 'med1', 'med2' ] } }
+    ]
+  },
+  {
+    _id: ObjectId("648f1655ff81e4cd71c664a9"),
+    firstName: 'Amir',
+    lastName: 'Y',
+    age: 40,
+    history: [
+      { disease: 'cough', treament: { medicine: [ 'med5', 'med6' ] } }
+    ]
+  },
+  {
+    _id: ObjectId("648f1674ff81e4cd71c664aa"),
+    firstName: 'C',
+    lastName: 'Z',
+    age: 19,
+    history: [
+      { disease: 'cold', treament: { medicine: [ 'med1', 'med2' ] } },
+      { disease: 'fever', treament: { medicine: [ 'med3', 'med4' ] } }
+    ]
+  }
+]
+
+db.PatientData.updateOne({lastName:"Y"},{$set:{firstName:"Amir", age:40, history : [{disease :"cough", treament :{ medicine : ["med5", "med6"]}} ]}})
+
+db.PatientData.find({age: {$gt : 25}}).pretty()
+
+db.PatientData.deleteMany({"history.disease":"cold"})
+
+
+
+Create:
+
+db.patients.insertMany([{
+    firstName: "Jack",
+    lastName: "Daw",
+    age: 35,
+    history: [{
+        disease: "cold",
+        treatment: "Anti-Histamines"
+    }]
+}, {
+    firstName: "John",
+    lastName: "Doe",
+    age: 27,
+    history: [{
+        disease: "type-1 diabetes",
+        treatment: "Insulin"
+    }]
+}, {
+    firstName: "Jane",
+    lastName: "Doe",
+    age: 33,
+    history: [{
+        disease: "cold",
+        treatment: "Anti-Histamines"
+    }, {
+        disease: "typhoid",
+        treatment: "Broad-Spectrum Anti-Biotics"
+    }]
+}])
+Update:
+
+db.patients.updateOne({
+    firstName: "John"
+}, {
+    $set: {
+        firstName: "Jon",
+        age: 28,
+        history: [{
+            disease: "type-2 diabetes",
+            treatment: "Insulin"
+        }]
+    }
+})
+Read:
+
+db.patients.find({
+    age: {
+        $gt: 30
+    }
+})
+Delete:
+
+db.patients.deleteMany({
+    "history.disease": "cold"
+})
+
+
+Important: We will regularly start with a clean database server (i.e. all data was purged) in this course.
+
+To get rid of your data, you can simply load the database you want to get rid of (use databaseName) and then execute db.dropDatabase().
+
+Similarly, you could get rid of a single collection in a database via db.myCollection.drop().
+
+
+
+
+db.companies.drop()
+
+
+Modules :
+
+Data Types :
+
+db.stats()
+
+typeof db.numbers.findOne().a
+
+
+Data Types & Limits
+MongoDB has a couple of hard limits - most importantly, a single document in a collection (including all embedded documents it might have) must be <= 16mb. Additionally, you may only have 100 levels of embedded documents.
+
+You can find all limits (in great detail) here: https://docs.mongodb.com/manual/reference/limits/
+
+For the data types, MongoDB supports, you find a detailed overview on this page: https://docs.mongodb.com/manual/reference/bson-types/
+
+Important data type limits are:
+
+Normal integers (int32) can hold a maximum value of +-2,147,483,647
+
+Long integers (int64) can hold a maximum value of +-9,223,372,036,854,775,807
+
+Text can be as long as you want - the limit is the 16mb restriction for the overall document
+
+It's also important to understand the difference between int32 (NumberInt), int64 (NumberLong) and a normal number as you can enter it in the shell. The same goes for a normal double and NumberDecimal.
+
+NumberInt creates a int32 value => NumberInt(55)
+
+NumberLong creates a int64 value => NumberLong(7489729384792)
+
+If you just use a number (e.g. insertOne({a: 1}), this will get added as a normal double into the database. The reason for this is that the shell is based on JS which only knows float/ double values and doesn't differ between integers and floats.
+
+NumberDecimal creates a high-precision double value => NumberDecimal("12.99") => This can be helpful for cases where you need (many) exact decimal places for calculations.
+
+When not working with the shell but a MongoDB driver for your app programming language (e.g. PHP, .NET, Node.js, ...), you can use the driver to create these specific numbers.
+
+Example for Node.js: http://mongodb.github.io/node-mongodb-native/3.1/api/Long.html
+
+This will allow you to build a NumberLong value like this:
+
+const Long = require('mongodb').Long;
+ 
+db.collection('wealth').insert( {
+    value: Long.fromString("121949898291")
+});
+By browsing the API docs for the driver you're using, you'll be able to identify the methods for building int32s, int64s etc.
+
+
+var dsid = db.patients.findOne().diseaseSummary
+db.diseaseSummaries.findOne({_id:dsid})
+
+db.orders.aggregate([{$lookup: {from: "customers", localField: "productId", foreignField : "_id", as : "customerOrders"}}]).pretty()
+
+
+
+db.createCollection("posts", {validator : {$jsonSchema : { bsonType : "object", required : ["title", "text" , "creator" , "comments"], properties : { title : { bsonType : "string", description : "must be string and is required" }, text : { bsonType : "string", description : "must be string and is required" }, creator : { bsonType: "objectId", description : "must be an objectid and is required" }, comments : { bsonType : "array", description : "must be array and is required", items : { bsonType : "object", required : ["text", "author"] ,properties : { text : { bsonType : "string", description : "must be string and is required" }, author : { bsonType : "objectId", description : "must be objectid and is required" } } } },  } } }})
+{ ok: 1 }
+blog
+Selection deleted
+
+db.createCollection('posts', {
+  validator: {
+    $jsonSchema: {
+      bsonType: 'object',
+      required: ['title', 'text', 'creator', 'comments'],
+      properties: {
+        title: {
+          bsonType: 'string',
+          description: 'must be a string and is required'
+        },
+        text: {
+          bsonType: 'string',
+          description: 'must be a string and is required'
+        },
+        creator: {
+          bsonType: 'objectId',
+          description: 'must be an objectid and is required'
+        },
+        comments: {
+          bsonType: 'array',
+          description: 'must be an array and is required',
+          items: {
+            bsonType: 'object',
+            required: ['text', 'author'],
+            properties: {
+              text: {
+                bsonType: 'string',
+                description: 'must be a string and is required'
+              },
+              author: {
+                bsonType: 'objectId',
+                description: 'must be an objectid and is required'
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+});
+
+
+
+Helpful Articles/ Docs:
+
+The MongoDB Limits: https://docs.mongodb.com/manual/reference/limits/
+
+The MongoDB Data Types: https://docs.mongodb.com/manual/reference/bson-types/
+
+More on Schema Validation: https://docs.mongodb.com/manual/core/schema-validation/
+
+
+ordered :
+
+db.hobbies.insertMany([{"":"","",""},{"":"","",""}],{ordered : false})
+
+WriteConcern : 
+
+ W : 1 ->
+db.PassengersData.insertOne({name : "Amir", age : 30},{writeConcern : {w : 1}})
+
+w : 0 ->
+db.PassengersData.insertOne({name : "Amir", age : 30},{writeConcern : {w : 0}})
+
+j : true ->
+db.PassengersData.insertOne({name : "Amir", age : 30},{writeConcern : {w : 1, j : true}})
+
+j : false ->
+db.PassengersData.insertOne({name : "Amir", age : 30},{writeConcern : {w : 1, j : false}})
+
+wtimeout ->
+
+db.PassengersData.insertOne({name : "Amir", age : 30},{writeConcern : {w : 1, j : true, wtimeout : 200}})
+
+db.PassengersData.insertOne({name : "Amir", age : 30},{writeConcern : {w : 1, j : true, wtimeout : 1}})
+
+So let's play around with the write concern and for that I'll go back to my persons,
+
+there we already have a couple of persons in the database of course and
+
+all these writes succeeded and they normally will of course.
+
+Now let's insert a new person with insert one and the write concern can also be set on all other write
+
+operations like insert many, I will use insert one here with a name of Chrissy, age 41
+
+and now I specify a second argument again where we previously set orders,
+
+I will now set my write concern.
+
+I do this by setting the write concern,
+
+named like this,
+
+the casing is important,
+
+so the write concern key, I set it to a value which again is a document which has the shape you saw on
+
+the slides.
+
+W 1 is the default,
+
+it simply means I need to be sure that the server acknowledge this,
+
+you can set this to 0. If you do this, you get back acknowledged false
+
+but if I find everything, you see that Chrissy was inserted.
+
+So you get back a different result, also without an objectID
+
+because it can't give you one, the server hasn't really registered this write yet, you just sent the request
+
+and you immediately return,
+
+you don't wait for a response of this request, so to say.
+
+So the storage engine had no chance to store it in memory and generate that objectId and therefore, you get
+
+back acknowledged false because you sent the request, you don't even know if it reached the server.
+
+This is of course super fast because you don't have to wait for any response here, for any ID generation
+
+but obviously, it tells you nothing about whether this succeeded or not. Could still be a valid option
+
+for data where it's ok for you, if some data does not end up in a database,
+
+so if you log some value every second about an application and you don't care if a couple of seconds
+
+get lost, you could do that.
+
+So that is w 0, the default with
+
+Alex who is 36, the default is w 1 of course, this gives you the output you saw before, acknowledge
+
+true
+
+and the inserted ID.
+
+Now let's go for Michael and let's play around with the journal,
+
+the journal can be set to true,
+
+the default is undefined or false,
+
+so if I set it to false, I have the same result as before.
+
+Now if I change it to McKayla and we set the journal to true now, the output for us does not change and
+
+.
+
+it also was super fast here because everything runs locally
+
+and it's not like the journaling will take four hours but it will have been a little bit slower because
+
+the entry will have been added to the journal and we waited for that journal editing to finish here.
+
+So here, we have higher security because we can also be sure that it ended up in this to do list of the
+
+storage engine which will eventually lead to the writes happen to database files.
+
+So now we got this,
+
+now let me add another person, Aliya 22 and let me also add a third option, w timeout. If I add this like this,
+
+it succeeded. Now
+
+if I repeat it with a very small value,
+
+it also succeeded because this is super fast here but it is an option which you can set in case
+
+you get shaky, a shaky connection or speed really matters and your connection is generally good but you
+
+can't rule out that once in a year,
+
+it's kind of shaky and you would then rather have that write fail and you recognize this in your client
+
+application of course because you'll get back an error here too.
+
+So you'll have that write fail and therefore you can try again later but you don't wait unnecessarily
+
+long.
+
+So this can absolutely be something you are fine with.
+
+
+
+
+-d : for database
+-c : for collection
+--jsonArray : to make mongo import aware for array format data 
+--drop : if exist then dropNow the last thing I'll add is --drop,
+
+this simply means if this collection should already exist, it will be dropped and then re-added
+
+otherwise it we'll append the data to the existing collection and that might also be what you want
+
+mongoimport tv-shows.json -d movie -c movieData --jsonArray -- drop
+
+
+
+
+
+>mongod --dbpath "C:\Program Files\MongoDB\Server\6.0\db"
+
+>mongod --logpath "C:\Program Files\MongoDB\Server\6.0\log\log.log"
