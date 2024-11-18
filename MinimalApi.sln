@@ -80,6 +80,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackblazeB2CloudStorage", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreadsConcept", "OOPsConcept\ThreadsConcept\ThreadsConcept.csproj", "{1041090C-568E-40BE-98A9-3237C86FB2CB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiTenancy", "DatabaseRelated\MultiTenancy\MultiTenancy.csproj", "{A5FCEF15-3B31-4AD2-86A1-DF4A345D5462}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -198,6 +200,10 @@ Global
 		{1041090C-568E-40BE-98A9-3237C86FB2CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1041090C-568E-40BE-98A9-3237C86FB2CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1041090C-568E-40BE-98A9-3237C86FB2CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5FCEF15-3B31-4AD2-86A1-DF4A345D5462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5FCEF15-3B31-4AD2-86A1-DF4A345D5462}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5FCEF15-3B31-4AD2-86A1-DF4A345D5462}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5FCEF15-3B31-4AD2-86A1-DF4A345D5462}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -231,6 +237,7 @@ Global
 		{118BC03E-97F7-415C-95C8-4AE5788F6454} = {4A55A25C-6353-4A6F-A44B-EFBF518A90E8}
 		{337419CA-FA4D-454D-8FBA-A81A065427E6} = {4A55A25C-6353-4A6F-A44B-EFBF518A90E8}
 		{1041090C-568E-40BE-98A9-3237C86FB2CB} = {F1B34365-85E0-4529-ADF1-77C48DD3C62D}
+		{A5FCEF15-3B31-4AD2-86A1-DF4A345D5462} = {5D680459-4AD8-4560-93BF-F3F6CDDD2C3A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28FF3121-2A6C-4EC7-A341-71BD65260A1C}
