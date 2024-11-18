@@ -16,31 +16,40 @@ public class TenancyMiddleware(RequestDelegate next)
         }
 
         // get: client1/todo/1
-        var segments = path.Value
-                           .Split("/")
-                           .Where(x => x != string.Empty)
-                           .ToArray();
+        ////var segments = path.Value
+        ////                   .Split("/")
+        ////                   .Where(x => x != string.Empty)
+        ////                   .ToArray();
 
-        if (segments.Length <= 1)
+        ////if (segments.Length <= 1)
+        ////{
+        ////    context.Response.StatusCode = 500;
+        ////    await context.Response.WriteAsJsonAsync(new
+        ////    {
+        ////        status = "TENANT_IS_MISSING",
+        ////        message = "Tenant is missing from the request"
+        ////    });
+        ////    return;
+        ////}
+        if (!context.Request.Headers.TryGetValue("Tenant-ID", out var tenantIdHeader) || !int.TryParse(tenantIdHeader, out var tenantId))
         {
-            context.Response.StatusCode = 500;
+            context.Response.StatusCode = 400; // Bad Request
             await context.Response.WriteAsJsonAsync(new
             {
-                status = "TENANT_IS_MISSING",
-                message = "Tenant is missing from the request"
+                status = "TENANT_ID_MISSING_OR_INVALID",
+                message = "Tenant ID is missing or invalid."
             });
             return;
         }
 
-        var tenantName = segments[0];
-        var currentTenant = tenancyManager.GetTenant(tenantName);
+        var currentTenant = tenancyManager.GetTenant(tenantId);
         if (currentTenant is null)
         {
             context.Response.StatusCode = 500;
             await context.Response.WriteAsJsonAsync(new
             {
                 status = "TENANT_IS_NOT_REGISTERED",
-                message = $"Tenant {tenantName} is not registered"
+                message = $"Tenant {tenantId} is not registered"
             });
             return;
         }
@@ -48,7 +57,7 @@ public class TenancyMiddleware(RequestDelegate next)
         tenant.Id = currentTenant.Id;
         tenant.Title = currentTenant.Title;
 
-        context.Request.Path = Path.Combine("/", string.Join("/", segments.Skip(1)));
+        //context.Request.Path = Path.Combine("/", string.Join("/", segments.Skip(1)));
 
         await _next(context);
     }

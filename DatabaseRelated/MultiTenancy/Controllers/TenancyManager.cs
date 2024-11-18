@@ -21,6 +21,7 @@ public class Tenant : ITenant, ITenantSetter
 public interface ITenancyManager
 {
     Tenant? GetTenant(string tenantName);
+    Tenant? GetTenant(int tenantId);
 }
 
 public class TenancyManager : ITenancyManager
@@ -31,6 +32,14 @@ public class TenancyManager : ITenancyManager
          "client1" => new Tenant() { Id = 1, Title = "Client1" },
          "client2" => new Tenant() { Id = 2, Title = "Client2" },
          "client3" => new Tenant() { Id = 3, Title = "Client3" },
+         _ => null
+     };
+    public Tenant? GetTenant(int tenantId)
+     => tenantId switch
+     {
+         1 => new Tenant() { Id = 1, Title = "Client1" },
+         2 => new Tenant() { Id = 2, Title = "Client2" },
+         3 => new Tenant() { Id = 3, Title = "Client3" },
          _ => null
      };
 }
