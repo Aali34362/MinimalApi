@@ -1,6 +1,11 @@
 ﻿using System.Diagnostics;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Drawing;
 using System.Reflection;
-using System.Text;
+using Tesseract;
+using SkiaSharp;
+using ImageMagick;
 
 namespace ConsoleApp1.TesseractOcr;
 
@@ -13,28 +18,28 @@ public static class TesseractProgram
         Environment.SetEnvironmentVariable("TESSDATA_PREFIX", tessDataPath, EnvironmentVariableTarget.Process);
 
 
-        ////var testImagePath = "./TesseractOcr/phototest.tif";
-        ////string absolutetestImagePath = GetAbsolutePath(testImagePath);
-        var testImagePath = "./TesseractOcr/claimbill.webp";
+        var testImagePath = "./TesseractOcr/large.png";
         string absolutetestImagePath = GetAbsolutePath(testImagePath);
+        ////var testImagePath = "./TesseractOcr/claimbill.webp";
+        ////string absolutetestImagePath = GetAbsolutePath(testImagePath);
 
 
-        var oldImage = File.ReadAllBytes(absolutetestImagePath);
-        //var newImage = ConvertImageToTiff(oldImage);
-        var newImage = ConvertWebpToTiff(oldImage);
-        var largeTiff = $"{GetAbsolutePath()}/TesseractOcr/large.tiff";
-        File.WriteAllBytes(largeTiff, newImage);
+        ////var oldImage = File.ReadAllBytes(absolutetestImagePath);
+        //////var newImage = ConvertImageToTiff(oldImage);
+        ////var newImage = ConvertWebpToTiff(oldImage);
+        ////var largeTiff = $"{GetAbsolutePath()}/TesseractOcr/large.tiff";
+        ////File.WriteAllBytes(largeTiff, newImage);
 
-        var tessdataeng = "./tessdata";
-        string tessdata = GetAbsolutePath(tessdataeng);
+        var tessdataeng = @"C:\Program Files\Tesseract-OCR\tessdata";
+        ////string tessdata = GetAbsolutePath(tessdataeng);
 
 
         try
         {
             //using (var engine = new TesseractEngine(@"./tessdata", "eng", EngineMode.Default))
-            using (var engine = new TesseractEngine(tessdata, "eng", EngineMode.Default))
+            using (var engine = new TesseractEngine(tessdataeng, "eng", EngineMode.Default))
             {
-                using (var img = Pix.LoadFromFile(largeTiff))
+                using (var img = Pix.LoadFromFile(absolutetestImagePath))
                 {
                     using (var page = engine.Process(img))
                     {
