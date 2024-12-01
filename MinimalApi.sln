@@ -82,6 +82,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreadsConcept", "OOPsConce
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiTenancy", "DatabaseRelated\MultiTenancy\MultiTenancy.csproj", "{A5FCEF15-3B31-4AD2-86A1-DF4A345D5462}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackGround", "BackGround", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HangFire_MutliTenancy", "BackGround\HangFire_MutliTenancy\HangFire_MutliTenancy.csproj", "{0BCBADCF-D03B-4B8B-A200-AFE891D8C2F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -204,6 +208,10 @@ Global
 		{A5FCEF15-3B31-4AD2-86A1-DF4A345D5462}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5FCEF15-3B31-4AD2-86A1-DF4A345D5462}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5FCEF15-3B31-4AD2-86A1-DF4A345D5462}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BCBADCF-D03B-4B8B-A200-AFE891D8C2F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BCBADCF-D03B-4B8B-A200-AFE891D8C2F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BCBADCF-D03B-4B8B-A200-AFE891D8C2F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BCBADCF-D03B-4B8B-A200-AFE891D8C2F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -238,6 +246,7 @@ Global
 		{337419CA-FA4D-454D-8FBA-A81A065427E6} = {4A55A25C-6353-4A6F-A44B-EFBF518A90E8}
 		{1041090C-568E-40BE-98A9-3237C86FB2CB} = {F1B34365-85E0-4529-ADF1-77C48DD3C62D}
 		{A5FCEF15-3B31-4AD2-86A1-DF4A345D5462} = {5D680459-4AD8-4560-93BF-F3F6CDDD2C3A}
+		{0BCBADCF-D03B-4B8B-A200-AFE891D8C2F5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28FF3121-2A6C-4EC7-A341-71BD65260A1C}
