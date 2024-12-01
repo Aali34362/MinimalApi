@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Options;
-using OcrApi.ImageProcessing;
+﻿using OcrApi.ImageProcessing;
+using OcrApi.TesseractProcessing;
 namespace OcrApi.ConfigurationSettings;
 
 public static class DependencyInjectionSettings
@@ -7,6 +7,7 @@ public static class DependencyInjectionSettings
     public static void AddDependencyInjection(this WebApplicationBuilder builder)
     {
         builder.Services.AddSingleton<IImagePreprocessor, ImagePreprocessor>();
+        builder.Services.AddSingleton<ITesseractOCR, TesseractOCR>();
         builder.Services.Configure<SuperResolutionOptions>(
             builder.Configuration.GetSection("SuperResolution"));
     }

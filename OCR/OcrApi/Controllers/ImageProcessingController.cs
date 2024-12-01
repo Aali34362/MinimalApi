@@ -1,15 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OcrApi.ImageProcessing;
+using OcrApi.TesseractProcessing;
 using OpenCvSharp;
 
 namespace OcrApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ImageProcessingController(IImagePreprocessor imagePreprocessor, ISuperResolutionService superResolutionService) : ControllerBase
+public class ImageProcessingController(IImagePreprocessor imagePreprocessor, ISuperResolutionService superResolutionService, ITesseractOCR tesseractOCR) : ControllerBase
 {
     private readonly IImagePreprocessor _imagePreprocessor = imagePreprocessor;
     private readonly ISuperResolutionService _superResolutionService = superResolutionService;
+    private readonly ITesseractOCR _tesseractOCR = tesseractOCR;
 
 
     [HttpPost("preprocess")]
@@ -31,7 +33,16 @@ public class ImageProcessingController(IImagePreprocessor imagePreprocessor, ISu
         _imagePreprocessor.PreprocessImage(inputPath, outputPath);
         ////_imagePreprocessor.RePreprocessImage(inputPath, outputPath);
 
-        return Ok(new { Message = "Image processed successfully.", ProcessedImagePath = outputPath });
+        try
+        {
+            return Ok(new { ExtractedText = _tesseractOCR.PerformOCR(outputPath) });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error processing image: {ex.Message}");
+        }
+
+        ////return Ok(new { Message = "Image processed successfully.", ProcessedImagePath = outputPath });
     }
     [HttpPost("RePreprocess")]
     public IActionResult RePreprocessImage(IFormFile file)
@@ -51,8 +62,15 @@ public class ImageProcessingController(IImagePreprocessor imagePreprocessor, ISu
         // Preprocess the image
         ////_imagePreprocessor.PreprocessImage(inputPath, outputPath);
         _imagePreprocessor.RePreprocessImage(inputPath, outputPath);
-
-        return Ok(new { Message = "Image processed successfully.", ProcessedImagePath = outputPath });
+        try
+        {
+            return Ok(new { ExtractedText = _tesseractOCR.PerformOCR(outputPath) });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error processing image: {ex.Message}");
+        }
+        ////return Ok(new { Message = "Image processed successfully.", ProcessedImagePath = outputPath });
     }
 
     [HttpPost("process")]
