@@ -16,7 +16,7 @@ builder.Services.AddHangfire(x =>
 {
     x.UseSimpleAssemblyNameTypeSerializer()
         .UseRecommendedSerializerSettings()
-        .UseSqlServerStorage(builder.Configuration.GetConnectionString("sqlCon"));
+        .UseSqlServerStorage(builder.Configuration.GetConnectionString("DBConnection"));
 });
 builder.Services.AddHangfireServer();
 
@@ -33,7 +33,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.UseHangfireDashboard();
+app.UseHangfireDashboard("/hangfire");
 
 app.MapControllers();
 
