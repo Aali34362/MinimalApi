@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OcrApi.ContextualPrediction;
 using OcrApi.ImageProcessing;
 using OcrApi.TesseractProcessing;
 using OpenCvSharp;
@@ -7,11 +8,17 @@ namespace OcrApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ImageProcessingController(IImagePreprocessor imagePreprocessor, ISuperResolutionService superResolutionService, ITesseractOCR tesseractOCR) : ControllerBase
+public class ImageProcessingController
+    (IImagePreprocessor imagePreprocessor, 
+    ISuperResolutionService superResolutionService, 
+    ITesseractOCR tesseractOCR,
+    IOCRWithPrediction ocrWithPrediction) 
+    : ControllerBase
 {
     private readonly IImagePreprocessor _imagePreprocessor = imagePreprocessor;
     private readonly ISuperResolutionService _superResolutionService = superResolutionService;
     private readonly ITesseractOCR _tesseractOCR = tesseractOCR;
+    private readonly IOCRWithPrediction _ocrWithPrediction = ocrWithPrediction;
 
 
     [HttpPost("preprocess")]
@@ -32,10 +39,17 @@ public class ImageProcessingController(IImagePreprocessor imagePreprocessor, ISu
         // Preprocess the image
         _imagePreprocessor.PreprocessImage(inputPath, outputPath);
         ////_imagePreprocessor.RePreprocessImage(inputPath, outputPath);
-
+        
         try
         {
-            return Ok(new { ExtractedText = _tesseractOCR.PerformOCR(outputPath) });
+            return Ok(new 
+            {
+                //Tesseract Text Processing
+                ExtractedText = _tesseractOCR.PerformOCR(outputPath),
+
+                //Contextual Prediction and Nearest Word Matching
+                CorrectedText = _ocrWithPrediction.PerformOCRWithPrediction(inputPath, HospitalBillDictionary.GetValidWords())
+            });
         }
         catch (Exception ex)
         {
@@ -62,9 +76,17 @@ public class ImageProcessingController(IImagePreprocessor imagePreprocessor, ISu
         // Preprocess the image
         ////_imagePreprocessor.PreprocessImage(inputPath, outputPath);
         _imagePreprocessor.RePreprocessImage(inputPath, outputPath);
+
         try
         {
-            return Ok(new { ExtractedText = _tesseractOCR.PerformOCR(outputPath) });
+            return Ok(new
+            {
+                //Tesseract Text Processing
+                ExtractedText = _tesseractOCR.PerformOCR(outputPath),
+
+                //Contextual Prediction and Nearest Word Matching
+                CorrectedText = _ocrWithPrediction.PerformOCRWithPrediction(inputPath, HospitalBillDictionary.GetValidWords())
+            });
         }
         catch (Exception ex)
         {

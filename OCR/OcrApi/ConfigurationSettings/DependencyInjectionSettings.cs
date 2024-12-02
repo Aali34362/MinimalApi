@@ -1,4 +1,5 @@
-﻿using OcrApi.ImageProcessing;
+﻿using OcrApi.ContextualPrediction;
+using OcrApi.ImageProcessing;
 using OcrApi.TesseractProcessing;
 namespace OcrApi.ConfigurationSettings;
 
@@ -8,6 +9,7 @@ public static class DependencyInjectionSettings
     {
         builder.Services.AddSingleton<IImagePreprocessor, ImagePreprocessor>();
         builder.Services.AddSingleton<ITesseractOCR, TesseractOCR>();
+        builder.Services.AddSingleton<IOCRWithPrediction, OCRWithPrediction>();
         builder.Services.Configure<SuperResolutionOptions>(
             builder.Configuration.GetSection("SuperResolution"));
     }
