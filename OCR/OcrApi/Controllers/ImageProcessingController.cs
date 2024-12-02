@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OcrApi.ContextualPrediction;
 using OcrApi.ImageProcessing;
+using OcrApi.PDFProcessing;
 using OcrApi.TesseractProcessing;
 using OpenCvSharp;
 
@@ -12,13 +13,15 @@ public class ImageProcessingController
     (IImagePreprocessor imagePreprocessor, 
     ISuperResolutionService superResolutionService, 
     ITesseractOCR tesseractOCR,
-    IOCRWithPrediction ocrWithPrediction) 
+    IOCRWithPrediction ocrWithPrediction,
+    IPdfOCRProcessor pdfOCRProcessor) 
     : ControllerBase
 {
     private readonly IImagePreprocessor _imagePreprocessor = imagePreprocessor;
     private readonly ISuperResolutionService _superResolutionService = superResolutionService;
     private readonly ITesseractOCR _tesseractOCR = tesseractOCR;
     private readonly IOCRWithPrediction _ocrWithPrediction = ocrWithPrediction;
+    private readonly IPdfOCRProcessor _pdfOCRProcessor = pdfOCRProcessor;
 
 
     [HttpPost("preprocess")]
@@ -141,5 +144,37 @@ public class ImageProcessingController
         preprocessedImage.SaveImage(outputPath);
 
         return PhysicalFile(outputPath, "image/png", Path.GetFileName(outputPath));
+    }
+
+
+    [HttpPost("process-pdf")]
+    public IActionResult ProcessPdf(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest("Invalid file.");
+        }
+
+        string pdfPath = Path.Combine("Uploads", file.FileName);
+
+        // Save the uploaded file
+        using (var stream = new FileStream(pdfPath, FileMode.Create))
+        {
+            file.CopyTo(stream);
+        }
+
+        // Perform OCR on the PDF
+        try
+        {
+            ////string tessDataPath = Path.Combine(AppContext.BaseDirectory, "tessdata");
+            string tessDataPath = @"C:\Program Files\Tesseract-OCR\tessdata";
+            string extractedText = _pdfOCRProcessor.ProcessPdf(pdfPath, tessDataPath);
+
+            return Ok(new { ExtractedText = extractedText });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error processing PDF: {ex.Message}");
+        }
     }
 }
