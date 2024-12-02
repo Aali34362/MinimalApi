@@ -28,7 +28,7 @@ public class ImageProcessingController
             return BadRequest("Invalid file.");
 
         var inputPath = Path.Combine("Images\\Uploads", file.FileName);
-        var outputPath = Path.Combine("Images\\Processed", $"processed_{DateTime.Now.ToString("yyyymmddhhMMss")}_{file.FileName}");
+        var outputPath = Path.Combine("Images\\Processed", $"preprocess_{DateTime.Now.ToString("yyyymmddhhMMss")}_{file.FileName}");
 
         // Save uploaded file
         using (var stream = new FileStream(inputPath, FileMode.Create))
@@ -65,7 +65,7 @@ public class ImageProcessingController
             return BadRequest("Invalid file.");
 
         var inputPath = Path.Combine("Images\\Uploads", file.FileName);
-        var outputPath = Path.Combine("Images\\Processed", $"processed_{DateTime.Now.ToString("yyyymmddhhMMss")}_{file.FileName}");
+        var outputPath = Path.Combine("Images\\Processed", $"RePreprocess_{DateTime.Now.ToString("yyyymmddhhMMss")}_{file.FileName}");
 
         // Save uploaded file
         using (var stream = new FileStream(inputPath, FileMode.Create))
