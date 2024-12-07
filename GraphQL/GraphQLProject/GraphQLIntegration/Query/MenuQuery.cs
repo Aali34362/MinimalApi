@@ -1,9 +1,8 @@
 ﻿using GraphQL;
 using GraphQL.Types;
-using GraphQLProject.GraphQLIntegration.Type;
 using GraphQLProject.Interfaces;
 
-namespace GraphQLProject.GraphQLIntegration.Query;
+namespace GraphQLProject.GraphQLIntegration;
 
 public class MenuQuery : ObjectGraphType
 {

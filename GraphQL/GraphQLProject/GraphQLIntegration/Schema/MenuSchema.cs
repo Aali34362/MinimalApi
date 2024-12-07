@@ -1,6 +1,5 @@
-﻿using GraphQLProject.GraphQLIntegration.Query;
-
-namespace GraphQLProject.GraphQLIntegration.Schema;
+﻿
+namespace GraphQLProject.GraphQLIntegration;
 
 public class MenuSchema : GraphQL.Types.Schema
 {
