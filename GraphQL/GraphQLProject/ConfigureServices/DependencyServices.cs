@@ -1,4 +1,5 @@
-﻿using GraphQLProject.GraphQLIntegration;
+﻿using GraphQL.Types;
+using GraphQLProject.GraphQLIntegration;
 using GraphQLProject.Interfaces;
 using GraphQLProject.Services;
 
@@ -11,6 +12,6 @@ public static class DependencyServices
         serviceDescriptors.AddTransient<IMenuRepository, MenuRepository>();
         serviceDescriptors.AddTransient<MenuType>();
         serviceDescriptors.AddTransient<MenuQuery>();
-        serviceDescriptors.AddTransient<MenuSchema>();
+        serviceDescriptors.AddTransient<ISchema, MenuSchema>();
     }
 }

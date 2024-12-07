@@ -1,3 +1,5 @@
+using GraphiQl;
+using GraphQL.Types;
 using GraphQLProject.ConfigureServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDependencyServices();
+builder.Services.AddGraphQLServices();
 
 var app = builder.Build();
 
@@ -21,6 +24,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseGraphiQl("/graphql");
+app.UseGraphQL<ISchema>();
 
 app.UseAuthorization();
 
