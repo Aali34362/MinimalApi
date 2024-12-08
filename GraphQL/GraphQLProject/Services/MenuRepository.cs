@@ -1,10 +1,13 @@
-﻿using GraphQLProject.Interfaces;
+﻿using GraphQLProject.DatabaseConnections.DbContexts;
+using GraphQLProject.Interfaces;
 using GraphQLProject.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GraphQLProject.Services;
 
-public class MenuRepository : IMenuRepository
+public class MenuRepository(GraphqlDbContext dbContext) : IMenuRepository
 {
+    private readonly GraphqlDbContext _dbContext = dbContext;
     private static List<Menu> MenuList = new List<Menu>()
         {
             new Menu() { Id = Guid.NewGuid(), Name = "Classic Burger", Description="A juicy chicken burger with lettuce and cheese" , Price = 8.99},
@@ -56,5 +59,34 @@ public class MenuRepository : IMenuRepository
         if (index == -1) // If no menu with the given ID is found
             throw new KeyNotFoundException($"Menu with ID {id} not found.");
         return index;
+    }
+
+
+    public List<Menu> GetAllDBMenu()
+    {
+        return _dbContext.Menus.ToList();
+    }
+
+    public Menu GetDBMenuById(Guid id)
+    {
+        return _dbContext.Menus.FirstOrDefault(x => x.Id == id)!;
+    }
+
+    public Menu AddDBMenu(Menu menu)
+    {
+        _dbContext.Add(menu);
+        return menu;
+    }
+
+    public void DeleteDBMenu(Guid id)
+    {
+        _dbContext.Remove(id);
+    }
+
+    public Menu UpdateDBMenu(Guid id, Menu menu)
+    {
+        menu.Id = id;
+        _dbContext.Update(menu);
+        return menu;
     }
 }

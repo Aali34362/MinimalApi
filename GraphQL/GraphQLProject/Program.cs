@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDependencyServices();
 builder.Services.AddGraphQLServices();
+builder.Services.AddDbConnectionServices(builder.Configuration);
 
 var app = builder.Build();
 
