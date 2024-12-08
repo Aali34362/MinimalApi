@@ -11,7 +11,9 @@ public static class DependencyServices
     {
         serviceDescriptors.AddTransient<IMenuRepository, MenuRepository>();
         serviceDescriptors.AddTransient<MenuType>();
+        serviceDescriptors.AddTransient<MenuInputType>();
         serviceDescriptors.AddTransient<MenuQuery>();
+        serviceDescriptors.AddTransient<MenuMutation>();
         serviceDescriptors.AddTransient<ISchema, MenuSchema>();
     }
 }
