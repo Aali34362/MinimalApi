@@ -12,7 +12,7 @@ public interface IMenuRepository
 
     List<Menu> GetAllDBMenu();
     Menu GetDBMenuById(Guid id);
-    Menu AddDBMenu(Menu menu);
-    Menu UpdateDBMenu(Guid id, Menu menu);
-    void DeleteDBMenu(Guid id);
+    Task<Menu> AddDBMenu(Menu menu);
+    Task<Menu> UpdateDBMenu(Guid id, Menu menu);
+    Task DeleteDBMenu(Guid id);
 }

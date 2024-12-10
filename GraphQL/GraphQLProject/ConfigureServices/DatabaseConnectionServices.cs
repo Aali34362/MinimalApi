@@ -10,7 +10,7 @@ public static class DatabaseConnectionServices
     {
         serviceDescriptors.AddDbContext<GraphqlDbContext>(options =>
             options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection"), // Use the configuration object here
+                configuration.GetConnectionString("DBConnection"), // Use the configuration object here
                 sqlOptions => sqlOptions.EnableRetryOnFailure()
             )
             .UseLazyLoadingProxies()

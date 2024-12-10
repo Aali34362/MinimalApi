@@ -72,21 +72,36 @@ public class MenuRepository(GraphqlDbContext dbContext) : IMenuRepository
         return _dbContext.Menus.FirstOrDefault(x => x.Id == id)!;
     }
 
-    public Menu AddDBMenu(Menu menu)
+    public async Task<Menu> AddDBMenu(Menu menu)
     {
-        _dbContext.Add(menu);
+        await _dbContext.AddAsync(menu);
+        await _dbContext.SaveChangesAsync();
         return menu;
     }
 
-    public void DeleteDBMenu(Guid id)
+    public async Task DeleteDBMenu(Guid id)
     {
-        _dbContext.Remove(id);
+        // Find the entity using the provided ID
+        var menu = await _dbContext.Menus!.FindAsync(id); // Replace 'Menus' with your DbSet name
+
+        // Check if the entity exists
+        if (menu == null)
+        {
+            throw new KeyNotFoundException($"Menu with ID {id} not found.");
+        }
+
+        // Remove the entity from the DbContext
+        _dbContext.Menus.Remove(menu);
+
+        // Save changes to the database
+        await _dbContext.SaveChangesAsync();
     }
 
-    public Menu UpdateDBMenu(Guid id, Menu menu)
+    public async Task<Menu> UpdateDBMenu(Guid id, Menu menu)
     {
         menu.Id = id;
-        _dbContext.Update(menu);
+         _dbContext.Update(menu);
+        await _dbContext.SaveChangesAsync();
         return menu;
     }
 }

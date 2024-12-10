@@ -25,13 +25,13 @@ public class GraphqlDbContext(DbContextOptions<GraphqlDbContext> options) : DbCo
     }
 
     // Override OnConfiguring to ensure the connection string is set for migrations
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlServer("Server=AMIR_ALI\\SQLEXPRESS;Database=GraphqlDB;User=Amir_Ali\\Admin;Password=; MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=true;Connection Timeout=6000;Trusted_Connection=True;"); // Provide connection string here
-        }
-    }
+    ////protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    ////{
+    ////    if (!optionsBuilder.IsConfigured)
+    ////    {
+    ////        optionsBuilder.UseSqlServer("Server=AMIR_ALI\\SQLEXPRESS;Database=GraphqlDB;User=Amir_Ali\\Admin;Password=; MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=true;Connection Timeout=6000;Trusted_Connection=True;"); // Provide connection string here
+    ////    }
+    ////}
 
     // Apply entity configurations using the Fluent API
     protected override void OnModelCreating(ModelBuilder modelBuilder)

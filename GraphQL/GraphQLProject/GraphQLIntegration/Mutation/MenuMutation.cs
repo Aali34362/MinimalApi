@@ -44,8 +44,8 @@ public class MenuMutation : ObjectGraphType
            new QueryArguments(
                new QueryArgument<MenuInputType> { Name = "menu" }
            ))
-           .Resolve(context => {
-               return menuRepository.AddDBMenu(context.GetArgument<Menu>("menu"));
+           .ResolveAsync(async context => {
+               return await menuRepository.AddDBMenu(context.GetArgument<Menu>("menu"));
            });
 
         Field<MenuType>("UpdateDBMenu")
@@ -54,8 +54,8 @@ public class MenuMutation : ObjectGraphType
                 new QueryArgument<GuidGraphType> { Name = "menuId" },
                 new QueryArgument<MenuInputType> { Name = "menu" }
             ))
-            .Resolve(context => {
-                return menuRepository.UpdateDBMenu(context.GetArgument<Guid>("menuId"), context.GetArgument<Menu>("menu"));
+            .ResolveAsync(async context => {
+                return await menuRepository.UpdateDBMenu(context.GetArgument<Guid>("menuId"), context.GetArgument<Menu>("menu"));
             });
 
         Field<StringGraphType>("DeleteDBMenu")
@@ -63,8 +63,8 @@ public class MenuMutation : ObjectGraphType
             new QueryArguments(
                 new QueryArgument<GuidGraphType> { Name = "menuId" }
             ))
-            .Resolve(context => {
-                menuRepository.DeleteDBMenu(context.GetArgument<Guid>("menuId"));
+            .ResolveAsync(async context => {
+                await menuRepository.DeleteDBMenu(context.GetArgument<Guid>("menuId"));
                 return "Deleted";
             });
     }
