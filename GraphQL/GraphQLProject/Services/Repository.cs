@@ -105,3 +105,51 @@ public class MenuRepository(GraphqlDbContext dbContext) : IMenuRepository
         return menu;
     }
 }
+
+public class CategoryRepository(GraphqlDbContext dbContext) : ICategoryRepository
+{
+    private readonly GraphqlDbContext _dbContext = dbContext;
+
+    public List<Category> GetCategoryList()
+    {
+        return _dbContext.Category.ToList();
+    }
+
+    public Category GetCategoryById(Guid id)
+    {
+        return _dbContext.Category.FirstOrDefault(x => x.Id == id)!;
+    }
+
+    public async Task<Category> AddCategory(Category Category)
+    {
+        await _dbContext.AddAsync(Category);
+        await _dbContext.SaveChangesAsync();
+        return Category;
+    }
+
+    public async Task DeleteCategory(Guid id)
+    {
+        // Find the entity using the provided ID
+        var Category = await _dbContext.Category!.FindAsync(id); // Replace 'Categorys' with your DbSet name
+
+        // Check if the entity exists
+        if (Category == null)
+        {
+            throw new KeyNotFoundException($"Category with ID {id} not found.");
+        }
+
+        // Remove the entity from the DbContext
+        _dbContext.Category.Remove(Category);
+
+        // Save changes to the database
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<Category> UpdateCategory(Guid id, Category Category)
+    {
+        Category.Id = id;
+        _dbContext.Update(Category);
+        await _dbContext.SaveChangesAsync();
+        return Category;
+    }
+}

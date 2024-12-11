@@ -8,6 +8,8 @@ public class GraphqlDbContext(DbContextOptions<GraphqlDbContext> options) : DbCo
 {
     // DbSet for the Menu entity
     public DbSet<Menu>? Menus { get; set; }
+    public DbSet<Category>? Category { get; set; }
+    public DbSet<Reservation>? Reservations { get; set; }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
