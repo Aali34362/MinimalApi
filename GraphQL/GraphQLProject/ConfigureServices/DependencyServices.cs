@@ -10,16 +10,25 @@ public static class DependencyServices
 {
     public static void AddDependencyServices(this IServiceCollection serviceDescriptors)
     {
-        // Register repositories
-        serviceDescriptors.AddScoped<IRepository<Category>, CategoryRepository>();
-        serviceDescriptors.AddScoped<IRepository<Reservation>, ReservationRepository>();
-
-        // Register other dependencies
         serviceDescriptors.AddTransient<IMenuRepository, MenuRepository>();        
         serviceDescriptors.AddTransient<MenuType>();
         serviceDescriptors.AddTransient<MenuInputType>();
         serviceDescriptors.AddTransient<MenuQuery>();
         serviceDescriptors.AddTransient<MenuMutation>();
         serviceDescriptors.AddTransient<ISchema, MenuSchema>();
+
+        serviceDescriptors.AddScoped<IRepository<Category>, CategoryRepository>();
+        serviceDescriptors.AddTransient<CategoryType>();
+        serviceDescriptors.AddTransient<CategoryInputType>();
+        serviceDescriptors.AddTransient<CategoryQuery>();
+        serviceDescriptors.AddTransient<CategoryMutation>();
+        serviceDescriptors.AddTransient<ISchema, CategorySchema>();
+
+        serviceDescriptors.AddScoped<IRepository<Reservation>, ReservationRepository>();
+        serviceDescriptors.AddTransient<ReservationType>();
+        serviceDescriptors.AddTransient<ReservationInputType>();
+        serviceDescriptors.AddTransient<ReservationQuery>();
+        serviceDescriptors.AddTransient<ReservationMutation>();
+        serviceDescriptors.AddTransient<ISchema, ReservationSchema>();
     }
 }
