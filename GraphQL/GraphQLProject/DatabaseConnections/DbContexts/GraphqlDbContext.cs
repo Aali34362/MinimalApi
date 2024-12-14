@@ -44,3 +44,4 @@ public class GraphqlDbContext(DbContextOptions<GraphqlDbContext> options) : DbCo
     }
 
 }
+

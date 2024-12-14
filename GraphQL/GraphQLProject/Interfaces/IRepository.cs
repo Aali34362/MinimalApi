@@ -2,6 +2,15 @@
 
 namespace GraphQLProject.Interfaces;
 
+public interface IRepository<T> where T : class
+{
+    T GetById(Guid id);
+    List<T> GetList();
+    Task<T> Add(T dto);
+    Task<T> Update(Guid id, T dto);
+    Task Delete(Guid id);
+}
+
 public interface IMenuRepository
 {
     List<Menu> GetAllMenu();
