@@ -5,6 +5,16 @@ using GraphQLProject.Models;
 
 namespace GraphQLProject.GraphQLIntegration;
 
+public class RootQuery : ObjectGraphType
+{
+    public RootQuery()
+    {
+        Field<MenuQuery>("menuQuery").Resolve(context => new { });
+        Field<CategoryQuery>("categoryQuery").Resolve(context => new { });
+        Field<ReservationQuery>("reservationQuery").Resolve(context => new { });
+    }
+}
+
 public class MenuQuery : ObjectGraphType
 {
     public MenuQuery(IMenuRepository menuRepository)
@@ -63,7 +73,7 @@ public class ReservationQuery : ObjectGraphType
 {
     public ReservationQuery(IRepository<Reservation> reservationRepository)
     {
-        Field<ListGraphType<ReservationType>>("reservations")
+        Field<ListGraphType<ReservationType>>("Reservations")
             .Resolve(context => {
                 return reservationRepository.GetList();
             });

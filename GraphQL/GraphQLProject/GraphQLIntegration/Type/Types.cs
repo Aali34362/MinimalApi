@@ -1,12 +1,14 @@
 ﻿using GraphQL.Types;
+using GraphQLProject.Interfaces;
 using GraphQLProject.Models;
+using GraphQLProject.Services;
 
 namespace GraphQLProject.GraphQLIntegration;
 
 #region Menu
 public class MenuType : ObjectGraphType<Menu>
 {
-    public MenuType()
+    public MenuType(IRepository<Category> categoryRepository)
     {
         Field(m => m.Id);
         Field(m => m.Name);
@@ -14,6 +16,17 @@ public class MenuType : ObjectGraphType<Menu>
         Field(m => m.Price);
         Field(m => m.ImageUrl);
         Field(m => m.CategoryId);
+        //Nested Queries
+        Field<CategoryType>("Category")
+             .Arguments(
+             new QueryArguments(
+                 new QueryArgument<GuidGraphType> { Name = "categoryId" }
+             ))
+             .Resolve(context => {
+                 // Automatically use the parent Menu's CategoryId
+                 var categoryId = context.Source.CategoryId;
+                 return categoryRepository.GetById(categoryId);
+             });
     }
 }
 public class MenuInputType : InputObjectGraphType
@@ -24,8 +37,8 @@ public class MenuInputType : InputObjectGraphType
         Field<StringGraphType>("name");
         Field<StringGraphType>("description");
         Field<FloatGraphType>("price");
-        Field<FloatGraphType>("imageurl");
-        Field<GuidGraphType>("categoryid");
+        Field<StringGraphType>("imageurl");
+        Field<GuidGraphType>("categoryid");        
     }
 }
 #endregion
@@ -33,11 +46,16 @@ public class MenuInputType : InputObjectGraphType
 #region Category
 public class CategoryType : ObjectGraphType<Category>
 {
-    public CategoryType()
+    public CategoryType(IMenuRepository menuRepository)
     {
         Field(m => m.Id);
         Field(m => m.Name);
         Field(m => m.ImageUrl);
+        //Nested Queries
+        Field<ListGraphType<MenuType>>("Menus")
+        .Resolve(context => {
+                return menuRepository.GetAllMenu();
+            });
     }
 }
 public class CategoryInputType : InputObjectGraphType
@@ -59,7 +77,6 @@ public class ReservationType : ObjectGraphType<Reservation>
         Field(m => m.Id);
         Field(m => m.CustomerName);
         Field(m => m.Email);
-        Field(m => m.PhoneNumber);
         Field(m => m.PhoneNumber);
         Field(m => m.PartySize);
         Field(m => m.SpecialRequest);
