@@ -5,33 +5,31 @@ query {
   viewer {
     login
   }
-}
-
-{
-viewer {
-id 
-name
-login
- url
+} {
+  viewer {
+    id name
+    login url
   }
 }
 //
 query getDetails {
-viewer {
-id 
-name
-login 
-url
+  viewer {
+    id name
+    login url
   }
 }
 ////nested queries
 query getDetails {
   viewer {
-    id, name,
-    login, url,
-    location, bio,
+    id,
+    name,
+    login,
+    url,
+    location,
+    bio,
     status {
-      emoji, message
+      emoji,
+      message
     }
   }
 }
@@ -40,18 +38,24 @@ query getDetails {
 // multiple queries
 query getDetails {
   viewer {
-    id, name,
-    login, url,
-    location, bio,
+    id,
+    name,
+    login,
+    url,
+    location,
+    bio,
   }
-} 
-query getDetailsWithStatus {
+} query getDetailsWithStatus {
   viewer {
-    id, name,
-    login, url,
-    location, bio,
+    id,
+    name,
+    login,
+    url,
+    location,
+    bio,
     status {
-      emoji, message
+      emoji,
+      message
     }
   }
 }
@@ -62,20 +66,26 @@ query getDetailsWithStatus {
 {
   user(login: "Aali34362"
   ) {
-    id, name,
-    url, bio,
-  }
-}
-
-//Alias
-{
-  amir:user(login : "Aali34362"){
     id,
     name,
     url,
     bio,
   }
-  alex:user(login : "alex"){
+}
+
+//Alias
+{
+  amir:
+  user(login: "Aali34362"
+  ) {
+    id,
+    name,
+    url,
+    bio,
+  }
+  alex:
+  user(login: "alex"
+  ) {
     id,
     name,
     url,
@@ -85,90 +95,93 @@ query getDetailsWithStatus {
 
 //Fragment
 {
-  amir:user(login : "Aali34362"){
+  amir:
+  user(login: "Aali34362"
+  ) {
     ...userFields
   }
-  alex:user(login : "alex"){
+  alex:
+  user(login: "alex"
+  ) {
     ...userFields
   }
-}
-
-fragment userFields on User{
- 		id,
-    name,
-    url,
-    bio, 
-}
-
-{
-  amir:user(login : "Aali34362"){
-    ...userFields
-    location
+} fragment userFields on User {
+  id,
+  name,
+  url,
+  bio,
+} {
+  amir:
+  user(login: "Aali34362"
+  ) {
+    ...userFields location
   }
-  alex:user(login : "alex"){
+  alex:
+  user(login: "alex"
+  ) {
     ...userFields
   }
-}
-
-fragment userFields on User{
- 		user_id:id,
-    name,
-    url,
-    bio, 
+} fragment userFields on User {
+  user_id: id,
+  name,
+  url,
+  bio,
 }
 
 ////Inline Fragment
 {
-  amir:user(login : "Aali34362"){
-    ...userFields
-    location
-    ... on Actor{
-      login
-      avatarUrl      
+  amir:
+  user(login: "Aali34362"
+  ) {
+    ...userFields location
+    ... on
+    Actor {
+      login avatarUrl
     }
-    ... on ProfileOwner{
-      id
-      websiteUrl
-      email      
+    ... on
+    ProfileOwner {
+      id websiteUrl
+      email
     }
   }
-  alex:user(login : "alex"){
+  alex:
+  user(login: "alex"
+  ) {
     ...userFields
   }
-}
-
-fragment userFields on User{
- 		user_id:id,
-    name,
-    url,
-    bio, 
+} fragment userFields on User {
+  user_id: id,
+  name,
+  url,
+  bio,
 }
 
 //Variables
-query($loginName: String!){
-  amir:user(login : $loginName){
-    ...userFields
-    location
-    ... on Actor{
-      login
-      avatarUrl      
+query($loginName: String!) {
+  amir:
+  user(login: $loginName)
+  {
+    ...userFields location
+    ... on
+    Actor {
+      login avatarUrl
     }
-    ... on ProfileOwner{
-      id
-      websiteUrl
-      email      
+    ... on
+    ProfileOwner {
+      id websiteUrl
+      email
     }
   }
-  alex:user(login : "alex"){
+  alex:
+  user(login: "alex"
+  ) {
     ...userFields
   }
-}
-
-fragment userFields on User{
- 		user_id:id,
-    name,
-    url,
-    bio, 
+} fragment userFields on User {
+  user_id: id,
+  name,
+  url,
+  bio,
 }
 
 //Variables:
@@ -177,31 +190,33 @@ fragment userFields on User{
 }
 
 //Inline variables in Fragment
-query($loginName: String = "Aali34362", $repoName:String!){
-  amir:user(login : $loginName){
-    ...userFields
-    location
-    ... on Actor{
-      login
-      avatarUrl      
+query($loginName: String = "Aali34362", $repoName:String!) {
+  amir:
+  user(login: $loginName)
+  {
+    ...userFields location
+    ... on
+    Actor {
+      login avatarUrl
     }
-    ... on ProfileOwner{
-      id
-      websiteUrl
-      email      
+    ... on
+    ProfileOwner {
+      id websiteUrl
+      email
     }
   }
-  alex:user(login : "alex"){
+  alex:
+  user(login: "alex"
+  ) {
     ...userFields
   }
-}
-
-fragment userFields on User{
- 		user_id:id,
-    name,
-    url,
-    bio, 
-  repository(name:$repoName){
+} fragment userFields on User {
+  user_id: id,
+  name,
+  url,
+  bio,
+  repository(name: $repoName)
+  {
     name,
     url
   }
@@ -214,6 +229,55 @@ fragment userFields on User{
 }
 
 //Directive -> Include | Skip
+query($loadStatus:Boolean!,$loginName: String = "Aali34362", $repoName:String!) {
+  amir:
+  user(login: $loginName)
+  {
+    ...userFields location
+    ... on
+    Actor {
+      login avatarUrl
+    }
+    ... on
+    ProfileOwner {
+      id websiteUrl
+      email
+    }
+  }
+  alex:
+  user(login: "alex"
+  ) {
+    ...userFields
+  }
+} fragment userFields on User {
+  user_id: id,
+  name,
+  url,
+  bio
+  @skip(if: $loadStatus),
+  repository(name: $repoName)
+  {
+    name,
+    url
+  },
+  status
+  @include(if: $loadStatus)
+  {
+    emoji,
+    message
+  }
+}
+
+//Variables
+{
+  "loginName": "Aali34362",
+  "repoName": "MinimalApi",
+  "loadStatus": true
+}
+
+
+//Pagination
+//First | Last
 query($loadStatus:Boolean!,$loginName: String = "Aali34362", $repoName:String!){
   amir:user(login : $loginName){
     ...userFields
@@ -237,20 +301,138 @@ fragment userFields on User{
  		user_id:id,
     name,
     url,
-    bio, 
+    bio @skip(if: $loadStatus), 
   repository(name:$repoName){
     name,
     url
   },
+  repositories(first: 3){
+    totalCount,
+    pageInfo{
+      hasPreviousPage,
+      hasNextPage,
+      startCursor,
+      endCursor
+    },
+    edges{
+      cursor,
+      node{
+        name,
+        url
+      }
+    }
+  }
   status @include(if: $loadStatus){
     emoji,
     message
   }
 }
 
-//Variables
-{
-  "loginName": "Aali34362",
-  "repoName": "MinimalApi",
-  "loadStatus" : true
+//After | Before
+query($loadStatus:Boolean!,$loginName: String = "Aali34362", $repoName:String!){
+  amir:user(login : $loginName){
+    ...userFields
+    location
+    ... on Actor{
+      login
+      avatarUrl      
+    }
+    ... on ProfileOwner{
+      id
+      websiteUrl
+      email      
+    }
+  }
+  alex:user(login : "alex"){
+    ...userFields
+  }
 }
+
+fragment userFields on User{
+ 		user_id:id,
+    name,
+    url,
+    bio @skip(if: $loadStatus), 
+  repository(name:$repoName){
+    name,
+    url
+  },
+  repositories(first: 3, after: "Y3Vyc29yOnYyOpHOLN-owg=="){
+    totalCount,
+    pageInfo{
+      hasPreviousPage,
+      hasNextPage,
+      startCursor,
+      endCursor
+    },
+    edges{
+      cursor,
+      node{
+        name,
+        url
+      }
+    }
+  }
+  status @include(if: $loadStatus){
+    emoji,
+    message
+  }
+}
+
+////Order By
+query($loadStatus:Boolean!,$loginName: String = "Aali34362", $repoName:String!){
+  amir:user(login : $loginName){
+    ...userFields
+    location
+    ... on Actor{
+      login
+      avatarUrl      
+    }
+    ... on ProfileOwner{
+      id
+      websiteUrl
+      email      
+    }
+  }
+  alex:user(login : "alex"){
+    ...userFields
+  }
+}
+
+fragment userFields on User{
+ 		user_id:id,
+    name,
+    url,
+    bio @skip(if: $loadStatus), 
+  repository(name:$repoName){
+    name,
+    url
+  },
+  repositories(
+    first: 3, 
+    after: "Y3Vyc29yOnYyOpHOLN-owg==",
+  	orderBy: {field: NAME, direction: ASC}
+  ){
+    totalCount,
+    pageInfo{
+      hasPreviousPage,
+      hasNextPage,
+      startCursor,
+      endCursor
+    },
+    edges{
+      cursor,
+      node{
+        name,
+        url
+      }
+    }
+  }
+  status @include(if: $loadStatus){
+    emoji,
+    message
+  }
+}
+
+////Types -> Scalar, Object, Interface, Union, Enum, InputObject
+
