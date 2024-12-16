@@ -1,6 +1,8 @@
 using GraphiQl;
+using GraphQL.Server.Ui.Playground;
 using GraphQL.Types;
 using GraphQLProject.ConfigureServices;
+using GraphQLProject.MiddlewareServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,8 +28,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseGraphiQl("/graphql");
+////app.UseGraphiQl("/graphql");
+// Add middleware for GraphQL Playground
+app.UseGraphQLPlayground("/ui/playground", new PlaygroundOptions
+{
+    GraphQLEndPoint = "/graphql"
+});
 app.UseGraphQL<ISchema>();
+
+// Use the custom GraphQL middleware
+////app.UseCustomGraphQL();
 
 app.UseAuthorization();
 

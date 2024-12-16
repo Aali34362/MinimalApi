@@ -7,8 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="graphqltemplate.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="graphiql" Version="2.0.0" />
     <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="8.2.0" />
+    <PackageReference Include="GraphQL.Server.Ui.Playground" Version="8.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
       <PrivateAssets>all</PrivateAssets>
