@@ -436,3 +436,21 @@ fragment userFields on User{
 
 ////Types -> Scalar, Object, Interface, Union, Enum, InputObject
 
+//Introspection
+{
+  "__type(name": "User"
+  ")",
+  {
+    "name",
+    "description",
+    "interfaces" {
+      "name"
+    },
+    "fields" {
+      "name",
+      "description"
+    }
+  }
+}
+
+
