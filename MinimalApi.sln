@@ -106,6 +106,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryManagementSystem", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RideSharingApp", "SOLIDPrinciples\RideSharingApp\RideSharingApp.csproj", "{3946EA07-DC3C-4846-95AD-1BE16D3A3503}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebHooks", "WebHooks", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebHook.Api", "WebHooks\WebHook.Api\WebHook.Api.csproj", "{EA175FD9-2F91-44BA-ADE4-F89911D22AE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -260,6 +264,10 @@ Global
 		{3946EA07-DC3C-4846-95AD-1BE16D3A3503}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3946EA07-DC3C-4846-95AD-1BE16D3A3503}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3946EA07-DC3C-4846-95AD-1BE16D3A3503}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA175FD9-2F91-44BA-ADE4-F89911D22AE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA175FD9-2F91-44BA-ADE4-F89911D22AE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA175FD9-2F91-44BA-ADE4-F89911D22AE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA175FD9-2F91-44BA-ADE4-F89911D22AE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -302,6 +310,7 @@ Global
 		{0DC764C4-5989-4A4B-80CC-9BD0E59F7B1A} = {2C1244A0-1374-472D-8073-C02BF7BFCDF5}
 		{46E151D4-4682-412E-92E3-FF22F3649057} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{3946EA07-DC3C-4846-95AD-1BE16D3A3503} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{EA175FD9-2F91-44BA-ADE4-F89911D22AE1} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28FF3121-2A6C-4EC7-A341-71BD65260A1C}
