@@ -155,7 +155,7 @@ public class ImageProcessingController
             return BadRequest("Invalid file.");
         }
 
-        string pdfPath = Path.Combine("Uploads", file.FileName);
+        string pdfPath = Path.Combine("Pdfs/Uploads", file.FileName);
 
         // Save the uploaded file
         using (var stream = new FileStream(pdfPath, FileMode.Create))
