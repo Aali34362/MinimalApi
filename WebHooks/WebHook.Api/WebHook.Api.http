@@ -3,4 +3,20 @@
 GET {{WebHook.Api_HostAddress}}/weatherforecast/
 Accept: application/json
 
-###
+
+### Create Order
+Post {{WebHook.Api_HostAddress}}/orders/
+Content-Type: application/json
+{
+  "customerName" : "string",
+  "amount": 123
+}
+
+### Create Subscription
+Send request | Debug
+Post {{WebHook.Api_HostAddress}}/webhooks/subscriptions
+Content-Type: application/json
+{
+  "eventType" : "order.created",
+  "webhookUrl": "https://webhook.site/4be62c82-f319-4230-aaa1-746035ceed87"
+}
