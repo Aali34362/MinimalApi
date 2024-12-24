@@ -1,5 +1,6 @@
 ﻿using GraphQL;
 using GraphQL.Types;
+using GraphQLProject.Models;
 
 namespace GraphQLProject.ConfigureServices;
 
@@ -13,5 +14,10 @@ public static class GraphQLServices
                 b.AddAutoSchema<ISchema>()
                 .AddSystemTextJson());
 
+        serviceDescriptors
+            .AddOptions<JwtOptions>()
+            .BindConfiguration("Jwt")
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
     }
 }

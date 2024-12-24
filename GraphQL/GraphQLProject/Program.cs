@@ -26,6 +26,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCustomGraphQL();
+
 app.UseHttpsRedirection();
 
 ////app.UseGraphiQl("/graphql");
@@ -38,6 +40,7 @@ app.UseGraphQL<ISchema>();
 
 // Use the custom GraphQL middleware
 ////app.UseCustomGraphQL();
+
 
 app.UseAuthorization();
 
