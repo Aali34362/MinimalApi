@@ -1,10 +1,25 @@
+using Scalar.AspNetCore;
 using WebHook.Api.Models;
 using WebHook.Api.Repositories;
 using WebHook.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi("openapi", options =>
+{
+    options.AddDocumentTransformer((document, context, cancToken) =>
+    {
+        document.Info.Title = "Web Hook Open APi";
+        document.Info.Version = "v1";
+        document.Info.Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "ABC",
+            Email = "abc@gmail.com"
+        };
+        return Task.CompletedTask;
+    });
+
+});
 
 builder.Services.AddSingleton<InMemoryOrderRepository>();
 builder.Services.AddSingleton<InMemoryWebHookSubscriptionRepository>();
@@ -16,8 +31,16 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.UseSwaggerUI(options => {
-        options.SwaggerEndpoint("/openapi/v1.json", "OpenApi V1");
+    ////app.UseSwaggerUI(options => {
+    ////    options.SwaggerEndpoint("/openapi/v1.json", "OpenApi V1");
+    ////});
+    app.MapScalarApiReference(options =>
+    {
+        options
+        .WithTitle("Web Hooks Open APi")
+        .WithDarkMode(true)
+        .WithTheme(ScalarTheme.Moon)
+        .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
     });
 }
 
