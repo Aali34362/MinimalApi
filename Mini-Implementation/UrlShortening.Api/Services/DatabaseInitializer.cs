@@ -33,8 +33,15 @@ public class DatabaseInitializer(
         builder.Database = "postgres";
 
         await using var connection = new NpgsqlConnection(builder.ToString());
-        await connection.OpenAsync(cancellationToken);
-
+        try
+        {
+            await connection.OpenAsync(cancellationToken);
+        }
+        catch(Exception ex)
+        {
+            logger.LogError(ex, "Error Connection OpenAsync");
+            throw;
+        }
         bool databaseExist = await connection.ExecuteScalarAsync<bool>(
             "Select exists(Select 1 from pg_database where datname = @databaseName)", new { databaseName });
 
@@ -64,13 +71,21 @@ public class DatabaseInitializer(
             visited_at Timestamp with time zone default current_timestamp,
             user_agent Text,
             referer Text,
-            Foreign Key(short_code) Reference shortened_urls(short_code)
+            Foreign Key(short_code) References shortened_urls(short_code)
             );
             
             Create Index If Not Exists idx_visits_short_code On url_visits(short_code);
             
             """;
-        await using var command = dataSource.CreateCommand(createTableSql);
-        await command.ExecuteNonQueryAsync(cancellationToken);
+        await using var command = dataSource.CreateCommand(createTableSql);        
+        try
+        {
+            await command.ExecuteNonQueryAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error Command ExecuteNonQueryAsync");
+            throw;
+        }
     }
 }
