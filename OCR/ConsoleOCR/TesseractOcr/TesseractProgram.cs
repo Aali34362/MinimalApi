@@ -18,7 +18,7 @@ public static class TesseractProgram
         Environment.SetEnvironmentVariable("TESSDATA_PREFIX", tessDataPath, EnvironmentVariableTarget.Process);
 
 
-        var testImagePath = "./TesseractOcr/large.png";
+        var testImagePath = "./TesseractOcr/TRIGONOMETRY.jpg";
         string absolutetestImagePath = GetAbsolutePath(testImagePath);
         ////var testImagePath = "./TesseractOcr/claimbill.webp";
         ////string absolutetestImagePath = GetAbsolutePath(testImagePath);
