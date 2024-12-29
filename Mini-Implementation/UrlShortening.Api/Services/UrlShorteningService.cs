@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Caching.Hybrid;
 using Npgsql;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using URL_Shortener.Models;
 
@@ -9,7 +10,8 @@ namespace URL_Shortener.Services;
 internal sealed class UrlShorteningService(
     NpgsqlDataSource dataSource,
     ILogger<UrlShorteningService> logger,
-    HybridCache cache)
+    HybridCache cache,
+    IHttpContextAccessor httpContextAccessor)
 {
     private static string GenerateShortCode()
     {
@@ -80,7 +82,33 @@ internal sealed class UrlShorteningService(
             var originalUrl = await connection.QuerySingleOrDefaultAsync<string>(sql, new { ShortCode = shortCode });
             return originalUrl!;
         });
+        if (originalUrl is null)
+            FailedRedirectsCounter.Add(1, new TagList { { "short_code", shortCode } });
+        else
+        {
+            await RecordVisit(shortCode);
+            RedirectsCounter.Add(1, new TagList { { "short_code", shortCode } });
+        }
         return originalUrl;
+    }
+    private async Task RecordVisit(string shortCode)
+    {
+        var context = httpContextAccessor.HttpContext;
+        var userAgent = context?.Request.Headers.UserAgent.ToString();
+        var referer = context?.Request.Headers.Referer.ToString();
+
+        const string sql =
+            """
+            Insert into url_visits(short_code, user_agent, referer)
+            values (@ShortCode, @UserAgent, @Referer);
+            """;
+        await using var connection = await dataSource.OpenConnectionAsync();
+        await connection.ExecuteAsync(sql, new
+        {
+            ShortCode = shortCode,
+            UserAgent = userAgent,
+            Referer = referer
+        });
     }
     public async Task<IEnumerable<ShortenedUrl>> GetAllUrls()
     {

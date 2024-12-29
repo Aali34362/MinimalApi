@@ -1,5 +1,4 @@
 using Scalar.AspNetCore;
-using System;
 using URL_Shortener.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +30,10 @@ builder.Services.AddOpenApi("openapi", options =>
 
 builder.Services.AddHostedService<DatabaseInitializer>();
 builder.Services.AddScoped<UrlShorteningService>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddOpenTelemetry()
+    .WithMetrics(metrics => metrics.AddMeter("UrlShortening.Api"));
+
 
 var app = builder.Build();
 
