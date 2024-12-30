@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Hosting;
 using Scalar.AspNetCore;
 using URL_Shortener.Services;
 
