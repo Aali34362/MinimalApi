@@ -48,7 +48,7 @@ internal sealed class UrlShorteningService(
             Returning short_code;
             """;
                 await using var connection = await dataSource.OpenConnectionAsync();
-                var result = await connection.QuerySingleAsync<string>(sql, new { ShortCode = shortCode, OrignialUrl = originalUrl });
+                var result = await connection.QuerySingleAsync<string>(sql, new { ShortCode = shortCode, OriginalUrl = originalUrl });
                 await cache.SetAsync(shortCode, originalUrl);
                 return result;
             }

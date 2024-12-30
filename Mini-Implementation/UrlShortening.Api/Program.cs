@@ -50,7 +50,6 @@ if (app.Environment.IsDevelopment())
         .WithDarkMode(true)
         .WithTheme(ScalarTheme.Moon)
         .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
-
     });
 }
 
@@ -58,22 +57,31 @@ app.UseHttpsRedirection();
 
 app.MapPost("shorten", async (string url, UrlShorteningService urlShorteningService) =>
 {
-    if (Uri.TryCreate(url, UriKind.Absolute, out _))
+    if (!Uri.TryCreate(url, UriKind.Absolute, out _))
         return Results.BadRequest("Invalid Url format");
 
     var shortCode = await urlShorteningService.ShortenUrl(url);
 
     return Results.Ok(new { shortCode });
-});
+}).WithTags("shorten");
+
+////app.MapGet("{shortCode}", async (string shortCode, UrlShorteningService urlShorteningService) =>
+////{
+////    return Results.Redirect(await urlShorteningService.GetOriginalUrl(shortCode)) ?? Results.NotFound();
+////}).WithTags("shorten");
 
 app.MapGet("{shortCode}", async (string shortCode, UrlShorteningService urlShorteningService) =>
 {
-    return Results.Redirect(await urlShorteningService.GetOriginalUrl(shortCode)) ?? Results.NotFound();
-});
+    if (string.IsNullOrEmpty(shortCode))
+        return Results.BadRequest("Short code is required.");
+
+    var originalUrl = await urlShorteningService.GetOriginalUrl(shortCode);
+    return originalUrl != null ? Results.Redirect(originalUrl) : Results.NotFound();
+}).WithTags("shorten");
 
 app.MapGet("urls",async (UrlShorteningService urlShorteningService) =>
 {
     return Results.Ok(await urlShorteningService.GetAllUrls()) ?? Results.NotFound();
-});
+}).WithTags("shorten");
 
 app.Run();

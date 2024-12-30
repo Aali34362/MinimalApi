@@ -132,6 +132,6 @@ app.MapPost("webhooks/subscriptions", (
     var webHook = new WebHookSubscription(Guid.NewGuid(), request.EventType, request.WebHookUrl, DateTime.UtcNow);
     webHookRepository.Add(webHook);
     return Results.Ok(webHook);
-}).WithTags("Orders");
+}).WithTags("webhooks");
 
 app.Run();
