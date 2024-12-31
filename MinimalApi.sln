@@ -118,6 +118,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalApi.AppHost", "Host\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalApi.ServiceDefaults", "Host\MinimalApi.ServiceDefaults\MinimalApi.ServiceDefaults.csproj", "{064E9FB3-9A8E-8D1A-92A6-A435F043142B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stocks.Realtime.Api", "Mini-Implementation\Stocks.Realtime.Api\Stocks.Realtime.Api.csproj", "{30632193-1170-69CE-2B06-D600411CF00D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -288,6 +290,10 @@ Global
 		{064E9FB3-9A8E-8D1A-92A6-A435F043142B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{064E9FB3-9A8E-8D1A-92A6-A435F043142B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{064E9FB3-9A8E-8D1A-92A6-A435F043142B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30632193-1170-69CE-2B06-D600411CF00D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30632193-1170-69CE-2B06-D600411CF00D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30632193-1170-69CE-2B06-D600411CF00D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30632193-1170-69CE-2B06-D600411CF00D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -334,6 +340,7 @@ Global
 		{27BEF337-0B52-BCF7-1D66-E448E0B4E4CD} = {BF860EDD-7496-4D3C-B1CA-F417A1278A40}
 		{403C58A3-59D9-B1F9-4BBB-0D6596CEA31C} = {C2B18E41-4684-4083-886A-C017A28E92F0}
 		{064E9FB3-9A8E-8D1A-92A6-A435F043142B} = {C2B18E41-4684-4083-886A-C017A28E92F0}
+		{30632193-1170-69CE-2B06-D600411CF00D} = {BF860EDD-7496-4D3C-B1CA-F417A1278A40}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28FF3121-2A6C-4EC7-A341-71BD65260A1C}

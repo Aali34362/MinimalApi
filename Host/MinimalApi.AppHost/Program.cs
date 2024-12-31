@@ -11,4 +11,6 @@ builder.AddProject<Projects.UrlShortening_Api>("urlshortening-api")
     .WaitFor(postgres)
     .WaitFor(redis);
 
+builder.AddProject<Projects.Stocks_Realtime_Api>("stocks-realtime-api");
+
 builder.Build().Run();
