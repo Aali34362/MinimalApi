@@ -15,4 +15,6 @@ builder.AddProject<Projects.Stocks_Realtime_Api>("stocks-realtime-api");
 
 builder.AddProject<Projects.SignalRIntro_Api>("signalrintro-api");
 
+builder.AddProject<Projects.KafkaImplementation>("kafkaimplementation");
+
 builder.Build().Run();
