@@ -13,4 +13,6 @@ builder.AddProject<Projects.UrlShortening_Api>("urlshortening-api")
 
 builder.AddProject<Projects.Stocks_Realtime_Api>("stocks-realtime-api");
 
+builder.AddProject<Projects.SignalRIntro_Api>("signalrintro-api");
+
 builder.Build().Run();

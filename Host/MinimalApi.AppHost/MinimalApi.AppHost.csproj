@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Mini-Implementation\Stocks.Realtime.Api\Stocks.Realtime.Api.csproj" />
     <ProjectReference Include="..\..\Mini-Implementation\UrlShortening.Api\UrlShortening.Api.csproj" />
+    <ProjectReference Include="..\..\SignalR\SignalRIntro.Api\SignalRIntro.Api.csproj" />
   </ItemGroup>
 
 </Project>

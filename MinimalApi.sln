@@ -120,11 +120,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalApi.ServiceDefaults"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stocks.Realtime.Api", "Mini-Implementation\Stocks.Realtime.Api\Stocks.Realtime.Api.csproj", "{30632193-1170-69CE-2B06-D600411CF00D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stocks-ui", "stocks-ui", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stocks-ui", "stocks-ui", "{E94A07A1-D936-4989-B163-0632B5657E89}"
 	ProjectSection(SolutionItems) = preProject
 		Mini-Implementation\stocks-ui\index.html = Mini-Implementation\stocks-ui\index.html
 		Mini-Implementation\stocks-ui\script.js = Mini-Implementation\stocks-ui\script.js
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SignalR", "SignalR", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRIntro.Api", "SignalR\SignalRIntro.Api\SignalRIntro.Api.csproj", "{CC801734-D815-496A-1EE5-B6E2A7E366C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -300,6 +304,10 @@ Global
 		{30632193-1170-69CE-2B06-D600411CF00D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30632193-1170-69CE-2B06-D600411CF00D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30632193-1170-69CE-2B06-D600411CF00D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC801734-D815-496A-1EE5-B6E2A7E366C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC801734-D815-496A-1EE5-B6E2A7E366C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC801734-D815-496A-1EE5-B6E2A7E366C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC801734-D815-496A-1EE5-B6E2A7E366C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -347,7 +355,8 @@ Global
 		{403C58A3-59D9-B1F9-4BBB-0D6596CEA31C} = {C2B18E41-4684-4083-886A-C017A28E92F0}
 		{064E9FB3-9A8E-8D1A-92A6-A435F043142B} = {C2B18E41-4684-4083-886A-C017A28E92F0}
 		{30632193-1170-69CE-2B06-D600411CF00D} = {BF860EDD-7496-4D3C-B1CA-F417A1278A40}
-		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {BF860EDD-7496-4D3C-B1CA-F417A1278A40}
+		{E94A07A1-D936-4989-B163-0632B5657E89} = {BF860EDD-7496-4D3C-B1CA-F417A1278A40}
+		{CC801734-D815-496A-1EE5-B6E2A7E366C0} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28FF3121-2A6C-4EC7-A341-71BD65260A1C}
