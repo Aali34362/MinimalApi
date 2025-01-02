@@ -126,11 +126,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stocks-ui", "stocks-ui", "{
 		Mini-Implementation\stocks-ui\script.js = Mini-Implementation\stocks-ui\script.js
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SignalR", "SignalR", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SignalR", "SignalR", "{C9E019B5-65B7-4659-934D-99D2471C4187}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRIntro.Api", "SignalR\SignalRIntro.Api\SignalRIntro.Api.csproj", "{CC801734-D815-496A-1EE5-B6E2A7E366C0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafkaImplementation", "PUB-SUB\KafkaImplementation\KafkaImplementation.csproj", "{C23F1B12-D8F1-D409-1C1F-2804A4E612C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Send", "PUB-SUB\Send\Send.csproj", "{DE61FECE-1189-4260-B966-1A700B76ADE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Receive", "PUB-SUB\Receive\Receive.csproj", "{A7F423BF-E297-4EBB-AC35-5AD73F277C30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -314,6 +318,14 @@ Global
 		{C23F1B12-D8F1-D409-1C1F-2804A4E612C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C23F1B12-D8F1-D409-1C1F-2804A4E612C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C23F1B12-D8F1-D409-1C1F-2804A4E612C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE61FECE-1189-4260-B966-1A700B76ADE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE61FECE-1189-4260-B966-1A700B76ADE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE61FECE-1189-4260-B966-1A700B76ADE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE61FECE-1189-4260-B966-1A700B76ADE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7F423BF-E297-4EBB-AC35-5AD73F277C30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7F423BF-E297-4EBB-AC35-5AD73F277C30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7F423BF-E297-4EBB-AC35-5AD73F277C30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7F423BF-E297-4EBB-AC35-5AD73F277C30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -364,6 +376,8 @@ Global
 		{E94A07A1-D936-4989-B163-0632B5657E89} = {BF860EDD-7496-4D3C-B1CA-F417A1278A40}
 		{CC801734-D815-496A-1EE5-B6E2A7E366C0} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{C23F1B12-D8F1-D409-1C1F-2804A4E612C8} = {521AFDDF-8CEB-41DA-822A-6F4672504A4D}
+		{DE61FECE-1189-4260-B966-1A700B76ADE5} = {521AFDDF-8CEB-41DA-822A-6F4672504A4D}
+		{A7F423BF-E297-4EBB-AC35-5AD73F277C30} = {521AFDDF-8CEB-41DA-822A-6F4672504A4D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28FF3121-2A6C-4EC7-A341-71BD65260A1C}
