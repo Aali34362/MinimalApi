@@ -22,6 +22,9 @@
     <ProjectReference Include="..\..\Mini-Implementation\UrlShortening.Api\UrlShortening.Api.csproj" />
     <ProjectReference Include="..\..\PUB-SUB\KafkaImplementation\KafkaImplementation.csproj" />
     <ProjectReference Include="..\..\SignalR\SignalRIntro.Api\SignalRIntro.Api.csproj" />
+    <ProjectReference Include="..\..\WebHooks\WebHook.App\WebHook.App.csproj" />
+    <ProjectReference Include="..\..\WebHooks\WebHook.Consumer.Api\WebHook.Consumer.Api.csproj" />
+    <ProjectReference Include="..\..\WebHooks\WebHook.Publisher.Api\WebHook.Publisher.Api.csproj" />
   </ItemGroup>
 
 </Project>

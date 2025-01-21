@@ -1,8 +1,7 @@
-using AspNetCoreRateLimit;
-using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
-using System.Collections.Concurrent;
-using System.Threading.RateLimiting;
+using System.Threading.Channels;
+using WebHook.Api.Data;
 using WebHook.Api.Models;
 using WebHook.Api.Repositories;
 using WebHook.Api.Services;
@@ -29,15 +28,31 @@ builder.Services.AddSingleton<InMemoryOrderRepository>();
 builder.Services.AddSingleton<InMemoryWebHookSubscriptionRepository>();
 builder.Services.AddHttpClient<WebhookDispatcher>();
 
-//Fixed window limiter
-builder.Services.AddRateLimiter(_ => _
-    .AddFixedWindowLimiter(policyName: "fixed", options =>
+builder.Services.AddDbContext<WebHooksDbContext>( options => {
+    options.UseNpgsql(builder.Configuration.GetConnectionString("webhookDb"));
+
+});
+builder.Services.AddScoped<WebhookDBDispatcher>();
+
+builder.Services.AddSingleton(_ => {
+    return Channel.CreateBounded<WebHookDispatch>(new BoundedChannelOptions(100)
     {
-        options.PermitLimit = 4;
-        options.Window = TimeSpan.FromSeconds(12);
-        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-        options.QueueLimit = 2;
-    }));
+        FullMode = BoundedChannelFullMode.Wait
+    });
+});
+
+////builder.Services.AddOpenTelemetry()
+////    .WithTracing(tracing => tracing.AddSource(DiagnosticConfig.source.Name));
+
+//Fixed window limiter
+////builder.Services.AddRateLimiter(_ => _
+////    .AddFixedWindowLimiter(policyName: "fixed", options =>
+////    {
+////        options.PermitLimit = 4;
+////        options.Window = TimeSpan.FromSeconds(12);
+////        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+////        options.QueueLimit = 2;
+////    }));
 
 // Configure services
 ////builder.Services.AddRateLimiter(options =>
@@ -50,11 +65,11 @@ builder.Services.AddRateLimiter(_ => _
 ////});
 
 // Tenant-specific rate limit data
-var tenantRateLimits = new ConcurrentDictionary<string, int>
-{
-    ["Tenant1"] = 100, // Premium
-    ["Tenant2"] = 10   // Basic
-};
+////var tenantRateLimits = new ConcurrentDictionary<string, int>
+////{
+////    ["Tenant1"] = 100, // Premium
+////    ["Tenant2"] = 10   // Basic
+////};
 
 
 
@@ -79,7 +94,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseRateLimiter();
+////app.UseRateLimiter();
 // Add rate limiter middleware
 ////app.UseRateLimiter(options =>
 ////{
@@ -101,11 +116,12 @@ app.UseRateLimiter();
 ////    };
 ////});
 
-static string GetTicks() => (DateTime.Now.Ticks & 0x11111).ToString("00000");
+//static string GetTicks() => (DateTime.Now.Ticks & 0x11111).ToString("00000");
 
-app.MapGet("/", () => Results.Ok($"Hello {GetTicks()}"))
-                           .RequireRateLimiting("fixed");
+//app.MapGet("/", () => Results.Ok($"Hello {GetTicks()}"))
+//                           .RequireRateLimiting("fixed");
 
+//List
 //Create an order
 app.MapPost("/orders", async (
     CreateOrderRequest request,
@@ -132,6 +148,36 @@ app.MapPost("webhooks/subscriptions", (
     var webHook = new WebHookSubscription(Guid.NewGuid(), request.EventType, request.WebHookUrl, DateTime.UtcNow);
     webHookRepository.Add(webHook);
     return Results.Ok(webHook);
-}).WithTags("webhooks");
+}).WithTags("WebHookSubscriptions");
+
+
+//DB
+app.MapPost("/ordersDB", async (
+    CreateOrderRequest request,
+    WebHooksDbContext orderRepository,
+    WebhookDBDispatcher webhookDispatcher
+    ) =>
+{
+    var order = new Orders(Guid.NewGuid(), request.CustomerName, request.Amount, DateTime.UtcNow);
+    await orderRepository.Orders.AddAsync(order);
+    await orderRepository.SaveChangesAsync();
+    await webhookDispatcher.DispatchAsync("orderDB.created", order);
+    return Results.Ok(order);
+}).WithTags("OrdersDB");
+
+app.MapGet("/ordersDB", async (WebHooksDbContext orderRepository) =>
+{
+    return Results.Ok(await orderRepository.Orders.ToListAsync());
+}).WithTags("OrdersDB");
+
+app.MapPost("webhooks/subscriptionsDB", async (
+    CreateWebHookRequest request,
+    WebHooksDbContext webHookRepository) =>
+{
+    var webHook = new WebHookSubscription(Guid.NewGuid(), request.EventType, request.WebHookUrl, DateTime.UtcNow);
+    await webHookRepository.Subscriptions.AddAsync(webHook);
+    await webHookRepository.SaveChangesAsync();
+    return Results.Ok(webHook);
+}).WithTags("WebHookSubscriptionsDB");
 
 app.Run();

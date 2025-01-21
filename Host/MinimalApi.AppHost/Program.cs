@@ -17,4 +17,10 @@ builder.AddProject<Projects.SignalRIntro_Api>("signalrintro-api");
 
 builder.AddProject<Projects.KafkaImplementation>("kafkaimplementation");
 
+builder.AddProject<Projects.WebHook_Publisher_Api>("webhook-publisher-api");
+
+builder.AddProject<Projects.WebHook_Consumer_Api>("webhook-consumer-api");
+
+builder.AddProject<Projects.WebHook_App>("webhook-app");
+
 builder.Build().Run();

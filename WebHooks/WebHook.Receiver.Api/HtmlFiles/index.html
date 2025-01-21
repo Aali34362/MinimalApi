@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhook Receiver</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.0/signalr.min.js"></script>
+</head>
+<body>
+    <h1>Webhook Receiver</h1>
+    <button id="generateUrl">Generate Webhook URL</button>
+    <p id="webhookUrl"></p>
+    <div id="webhookData"></div>
+
+    <script>const baseUrl = "https://localhost:7185";
+
+        const generateButton = document.getElementById("generateUrl");
+        const webhookUrlElement = document.getElementById("webhookUrl");
+        const webhookDataElement = document.getElementById("webhookData");
+
+        generateButton.addEventListener("click", async () => {
+            //const response = await fetch(`${baseUrl}/api/webhook/generate`);
+            const response = await fetch(`${baseUrl}/generate`);
+            const data = await response.json();
+            webhookUrlElement.textContent = `Your Webhook URL: ${data.url}`;
+            connectToSignalR(data.url.split("/").pop());
+        });
+
+        function connectToSignalR(uniqueId) {
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl(`${baseUrl}/webhookHub`)
+                .build();
+            console.log(`Your connection : ${connection}`);
+            connection.on("NewWebhook", (data) => {
+                const div = document.createElement("div");
+                div.textContent = JSON.stringify(data, null, 2);
+                webhookDataElement.appendChild(div);
+            });
+
+            connection.start().then(() => {
+                connection.invoke("JoinGroup", uniqueId);
+            });
+        }</script>
+</body>
+</html>
