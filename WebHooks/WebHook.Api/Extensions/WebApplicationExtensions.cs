@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebHooks.Data;
+using WebHook.Api.Data;
 
-namespace WebHooks.Extensions;
+
+namespace WebHook.Api.Extensions;
 
 public static class WebApplicationExtensions
 {
     public static async Task ApplyMigrationAsync(this WebApplication app)
     {
         using var scope = app.Services.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<WebHookDbContext>();
+        var db = scope.ServiceProvider.GetRequiredService<WebHooksDbContext>();
         await db.Database.MigrateAsync();
     }
 }

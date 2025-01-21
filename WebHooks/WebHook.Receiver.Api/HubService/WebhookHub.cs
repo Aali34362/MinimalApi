@@ -12,10 +12,12 @@ public class WebhookHub : Hub
     public async Task JoinGroup(string uniqueId)
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, uniqueId);
+        Console.WriteLine($"Connection {Context.ConnectionId} joined group {uniqueId}");
     }
 
     public async Task LeaveGroup(string uniqueId)
     {
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, uniqueId);
+        Console.WriteLine($"Connection {Context.ConnectionId} left group {uniqueId}");
     }
 }

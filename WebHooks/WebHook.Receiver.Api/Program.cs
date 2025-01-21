@@ -4,7 +4,7 @@ using WebHook.Receiver.Api.HubService;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
+
 
 // Add services to the container.
 
@@ -19,17 +19,25 @@ builder.Services.AddSignalR();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
+    options.AddPolicy("AllowAll", policy =>
     {
-        builder.AllowAnyOrigin() // Allow all origins
-               .AllowAnyMethod() // Allow all HTTP methods (GET, POST, etc.)
-               .AllowAnyHeader(); // Allow all headers
+        policy.AllowAnyOrigin() // Allow all origins
+              .AllowAnyMethod() // Allow all HTTP methods
+              .AllowAnyHeader(); // Allow all headers
+    });
+
+    options.AddPolicy("AllowAllWithCredentials", policy =>
+    {
+        policy.AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials() // Allow cookies/auth headers
+              .SetIsOriginAllowed(_ => true); // Allow any origin
     });
 });
 
 var app = builder.Build();
 
-app.MapDefaultEndpoints();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -47,6 +55,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHub<WebhookHub>("/webhookHub");
+app.MapHub<WebhookHub>("/webhookHub").RequireCors("AllowAllWithCredentials");
 
 app.Run();
