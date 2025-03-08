@@ -1,0 +1,15 @@
+@Dapr.eShop.Checkout_HostAddress = http://localhost:5229
+
+GET {{Dapr.eShop.Checkout_HostAddress}}/weatherforecast/
+Accept: application/json
+
+### 
+Post {{Dapr.eShop.Checkout_HostAddress}}/create-order/
+Accept: application/json
+Content-Type: application/json
+{
+  "orderId": "123",
+  "customerId": "123",
+  "items": ["1","2","3"]
+}
+###
