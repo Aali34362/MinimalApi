@@ -1,8 +1,8 @@
+using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.AddServiceDefaults();
 
 builder.Services.AddOpenApi("openapi", options =>
 {
@@ -20,9 +20,11 @@ builder.Services.AddOpenApi("openapi", options =>
 
 });
 
-builder.Services.AddControllers();
+builder.Configuration
+    .AddJsonFile("ocelot.Orders.json", optional: true, reloadOnChange: true)
+    .AddJsonFile("ocelot.Checkout.json", optional: true, reloadOnChange: true);
 
-builder.Services.AddOpenApi();
+builder.Services.AddOcelot();
 
 var app = builder.Build();
 
@@ -42,10 +44,6 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
+await app.UseOcelot();
 
 app.Run();
