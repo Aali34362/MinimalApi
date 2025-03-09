@@ -1,0 +1,5 @@
+add-migration news -Context ApplicationDbContext
+update-database -Context ApplicationDbContext
+
+add-migration newsletterreporting -Context ApplicationDbContext
+update-database -Context ApplicationDbContext
