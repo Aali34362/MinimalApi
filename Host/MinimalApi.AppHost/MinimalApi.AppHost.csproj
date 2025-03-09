@@ -19,6 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ApiGateways\OcelotApiGateway\OcelotApiGateway.csproj" />
+    <ProjectReference Include="..\..\ApiGateways\YarpApiGateWay\YarpApiGateWay.csproj" />
     <ProjectReference Include="..\..\Dapr\Dapr.eShop.Checkout\Dapr.eShop.Checkout.csproj" />
     <ProjectReference Include="..\..\Dapr\Dapr.eShop.Orders\Dapr.eShop.Orders.csproj" />
     <ProjectReference Include="..\..\Mini-Implementation\Stocks.Realtime.Api\Stocks.Realtime.Api.csproj" />

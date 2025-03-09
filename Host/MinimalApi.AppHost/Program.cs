@@ -33,4 +33,10 @@ builder.AddProject<Projects.Dapr_eShop_Orders>("dapr-eshop-orders")
 builder.AddProject<Projects.Dapr_eShop_Checkout>("dapr-eshop-checkout")
     .WithDaprSidecar(new DaprSidecarOptions { AppId = "checkout-api" });
 
+////builder.AddProject<Projects.YarpApiGateWay>("yarpapigateway");
+
+builder.AddProject<Projects.OcelotApiGateway>("ocelotapigateway");
+
+////builder.AddProject<Projects.YarpApiGateWay>("yarpapigateway");
+
 builder.Build().Run();
