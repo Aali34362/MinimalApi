@@ -2,8 +2,6 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
-
 builder.Services.AddOpenApi("openapi", options =>
 {
     options.AddDocumentTransformer((document, context, cancToken) =>
@@ -20,13 +18,18 @@ builder.Services.AddOpenApi("openapi", options =>
 
 });
 
-builder.Services.AddControllers();
+// Load main appsettings.json
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-builder.Services.AddOpenApi();
+// Load separate reverse proxy configs
+builder.Configuration.AddJsonFile("appsettings.Orders.json", optional: true, reloadOnChange: true);
+builder.Configuration.AddJsonFile("appsettings.Checkout.json", optional: true, reloadOnChange: true);
+
+// Load reverse proxy configs dynamically
+builder.Services.AddReverseProxy()
+    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
 var app = builder.Build();
-
-app.MapDefaultEndpoints();
 
 if (app.Environment.IsDevelopment())
 {
@@ -42,10 +45,6 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
+app.MapReverseProxy();
 
 app.Run();

@@ -49,6 +49,23 @@ app.MapPost("/process-order", async (OrderRequest request) =>
     return Results.Ok($"Order {request.OrderId} confirmation: #{Guid.NewGuid().ToString()[..8]}");
 });
 
+// Example for future-proofing
+app.MapGet("/process-order/{id}", (int id) =>
+{
+    return Results.Ok($"Fetching order with ID: {id}");
+});
+
+app.MapPut("/process-order/{id}", (int id, OrderRequest request) =>
+{
+    return Results.Ok($"Order {id} updated");
+});
+
+app.MapDelete("/process-order/{id}", (int id) =>
+{
+    return Results.Ok($"Order {id} deleted");
+});
+
+
 app.Run();
 
 

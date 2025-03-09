@@ -52,6 +52,22 @@ app.MapPost("/create-order", async (OrderRequest request, DaprClient client) =>
     return Results.Ok(result);
 });
 
+// Example for future-proofing
+app.MapGet("/create-order/{id}", (int id) =>
+{
+    return Results.Ok($"Fetching order with ID: {id}");
+});
+
+app.MapPut("/create-order/{id}", (int id, OrderRequest request) =>
+{
+    return Results.Ok($"Order {id} updated");
+});
+
+app.MapDelete("/create-order/{id}", (int id) =>
+{
+    return Results.Ok($"Order {id} deleted");
+});
+
 app.Run();
 
 public record OrderRequest(string OrderId, string CustomerId, List<string> Items);
