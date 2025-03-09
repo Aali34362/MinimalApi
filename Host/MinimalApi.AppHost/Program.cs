@@ -27,16 +27,14 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 ////builder.AddProject<Projects.Exotic_WebHook_Api>("exotic-webhook-api");
 
-builder.AddProject<Projects.Dapr_eShop_Orders>("dapr-eshop-orders")
-    .WithDaprSidecar(new DaprSidecarOptions { AppId = "orders-api" });
+builder.AddProject<Projects.Dapr_eShop_Orders>("dapr-eshop-orders");
+//.WithDaprSidecar(new DaprSidecarOptions { AppId = "orders-api" });
 
-builder.AddProject<Projects.Dapr_eShop_Checkout>("dapr-eshop-checkout")
-    .WithDaprSidecar(new DaprSidecarOptions { AppId = "checkout-api" });
+builder.AddProject<Projects.Dapr_eShop_Checkout>("dapr-eshop-checkout");
+    //.WithDaprSidecar(new DaprSidecarOptions { AppId = "checkout-api" });
 
-////builder.AddProject<Projects.YarpApiGateWay>("yarpapigateway");
+builder.AddProject<Projects.YarpApiGateWay>("yarpapigateway");
 
 builder.AddProject<Projects.OcelotApiGateway>("ocelotapigateway");
-
-////builder.AddProject<Projects.YarpApiGateWay>("yarpapigateway");
 
 builder.Build().Run();

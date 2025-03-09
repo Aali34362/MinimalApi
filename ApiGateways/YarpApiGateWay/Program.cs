@@ -2,6 +2,8 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Services.AddOpenApi("openapi", options =>
 {
     options.AddDocumentTransformer((document, context, cancToken) =>

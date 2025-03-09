@@ -1,8 +1,11 @@
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using OcelotApiGateway;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
 
 builder.Services.AddOpenApi("openapi", options =>
 {
@@ -20,9 +23,10 @@ builder.Services.AddOpenApi("openapi", options =>
 
 });
 
+builder.Configuration.AddOcelotConfigs();
+
 builder.Configuration
-    .AddJsonFile("ocelot.Orders.json", optional: true, reloadOnChange: true)
-    .AddJsonFile("ocelot.Checkout.json", optional: true, reloadOnChange: true);
+    .AddJsonFile("ocelot.json", optional: true, reloadOnChange: true);
 
 builder.Services.AddOcelot();
 
