@@ -1,13 +1,15 @@
-using Ocelot.DependencyInjection;
-using Ocelot.Middleware;
-using OcelotApiGateway;
+using Microsoft.Extensions.DependencyInjection;
 using Scalar.AspNetCore;
-using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi("openapi", options =>
 {
     options.AddDocumentTransformer((document, context, cancToken) =>
@@ -24,31 +26,11 @@ builder.Services.AddOpenApi("openapi", options =>
 
 });
 
-builder.Configuration.AddOcelotConfigs();
-
-builder.Configuration
-    .AddJsonFile("ocelot.json", optional: true, reloadOnChange: true);
-
-builder.Services.AddRateLimiter(options => {
-    options.AddPolicy("FixedWindow", context =>
-    RateLimitPartition.GetFixedWindowLimiter(
-    partitionKey: context.Request.Path,
-    factory: _ => new FixedWindowRateLimiterOptions()
-    {
-        AutoReplenishment = true,
-        PermitLimit = 10,
-        Window = TimeSpan.FromSeconds(10)
-    }));
-});
-
-builder.Services.AddOcelot();
-
-
-
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
 
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -62,7 +44,11 @@ if (app.Environment.IsDevelopment())
 
     });
 }
-app.UseRateLimiter();
-await app.UseOcelot();
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();

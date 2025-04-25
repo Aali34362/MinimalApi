@@ -37,4 +37,6 @@ builder.AddProject<Projects.YarpApiGateWay>("yarpapigateway");
 
 builder.AddProject<Projects.OcelotApiGateway>("ocelotapigateway");
 
+builder.AddProject<Projects.Results>("results");
+
 builder.Build().Run();

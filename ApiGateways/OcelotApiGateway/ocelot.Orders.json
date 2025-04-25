@@ -9,8 +9,38 @@
         {
           "Host": "localhost",
           "Port": 7101
+        },
+        {
+          "Host": "localhost",
+          "Port": 7101
         }
-      ]
+      ],
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProvider": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role": "admin"
+      },
+      ////"HttpHandlerOptions": {
+      ////  "AllowAutoRedirect": true,
+      ////  "UseCookieContainer": true,
+      ////  "UseTracing": true
+      ////},
+      ////"QoSOptions": {
+      ////  "ExceptionsAllowedBeforeBreaking": 5,
+      ////  "DurationOfBreak": 30,
+      ////  "TimeoutValue": 20
+      ////},
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "10s",
+        "PeriodTimespan": 5,
+        "Limit": 10
+      }
     }
   ]
 }

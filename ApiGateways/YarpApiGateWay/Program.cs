@@ -1,4 +1,5 @@
 using Scalar.AspNetCore;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,18 @@ builder.Configuration.AddJsonFile("appsettings.Checkout.json", optional: true, r
 // Load reverse proxy configs dynamically
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+
+builder.Services.AddRateLimiter(options => {
+    options.AddPolicy("FixedWindow", context =>
+    RateLimitPartition.GetFixedWindowLimiter(
+    partitionKey: context.Request.Path, 
+    factory: _ => new FixedWindowRateLimiterOptions()
+    {
+        AutoReplenishment = true,
+        PermitLimit = 10,
+        Window = TimeSpan.FromSeconds(10)
+    }));
+});
 
 var app = builder.Build();
 
