@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 
 namespace Results.Controllers;
@@ -11,27 +12,62 @@ public class ReportController : Controller
     public IActionResult GenerateReports()
     {
         // File paths
-        string sourceFile = "C:\\Users\\Admin\\Downloads\\SampleResult.xlsx";
-        string templateFile = "C:\\Users\\Admin\\Downloads\\RESULT.xlsx";
-        string outputDir = "C:\\Users\\Admin\\Documents\\";
+        string sourceFile = "C:\\Users\\Admin\\Downloads\\Rough Result COM 2024 - 2025.xlsx";
+        string templateFile = "C:\\Users\\Admin\\Downloads\\ComResult.xlsx";
+        string outputDir = "C:\\Users\\Admin\\Documents\\Shaheen";
 
-        // Mapping source column headers to template named cells
-        var mappings = new Dictionary<string, string>
+        var mappings = new Dictionary<string, (string mainColumn, string supColumn, string destination)>
         {
-            ["English"] = "XEnglish",
-            ["U/H/I"] = "XUR_HN_IT",
-            ["ECO"] = "XECO",
-            ["BK"] = "XBK",
-            ["OC"] = "XOC",
-            ["SP/Maths"] = "XSP_MATHS",
-            ["Total"] = "XTOTAL",
-            ["Percentage"] = "XPercentage",
-            ["Remarks"] = "XRemarks",
-            ["NAME OF THE STUDENTS"] = "XStudentName",
-            ["ROLL NO"] = "XRollNo",
-            ["Date of Birth"] = "XDateOfBirth",
-            ["G R NO"] = "XGRNO",
+            ["English"] = ("English", "EG", "XEnglish")!,
+            ["U/H/I"] = ("U/H/I", "UHIG", "XUR_HN_IT")!,
+
+            ["ECO"] = ("ECO", "ECG", "XECO"),
+            ["BK"] = ("BK", "BKG", "XBK"),
+            ["OC"] = ("OC", "OCG", "XOC"),
+            ["SP/Maths"] = ("SP/Maths", "MG", "XSP_MATHS")!,
+
+            ["Total"] = ("Total", "TG", "XTOTAL")!,
+            ["Percentage"] = ("Percentage", null, "XPercentage")!,
+            ["Remarks"] = ("Remarks", null, "XRemarks")!,
+            ["Attendance"] = ("Attendance", null, "XATTENDANVE")!,
+            ["PT"] = ("PT", null, "XPT")!,
+            ["EVS"] = ("EVS", null, "XEVS")!,
+
+            ["NAME OF THE STUDENTS"] = ("NAME OF THE STUDENTS", null, "XStudentName")!,
+            ["ROLL NO"] = ("ROLL NO", null, "XRollNo")!,
+            ["G R NO"] = ("G R NO", null, "XGRNO")!,
         };
+
+        ////var mappings = new Dictionary<string, string>
+        ////{
+        ////    ["English"] = "XEnglish",
+        ////    ["U/H/I"] = "XUR_HN_IT",
+
+        ////    ["ECO"] = "XECO",
+        ////    ["BK"] = "XBK",
+        ////    ["OC"] = "XOC",
+        ////    ["SP/Maths"] = "XSP_MATHS",
+
+
+        ////    ////["PHYSICS"] = "XPHYSICS",
+        ////    ////["CHEMISTRY"] = "XCHEMISTRY",
+        ////    ////["BIOLOGY"] = "XBIOLOGY",
+        ////    ////["MATHS / GEO"] = "XMATHS_GEO",
+
+
+
+        ////    ["Total"] = "XTOTAL",
+        ////    ["Percentage"] = "XPercentage",
+        ////    ["Remarks"] = "XRemarks",
+        ////    ["Date of Birth"] = "XDateOfBirth",
+        ////    ["Attendance"] = "XATTENDANVE",
+        ////    ["PT"] = "XPT",
+        ////    ["EVS"] = "XEVS",
+
+        ////    ["NAME OF THE STUDENTS"] = "XStudentName",
+        ////    ["ROLL NO"] = "XRollNo",
+        ////    ["G R NO"] = "XGRNO",
+        ////};
 
         ExcelPackage.License.SetNonCommercialOrganization("My Noncommercial organization");
 
@@ -42,17 +78,30 @@ public class ReportController : Controller
 
         while (!string.IsNullOrEmpty(sourceSheet.Cells[row, 1].Text))
         {
-            var studentData = new Dictionary<string, string>();
-            foreach (var kvp in mappings)
+            var studentData = new Dictionary<string, (string main, string superscript)>();
+
+            foreach (var map in mappings)
             {
-                int colIndex = FindColumnIndex(sourceSheet, kvp.Key);
-                studentData[kvp.Value] = sourceSheet.Cells[row, colIndex].Text;
+                var (mainColName, supColName, destinationName) = map.Value;
+
+                int mainColIndex = FindColumnIndex(sourceSheet, mainColName);
+                string mainValue = mainColIndex > 0 ? sourceSheet.Cells[row, mainColIndex].Text : "";
+
+                string supValue = "";
+                if (!string.IsNullOrEmpty(supColName))
+                {
+                    int supColIndex = FindColumnIndex(sourceSheet, supColName);
+                    if (supColIndex > 0)
+                    {
+                        supValue = sourceSheet.Cells[row, supColIndex].Text;
+                    }
+                }
+
+                studentData[destinationName] = (mainValue, supValue);
             }
-            studentData.Add("XEVS", "A");
-            studentData.Add("XPT", "A");
-            studentData.Add("XReOpens", "");
-            var rollNo = studentData["XRollNo"];
-            var name = studentData["XStudentName"];
+
+            var rollNo = studentData["XRollNo"].main;
+            var name = studentData["XStudentName"].main;
             string newFileName = Path.Combine(outputDir, $"{rollNo}_{name.Replace(" ", "_")}.xlsx");
 
             try
@@ -80,27 +129,155 @@ public class ReportController : Controller
             using (var package = new ExcelPackage(new FileInfo(newFileName)))
             {
                 var workbook = package.Workbook;
-                var worksheet = workbook.Worksheets["Sheet1"]; 
-                foreach (var cellMap in studentData)
+                var worksheet = workbook.Worksheets["Sheet1"];
+
+                foreach (var data in studentData)
                 {
-                    try
+                    var destinationName = data.Key;
+                    var (mainValue, supValue) = data.Value;
+
+                    var namedRange = workbook.Names[destinationName];
+                    if (namedRange != null)
                     {
-                        var namedRange = workbook.Names[cellMap.Key];
-                        if (namedRange != null)
+                        var ws = namedRange.Worksheet;
+                        var address = new OfficeOpenXml.ExcelAddress(namedRange.Address);
+
+                        var cell = ws.Cells[address.Start.Row, address.Start.Column];
+
+                        cell.Value = null;
+
+                        if (!string.IsNullOrEmpty(mainValue))
                         {
-                            namedRange.Value = cellMap.Value;
+                            if (!string.IsNullOrEmpty(supValue))
+                            {
+                                var richText = cell.RichText;
+
+                                richText.Add(mainValue);
+
+                                var supPart = richText.Add($"+{supValue}");
+                                supPart.VerticalAlign = OfficeOpenXml.Style.ExcelVerticalAlignmentFont.Superscript;
+                                supPart.Color = System.Drawing.Color.Red;
+                            }
+                            else
+                            {
+                                cell.Value = mainValue;
+                            }
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error setting value for {cellMap.Key}: {ex.Message}");
-                    }
                 }
-
                 package.Save();
             }
+
             row++;
         }
+
+
+
+        ////while (!string.IsNullOrEmpty(sourceSheet.Cells[row, 1].Text))
+        ////{
+        ////    var studentData = new Dictionary<string, string>();
+        ////    foreach (var kvp in mappings)
+        ////    {
+        ////        int colIndex = FindColumnIndex(sourceSheet, kvp.Key);
+        ////        if (colIndex > 0)
+        ////        {
+        ////            studentData[kvp.Value] = sourceSheet.Cells[row, colIndex].Text;
+        ////        }
+        ////    }
+
+
+
+        ////    var rollNo = studentData["XRollNo"];
+        ////    var name = studentData["XStudentName"];
+        ////    string newFileName = Path.Combine(outputDir, $"{rollNo}_{name.Replace(" ", "_")}.xlsx");
+
+        ////    try
+        ////    {
+        ////        System.IO.File.Copy(templateFile, newFileName, overwrite: true);
+        ////    }
+        ////    catch (Exception ex)
+        ////    {
+        ////        return StatusCode(500, $"Error copying file: {ex.Message}");
+        ////    }
+
+        ////    using var templatePackage = new ExcelPackage(new FileInfo(newFileName));
+        ////    var templateSheet = templatePackage.Workbook.Worksheets["Sheet1"];
+
+        ////    try
+        ////    {
+        ////        templatePackage.Save();
+        ////        templatePackage.Dispose();
+        ////    }
+        ////    catch (Exception ex)
+        ////    {
+        ////        return StatusCode(500, $"Error saving the template file to initialize named cells: {ex.Message}");
+        ////    }
+
+        ////    using (var package = new ExcelPackage(new FileInfo(newFileName)))
+        ////    {
+        ////        var workbook = package.Workbook;
+        ////        var worksheet = workbook.Worksheets["Sheet1"];
+        ////        foreach (var cellMap in studentData)
+        ////        {
+        ////            try
+        ////            {
+        ////                var namedRange = workbook.Names[cellMap.Key];
+        ////                if (namedRange != null)
+        ////                {
+        ////                    var value = cellMap.Value;
+
+        ////                    var cell = namedRange.Worksheet.Cells[namedRange.Address];
+
+        ////                    // === Superscript Handling Start ===
+        ////                    if (!string.IsNullOrEmpty(value) && value.Contains("^"))
+        ////                    {
+        ////                        var parts = value.Split('^');
+        ////                        var normalText = parts[0];
+        ////                        var superscriptText = parts.Length > 1 ? parts[1] : "";
+
+        ////                        cell.RichText.Clear();
+
+        ////                        var normal = cell.RichText.Add(normalText);
+        ////                        var superscript = cell.RichText.Add(superscriptText);
+        ////                        superscript.VerticalAlign = OfficeOpenXml.Style.ExcelVerticalAlignmentFont.Superscript;
+        ////                    }
+        ////                    else
+        ////                    {
+        ////                        namedRange.Value = value;
+        ////                    }
+        ////                    // === Superscript Handling End ===
+        ////                }
+        ////            }
+        ////            catch (Exception ex)
+        ////            {
+        ////                Console.WriteLine($"Error setting value for {cellMap.Key}: {ex.Message}");
+        ////            }
+        ////        }
+
+        ////        package.Save();
+        ////    }
+        ////    row++;
+        ////}
+
+
+
+
+
+
+
+
+
+
+
+        ////string excelFile = @"C:\Users\Admin\Documents\Shaheen\1_KHAN_SHIFA_MOHAMMED_KALAM_ABEDA_.xlsx";
+        ////string pdfOutput = @"C:\Users\Admin\Documents\Shaheen\CommerceReportCard.pdf";
+        ////List<string> excelFiles = new List<string>
+        ////{
+        ////    @"C:\Users\Admin\Documents\Shaheen\1_KHAN_SHIFA_MOHAMMED_KALAM_ABEDA_.xlsx",
+        ////    @"C:\Users\Admin\Documents\Shaheen\2_KHAN_MARIYAM_IMRAN_SALMA.xlsx",
+        ////    @"C:\Users\Admin\Documents\Shaheen\3_KHAN_TUBA_HANIF_SHAMIM_BANO.xlsx"
+        ////};
+        ////ExcelToPdf.MergeExcelsToSinglePdf_FreeWay(excelFiles, pdfOutput);
 
         return Ok("Reports generated successfully.");
     }
