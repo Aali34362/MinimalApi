@@ -12,24 +12,24 @@ public class ReportController : Controller
     public IActionResult GenerateReports()
     {
         // File paths
-        string sourceFile = "C:\\Users\\Admin\\Downloads\\Rough Result Sci 2024 - 2025.xlsx";
-        string templateFile = "C:\\Users\\Admin\\Downloads\\Sci Result.xlsx";
-        string outputDir = "C:\\Users\\Admin\\Documents\\SWATI";
+        string sourceFile = "C:\\Users\\Admin\\Downloads\\Rough Result COM 2024 - 2025.xlsx";
+        string templateFile = "C:\\Users\\Admin\\Downloads\\ComResult.xlsx";
+        string outputDir = "C:\\Users\\Admin\\Documents\\Shaheen";
 
         var mappings = new Dictionary<string, (string mainColumn, string supColumn, string destination)>
         {
             ["English"] = ("English", null, "XEnglish")!,
             ["U/H/I"] = ("U/H/I", null, "XUR_HN_IT")!,
 
-            ////["ECO"] = ("ECO", "ECG", "XECO"),
-            ////["BK"] = ("BK", "BKG", "XBK"),
-            ////["OC"] = ("OC", "OCG", "XOC"),
-            ////["SP/Maths"] = ("SP/Maths", "MG", "XSP_MATHS")!,
+            ["ECO"] = ("ECO", "ECG", "XECO"),
+            ["BK"] = ("BK", "BKG", "XBK"),
+            ["OC"] = ("OC", "OCG", "XOC"),
+            ["SP/Maths"] = ("SP/Maths", "MG", "XSP_MATHS")!,
 
-            ["PHYSICS"] = ("PHYSICS", "PG", "XPHYSICS"),
-            ["CHEMISTRY"] = ("CHEMISTRY", "CG", "XCHEMISTRY"),
-            ["BIOLOGY"] = ("BIOLOGY", "BG", "XBIOLOGY"),
-            ["MATHS / GEO"] = ("MATHS / GEO", "MG", "XMATHS_GEO"),
+            ////["PHYSICS"] = ("PHYSICS", "PG", "XPHYSICS"),
+            ////["CHEMISTRY"] = ("CHEMISTRY", "CG", "XCHEMISTRY"),
+            ////["BIOLOGY"] = ("BIOLOGY", "BG", "XBIOLOGY"),
+            ////["MATHS / GEO"] = ("MATHS / GEO", "MG", "XMATHS_GEO"),
 
             ["Total"] = ("Total", "TG", "XTOTAL")!,
             ["Percentage"] = ("Percentage", null, "XPercentage")!,
@@ -41,6 +41,7 @@ public class ReportController : Controller
             ["NAME OF THE STUDENTS"] = ("NAME OF THE STUDENTS", null, "XStudentName")!,
             ["ROLL NO"] = ("ROLL NO", null, "XRollNo")!,
             ["G R NO"] = ("G R NO", null, "XGRNO")!,
+            ["Date of Birth"] = ("Date of Birth", null, "XDateOfBirth")!,
         };
 
         ////var mappings = new Dictionary<string, string>
