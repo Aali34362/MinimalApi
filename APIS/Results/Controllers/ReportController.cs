@@ -18,8 +18,8 @@ public class ReportController : Controller
 
         var mappings = new Dictionary<string, (string mainColumn, string supColumn, string destination)>
         {
-            ["English"] = ("English", null, "XEnglish")!,
-            ["U/H/I"] = ("U/H/I", null, "XUR_HN_IT")!,
+            ["English"] = ("English", "EG", "XEnglish")!,
+            ["U/H/I"] = ("U/H/I", "UHIG", "XUR_HN_IT")!,
 
             ["ECO"] = ("ECO", "ECG", "XECO"),
             ["BK"] = ("BK", "BKG", "XBK"),
@@ -42,6 +42,7 @@ public class ReportController : Controller
             ["ROLL NO"] = ("ROLL NO", null, "XRollNo")!,
             ["G R NO"] = ("G R NO", null, "XGRNO")!,
             ["Date of Birth"] = ("Date of Birth", null, "XDateOfBirth")!,
+            ["TEACHER'S REMARK"] = ("TEACHER'S REMARK", null, "XTEACHERREMARK")!,
         };
 
         ////var mappings = new Dictionary<string, string>

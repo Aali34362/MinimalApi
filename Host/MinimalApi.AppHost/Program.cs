@@ -39,4 +39,6 @@ builder.AddProject<Projects.OcelotApiGateway>("ocelotapigateway");
 
 builder.AddProject<Projects.Results>("results");
 
+builder.AddProject<Projects.ExcelCRUD>("excelcrud");
+
 builder.Build().Run();

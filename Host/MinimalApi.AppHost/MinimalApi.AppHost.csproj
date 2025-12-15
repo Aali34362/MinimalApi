@@ -24,6 +24,7 @@
     <ProjectReference Include="..\..\APIS\Results\Results.csproj" />
     <ProjectReference Include="..\..\Dapr\Dapr.eShop.Checkout\Dapr.eShop.Checkout.csproj" />
     <ProjectReference Include="..\..\Dapr\Dapr.eShop.Orders\Dapr.eShop.Orders.csproj" />
+    <ProjectReference Include="..\..\ExcelCRUD\ExcelCRUD.csproj" />
     <ProjectReference Include="..\..\Mini-Implementation\Stocks.Realtime.Api\Stocks.Realtime.Api.csproj" />
     <ProjectReference Include="..\..\Mini-Implementation\UrlShortening.Api\UrlShortening.Api.csproj" />
     <ProjectReference Include="..\..\PUB-SUB\KafkaImplementation\KafkaImplementation.csproj" />
