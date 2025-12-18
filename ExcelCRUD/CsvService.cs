@@ -4,7 +4,7 @@ namespace ExcelCRUD;
 
 public class CsvService
 {
-    private readonly string _filePath = "Data/people.csv";
+    private readonly string _filePath = string.Empty;
 
     public CsvService(IWebHostEnvironment env)
     {
