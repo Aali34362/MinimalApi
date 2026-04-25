@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Mvc;
+using NPOI.SS.Formula.Functions;
 using OfficeOpenXml;
 
 namespace Results.Controllers;
@@ -170,6 +171,14 @@ public class ReportController : Controller
                                 cell.Value = mainValue;
                             }
                         }
+                    }
+                    if (destinationName.Equals("XATTENDANVE"))
+                    {
+                        var ws = namedRange!.Worksheet;
+                        var address = new OfficeOpenXml.ExcelAddress(namedRange.Address);
+
+                        var cell = ws.Cells[address.Start.Row, address.Start.Column];
+                        cell.Value = $"{data.Value.main}/189";
                     }
                 }
                 package.Save();
