@@ -12,7 +12,7 @@ public class ReportController : Controller
     public IActionResult GenerateReports()
     {
         // File paths
-        string sourceFile = "C:\\Users\\Admin\\Downloads\\Rough Result COM 2024 - 2025.xlsx";
+        string sourceFile = "C:\\Users\\Admin\\Downloads\\Rough Result COM 2025-2026.xlsx";
         string templateFile = "C:\\Users\\Admin\\Downloads\\ComResult.xlsx";
         string outputDir = "C:\\Users\\Admin\\Documents\\Shaheen";
 
