@@ -13,24 +13,24 @@ public class ReportController : Controller
     public IActionResult GenerateReports()
     {
         // File paths
-        string sourceFile = "C:\\Users\\Admin\\Downloads\\Rough Result COM 2025-2026.xlsx";
-        string templateFile = "C:\\Users\\Admin\\Downloads\\ComResult.xlsx";
-        string outputDir = "C:\\Users\\Admin\\Documents\\Shaheen";
+        string sourceFile = "C:\\Users\\Admin\\Downloads\\Rough Result SCI 2025-2026.xlsx";
+        string templateFile = "C:\\Users\\Admin\\Downloads\\Sci Result.xlsx";
+        string outputDir = "C:\\Users\\Admin\\Documents\\Vishu";
 
         var mappings = new Dictionary<string, (string mainColumn, string supColumn, string destination)>
         {
             ["English"] = ("English", "EG", "XEnglish")!,
             ["U/H/I"] = ("U/H/I", "UHIG", "XUR_HN_IT")!,
 
-            ["ECO"] = ("ECO", "ECG", "XECO"),
-            ["BK"] = ("BK", "BKG", "XBK"),
-            ["OC"] = ("OC", "OCG", "XOC"),
-            ["SP/Maths"] = ("SP/Maths", "MG", "XSP_MATHS")!,
+            ////["ECO"] = ("ECO", "ECG", "XECO"),
+            ////["BK"] = ("BK", "BKG", "XBK"),
+            ////["OC"] = ("OC", "OCG", "XOC"),
+            ////["SP/Maths"] = ("SP/Maths", "MG", "XSP_MATHS")!,
 
-            ////["PHYSICS"] = ("PHYSICS", "PG", "XPHYSICS"),
-            ////["CHEMISTRY"] = ("CHEMISTRY", "CG", "XCHEMISTRY"),
-            ////["BIOLOGY"] = ("BIOLOGY", "BG", "XBIOLOGY"),
-            ////["MATHS / GEO"] = ("MATHS / GEO", "MG", "XMATHS_GEO"),
+            ["PHYSICS"] = ("PHYSICS", "PG", "XPHYSICS"),
+            ["CHEMISTRY"] = ("CHEMISTRY", "CG", "XCHEMISTRY"),
+            ["BIOLOGY"] = ("BIOLOGY", "BG", "XBIOLOGY"),
+            ["MATHS / GEO"] = ("MATHS / GEO", "MG", "XMATHS_GEO"),
 
             ["Total"] = ("Total", "TG", "XTOTAL")!,
             ["Percentage"] = ("Percentage", null, "XPercentage")!,
@@ -44,6 +44,9 @@ public class ReportController : Controller
             ["G R NO"] = ("G R NO", null, "XGRNO")!,
             ["Date of Birth"] = ("Date of Birth", null, "XDateOfBirth")!,
             ["TEACHER'S REMARK"] = ("TEACHER'S REMARK", null, "XTEACHERREMARK")!,
+            ["AADHAR NO"] = ("AADHAR NO", null, "XAADHARNO")!,
+            ["AAPAR ID"] = ("AAPAR ID", null, "XAAPARID")!,
+            ["STUDENT ID"] = ("STUDENT ID", null, "XSTUDENTID")!,
         };
 
         ////var mappings = new Dictionary<string, string>
@@ -178,7 +181,7 @@ public class ReportController : Controller
                         var address = new OfficeOpenXml.ExcelAddress(namedRange.Address);
 
                         var cell = ws.Cells[address.Start.Row, address.Start.Column];
-                        cell.Value = $"{data.Value.main}/189";
+                        cell.Value = $"{data.Value.main}/186";
                     }
                 }
                 package.Save();
